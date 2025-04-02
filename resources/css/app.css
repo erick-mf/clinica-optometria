@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@theme {
+    --bg-primary: #157564;
+}
+
+input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
