@@ -8,24 +8,24 @@
                     <p class="text-gray-600 mb-8">Bienvenido al panel de administración. Aquí puedes gestionar los
                         doctores, pacientes, citas y horarios.</p>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-white">
                         <a href="{{ route('admin.doctors.index') }}"
-                            class="block p-6 bg-[#30d2b5] hover:bg-[#31b099] rounded-lg transition duration-300">
+                            class="block p-6 bg-primary hover:bg-[#66a499] rounded-lg transition duration-300">
                             <h2 class="text-xl font-semibold mb-2">Gestionar Doctores</h2>
                             <p>Administra los doctores y sus perfiles</p>
                         </a>
                         <a href="{{ route('admin.doctors.index') }}"
-                            class="block p-6 bg-[#30d2b5] hover:bg-[#31b099] rounded-lg transition duration-300">
+                            class="block p-6 bg-primary hover:bg-[#66a499] rounded-lg transition duration-300">
                             <h2 class="text-xl font-semibold mb-2">Gestionar Pacientes</h2>
                             <p>Administra los pacientes y su información</p>
                         </a>
                         <a href="{{ route('admin.doctors.index') }}"
-                            class="block p-6 bg-[#30d2b5] hover:bg-[#31b099] rounded-lg transition duration-300">
+                            class="block p-6 bg-primary hover:bg-[#66a499] rounded-lg transition duration-300">
                             <h2 class="text-xl font-semibold mb-2">Gestionar Citas</h2>
                             <p>Revisa y gestiona las citas programadas</p>
                         </a>
-                        <a href="{{ route('admin.doctors.index') }}"
-                            class="block p-6 bg-[#30d2b5] hover:bg-[#31b099] rounded-lg transition duration-300">
+                        <a href="{{ route('admin.schedules.index') }}"
+                            class="block p-6 bg-primary hover:bg-[#66a499] rounded-lg transition duration-300">
                             <h2 class="text-xl font-semibold mb-2">Gestionar Horarios</h2>
                             <p>Administra los horarios disponibles para los doctores</p>
                         </a>
