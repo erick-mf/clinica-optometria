@@ -14,7 +14,7 @@
                             <h2 class="text-xl font-semibold mb-2">Gestionar Doctores</h2>
                             <p>Administra los doctores y sus perfiles</p>
                         </a>
-                        <a href="{{ route('admin.doctors.index') }}"
+                        <a href="{{ route('admin.patients.index') }}"
                             class="block p-6 bg-primary hover:bg-[#66a499] rounded-lg transition duration-300">
                             <h2 class="text-xl font-semibold mb-2">Gestionar Pacientes</h2>
                             <p>Administra los pacientes y su información</p>

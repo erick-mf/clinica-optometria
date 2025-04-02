@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DoctorController;
+use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -29,7 +30,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'verified', 'admin')-
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('doctors', DoctorController::class);
     Route::resource('schedules', ScheduleController::class);
-    // Route::resource('patients', AdminController::class);
+    Route::resource('patients', PatientController::class);
     // Route::resource('appointments', AdminController::class);
     // Route::resource('services', AdminController::class);
 });
