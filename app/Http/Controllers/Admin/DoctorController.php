@@ -83,7 +83,7 @@ class DoctorController extends Controller
             'name' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
             'surnames' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
             'email' => 'required|email|unique:users,email,'.$doctor->id,
-            'phone' => 'nullable|string|max:20|regex:/^[0-9\s\-+]+$/',
+            'phone' => 'nullable|string|max:9|regex:/^[0-9\s\-]+$/',
         ], [
             'name.required' => 'El nombre es obligatorio.',
             'name.max' => 'El nombre no puede tener más de 255 caracteres.',
@@ -95,7 +95,7 @@ class DoctorController extends Controller
             'email.email' => 'El correo electrónico debe ser una dirección válida.',
             'email.unique' => 'El correo electrónico ya está en uso.',
             'phone.max' => 'El teléfono no puede tener más de 20 caracteres.',
-            'phone.regex' => 'El teléfono solo puede contener números, espacios, guiones y signos de suma.',
+            'phone.regex' => 'El teléfono solo puede contener números, espacios y guiones.',
         ]);
 
         $this->repository->update($doctor, $validated);

@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Repositories\Patient;
+
+use App\Models\Patient;
+
+interface PatientRepositoryInterface
+{
+    public function paginate(int $perPage = 10);
+
+    public function searchPaginate(string $search, int $perPage = 10);
+
+    public function find($id);
+
+    public function create(array $data);
+
+    public function update(Patient $user, array $data);
+
+    public function delete(Patient $user);
+}
