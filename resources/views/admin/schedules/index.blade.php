@@ -1,5 +1,4 @@
 <x-app-layout>
-
     <div class="py-4 sm:py-12">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -7,18 +6,8 @@
                     <div
                         class="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <h1 class="text-lg font-bold sm:text-2xl">Listado de Horarios</h1>
-                        <a href="{{ route('admin.schedules.create') }}"
-                            class="bg-gray-800 hover:bg-gray-700 text-white py-2 px-4 rounded-md transition duration-150 ease-in-out w-full sm:w-auto text-center flex items-center justify-center text-sm sm:text-base">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 mr-2" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                            Nuevo Horario
-                        </a>
+                        <x-add-button action="{{ route('admin.schedules.create') }}" text="Agregar Nuevo Horario" />
                     </div>
-
-                    <x-search-box placeholder="Buscar horarios" />
 
                     <div id="noSearchResults" class="hidden bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
                         <p class="text-gray-600 text-sm sm:text-base">No se encontraron horarios con ese criterio de
@@ -136,51 +125,4 @@
     <x-delete-modal title="Confirmar eliminación"
         content="¿Estás seguro que deseas eliminar este doctor? Esta acción no se puede deshacer." />
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('searchSchedule');
-            const tableRows = document.querySelectorAll('#schedulesTableBody tr');
-            const mobileCards = document.querySelectorAll('.sm\\:hidden > div');
-            const noSearchResults = document.getElementById('noSearchResults');
-            const noVisibleResults = document.getElementById('noVisibleResults');
-            const paginateSection = document.getElementById('paginate');
-
-            // Función de búsqueda que funciona tanto para tablas como para tarjetas
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                let visibleItems = 0;
-
-                // Para vista móvil (tarjetas)
-                mobileCards.forEach(card => {
-                    const cardText = card.textContent.toLowerCase();
-                    if (cardText.includes(searchTerm)) {
-                        card.classList.remove('hidden');
-                        visibleItems++;
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-
-                // Para vista desktop (tabla)
-                tableRows.forEach(row => {
-                    const rowText = row.textContent.toLowerCase();
-                    if (rowText.includes(searchTerm)) {
-                        row.classList.remove('hidden');
-                    } else {
-                        row.classList.add('hidden');
-                    }
-                });
-
-                // Mostrar mensajes apropiados según los resultados
-                if (visibleItems === 0 && mobileCards.length > 0) {
-                    noSearchResults.classList.remove('hidden');
-                    paginateSection.classList.add('hidden');
-                } else {
-                    noSearchResults.classList.add('hidden');
-                    paginateSection.classList.remove('hidden');
-                }
-            });
-
-        });
-    </script>
 </x-app-layout>

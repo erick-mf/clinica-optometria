@@ -13,7 +13,7 @@
             @if (!Auth::check())
                 <div class="hidden md:flex items-center space-x-8">
                     <p class="text-white">{{ __('Eres parte de nuestro equipo?') }}</p>
-                    <x-nav-link :href="route('login')" :active="request()->routeIs('login')" class="text-white hover:text-gray-100">
+                    <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
                         {{ __('Iniciar sesión') }}
                     </x-nav-link>
                 </div>
@@ -23,12 +23,12 @@
             @if (Auth::check())
                 <div class="hidden md:flex items-center space-x-8">
                     @if (Auth::user()->role == 'admin')
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:text-gray-200">
-                            {{ __('Dashboard') }}
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                            {{ __('Panel de Administración') }}
                         </x-nav-link>
                     @else
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:text-gray-200">
-                            {{ __('Dashboard') }}
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Mi Panel') }}
                         </x-nav-link>
                     @endif
                     <!-- Settings Dropdown -->
@@ -51,7 +51,7 @@
 
                             <x-slot name="content">
                                 <x-dropdown-link :href="route('profile.edit')">
-                                    {{ __('Profile') }}
+                                    {{ __('Perfil') }}
                                 </x-dropdown-link>
 
                                 <!-- Authentication -->
@@ -61,7 +61,7 @@
                                     <x-dropdown-link :href="route('logout')"
                                         onclick="event.preventDefault();
                         this.closest('form').submit();">
-                                        {{ __('Log Out') }}
+                                        {{ __('Cerrar Sesión') }}
                                     </x-dropdown-link>
                                 </form>
                             </x-slot>
@@ -87,12 +87,11 @@
     </div>
 
     <!-- Responsive Navigation Menu - Mobile Only -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden bg-primary absolute w-full z-50 shadow-lg">
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden bg-white absolute w-full z-50 shadow-lg">
         <!-- Login link for non-authenticated users -->
         @if (!Auth::check())
             <div class="pt-2 pb-3 space-y-1 px-4">
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                    class="text-white hover:text-gray-200 flex justify-start">
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="flex justify-start">
                     {{ __('Iniciar sesión') }}
                 </x-responsive-nav-link>
             </div>
@@ -100,23 +99,14 @@
 
         <!-- Dashboard link for authenticated users -->
         @if (Auth::check())
-            <div class="pt-2 pb-3 space-y-1 px-4">
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                    class="text-white hover:text-gray-200 flex justify-start">
-                    {{ __('Dashboard') }}
-                </x-responsive-nav-link>
-            </div>
-
             <!-- Responsive Settings Options -->
-            <div class="pt-4 pb-1 border-t border-gray-200">
-                <div class="px-4">
-                    <div class="font-medium text-base text-white">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-300">{{ Auth::user()->email }}</div>
-                </div>
-
+            <div class="pt-2 pb-1 border-t border-gray-200">
                 <div class="mt-3 space-y-1 px-4">
-                    <x-responsive-nav-link :href="route('profile.edit')" class="text-white hover:text-gray-200 flex justify-start">
-                        {{ __('Profile') }}
+                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" class="flex justify-start">
+                        {{ __('Panel de Administración') }} - {{ Auth::user()->name }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('profile.edit')" class="flex justify-start">
+                        {{ __('Perfil') }}
                     </x-responsive-nav-link>
 
                     <!-- Authentication -->
@@ -126,8 +116,8 @@
                         <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                         this.closest('form').submit();"
-                            class="text-white hover:text-gray-200 flex justify-start">
-                            {{ __('Log Out') }}
+                            class="flex justify-start">
+                            {{ __('Cerrar Sesión') }}
                         </x-responsive-nav-link>
                     </form>
                 </div>

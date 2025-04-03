@@ -1,9 +1,14 @@
 export function modal(){
-
     // Referencias al modal de eliminación
     const deleteModal = document.getElementById('deleteModal');
     const cancelDelete = document.getElementById('cancelDelete');
     const confirmDelete = document.getElementById('confirmDelete');
+
+    if(!deleteModal || !cancelDelete || !confirmDelete){
+        // Para evitar los errores de referencia cuando se llama a la función sin los elementos cargados
+        return
+    }
+
     let currentDeleteForm = null;
 
     // Función para mostrar el modal de confirmación de eliminación

@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\ScheduleController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +27,7 @@ require __DIR__.'/auth.php';
 Route::prefix('admin')->name('admin.')->middleware('auth', 'verified', 'admin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('doctors', DoctorController::class);
+    Route::get('doctors/search', [DoctorController::class, 'search'])->name('admin.doctors.search');
     Route::resource('schedules', ScheduleController::class);
     // Route::resource('patients', AdminController::class);
     // Route::resource('appointments', AdminController::class);
