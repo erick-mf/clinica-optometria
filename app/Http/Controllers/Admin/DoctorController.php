@@ -14,9 +14,15 @@ class DoctorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $doctors = $this->repository->paginate();
+        $search = $request->input('search');
+
+        if ($search) {
+            $doctors = $this->repository->searchPaginate($search);
+        } else {
+            $doctors = $this->repository->paginate();
+        }
 
         return view('admin.doctors.index', compact('doctors'));
     }

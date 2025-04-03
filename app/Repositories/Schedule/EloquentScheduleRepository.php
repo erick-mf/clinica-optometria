@@ -18,7 +18,7 @@ class EloquentScheduleRepository implements ScheduleRepositoryInterface
 
     public function paginate(int $perPage = 10)
     {
-        return $this->model->orderBy('day', 'desc')->paginate($perPage);
+        return $this->model->orderBy('date', 'desc')->paginate($perPage);
     }
 
     public function find($id)

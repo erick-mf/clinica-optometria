@@ -18,6 +18,19 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
         return $this->model->query()->where('role', 'doctor')->orderBy('id', 'desc')->paginate($perPage);
     }
 
+    public function searchPaginate(string $search, int $perPage = 10)
+    {
+        return $this->model->query()
+            ->where('role', 'doctor')
+            ->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('surnames', 'like', '%'.$search.'%')
+                    ->orWhere('email', 'like', '%'.$search.'%');
+            })
+            ->orderBy('id', 'desc')
+            ->paginate($perPage);
+    }
+
     public function find($id)
     {
         return $this->model->find($id);

@@ -31,9 +31,6 @@
                             </a>
                         </div>
                     @else
-                        <!-- Buscador -->
-                        <x-search-box placeholder="Buscar doctor" />
-
                         <!-- Mensaje de no resultados para búsqueda -->
                         <div id="noSearchResults"
                             class="{{ $doctors->isEmpty() && request('search') ? '' : 'hidden' }} bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
