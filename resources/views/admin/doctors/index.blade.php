@@ -1,12 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Gestión de Doctores') }}
-            </h2>
-        </div>
-    </x-slot>
-
     <div class="py-4 sm:py-12">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -15,20 +7,11 @@
                     <div
                         class="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <h1 class="text-lg font-bold sm:text-2xl">Listado de Doctores</h1>
-                        <a href="{{ route('admin.doctors.create') }}"
-                            class="bg-gray-800 hover:bg-gray-700 text-white py-2 px-4 rounded-md transition duration-150 ease-in-out
-                            w-full sm:w-auto text-center flex items-center justify-center text-sm sm:text-base">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 mr-2" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                            Nuevo Doctor
-                        </a>
+                        <x-add-button action="{{ route('admin.doctors.create') }}" text="Agregar Doctor" />
                     </div>
 
 
-                    @if ($doctors->isEmpty())
+                    @if (!request('search') && $doctors->isEmpty())
                         <div class="bg-gray-50 rounded-lg p-4 sm:p-8 text-center">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-gray-400 mb-3 sm:mb-4" fill="none"
@@ -57,19 +40,54 @@
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
-                            <input type="text" id="searchDoctor" placeholder="Buscar por nombre, apellido o email..."
-                                class="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring focus:ring-gray-300 focus:border-gray-300 text-sm sm:text-base">
+                            <form action="{{ route('admin.doctors.index') }}" method="GET" class="relative">
+                                <input type="text" name="search" id="searchDoctor"
+                                    placeholder="Buscar por nombre, apellido o email..."
+                                    class="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring focus:ring-gray-300 focus:border-gray-300 text-sm sm:text-base"
+                                    value="{{ request('search') }}" autocomplete="off">
+
+                                <!-- Botón de limpiar búsqueda (aparece cuando hay texto) -->
+                                @if (request('search'))
+                                    <button type="button" id="clearSearch"
+                                        class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 hover:text-gray-600"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                @endif
+                            </form>
                         </div>
 
                         <!-- Mensaje de no resultados para búsqueda -->
                         <div id="noSearchResults"
-                            class="hidden bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
+                            class="{{ $doctors->isEmpty() && request('search') ? '' : 'hidden' }} bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
                             <p class="text-gray-600 text-sm sm:text-base">No se encontraron doctores con ese criterio de
                                 búsqueda.</p>
+                            <a href="{{ route('admin.doctors.index') }}"
+                                class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm sm:text-base mt-2">
+                                <span>Volver a todos los doctores</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 ml-1"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                            </a>
+                        </div>
+
+                        <!-- Mensaje cuando no hay resultados visibles localmente -->
+                        <div id="noVisibleResults"
+                            class="hidden bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
+                            <p class="text-gray-600 text-sm sm:text-base">No hay doctores visibles con ese criterio en
+                                esta página.</p>
+                            <div id="searchServerBtnContainer" class="mt-3"></div>
                         </div>
 
                         <!-- Vista para móviles (card-based) -->
-                        <div class="md:hidden space-y-3 mb-4">
+                        <div id="mobileView"
+                            class="md:hidden space-y-3 mb-4 {{ $doctors->isEmpty() && request('search') ? 'hidden' : '' }}">
                             @foreach ($doctors as $doctor)
                                 <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-3" data-doctor-card>
                                     <div class="flex justify-between items-start mb-2">
@@ -98,8 +116,8 @@
                                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
                                             </button>
-                                            <form action="{{ route('admin.doctors.destroy', $doctor) }}" method="POST"
-                                                class="hidden delete-form-mobile">
+                                            <form action="{{ route('admin.doctors.destroy', $doctor) }}"
+                                                method="POST" class="hidden delete-form-mobile">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
@@ -110,7 +128,8 @@
                         </div>
 
                         <!-- Vista para tablet/desktop (table-based) -->
-                        <div id="table" class="hidden md:block overflow-x-auto bg-white rounded-lg shadow">
+                        <div id="table"
+                            class="hidden md:block overflow-x-auto bg-white rounded-lg shadow {{ $doctors->isEmpty() && request('search') ? 'hidden' : '' }}">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
@@ -189,14 +208,8 @@
                             </table>
                         </div>
 
-                        <!-- Mensaje cuando no hay resultados visibles -->
-                        <div id="noVisibleResults"
-                            class="hidden mt-4 sm:mt-6 bg-gray-50 rounded-lg p-3 sm:p-4 text-center">
-                            <p class="text-gray-600 text-sm sm:text-base">No hay doctores visibles con los filtros
-                                actuales.</p>
-                        </div>
-
-                        <div class="mt-4 sm:mt-6" id="paginate">
+                        <div class="mt-4 sm:mt-6" id="paginate"
+                            class="{{ $doctors->isEmpty() && request('search') ? 'hidden' : '' }}">
                             <x-custom-pagination :paginator="$doctors" />
                         </div>
                     @endif
@@ -204,64 +217,38 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal de confirmación de eliminación -->
-    <div id="deleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-lg w-11/12 max-w-md mx-auto p-4 sm:p-6 shadow-xl">
-            <div class="text-center">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-10 w-10 sm:h-12 sm:w-12 text-red-500 mx-auto mb-3 sm:mb-4" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Confirmar eliminación</h3>
-                <p class="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">¿Estás seguro que deseas eliminar este
-                    doctor? Esta acción no se puede
-                    deshacer.</p>
-                <div class="flex justify-center space-x-3 sm:space-x-4">
-                    <button id="cancelDelete"
-                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-3 sm:px-4 rounded text-sm sm:text-base transition-colors duration-200">
-                        Cancelar
-                    </button>
-                    <button id="confirmDelete"
-                        class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-3 sm:px-4 rounded text-sm sm:text-base transition-colors duration-200">
-                        Eliminar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-delete-modal title="Confirmar eliminación"
+        content="¿Estás seguro que deseas eliminar este doctor? Esta acción no se puede deshacer." />
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Referencias a elementos del DOM para búsqueda
             const searchInput = document.getElementById('searchDoctor');
+            const searchForm = searchInput.closest('form');
             const tableRows = document.querySelectorAll('#doctorsTableBody tr');
             const doctorCards = document.querySelectorAll('[data-doctor-card]');
             const noSearchResults = document.getElementById('noSearchResults');
             const noVisibleResults = document.getElementById('noVisibleResults');
-            const deleteModal = document.getElementById('deleteModal');
-            const cancelDelete = document.getElementById('cancelDelete');
-            const confirmDelete = document.getElementById('confirmDelete');
-            const tableSection = document.getElementById("table");
-            const paginateSection = document.getElementById("paginate");
-            let currentForm = null;
-            let isMobile = window.innerWidth < 768;
+            const tableSection = document.getElementById('table');
+            const mobileView = document.getElementById('mobileView');
+            const paginateSection = document.getElementById('paginate');
+            const searchServerBtnContainer = document.getElementById('searchServerBtnContainer');
 
-            // Actualizar variable isMobile en resize
-            window.addEventListener('resize', function() {
-                isMobile = window.innerWidth < 768;
-            });
+            // Variables para el manejo de la búsqueda
+            let timeout = null;
+            let currentSearch = searchInput.value.trim();
+            let performingSearch = false;
 
-            // Función mejorada de búsqueda para ambas vistas
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase().trim();
+            // Función para filtrado local (en la página actual)
+            function filterLocalItems(searchText) {
+                searchText = searchText.toLowerCase().trim();
+
                 let visibleCount = 0;
 
-                // Búsqueda en tarjetas móviles
+                // Filtrar cards para móvil
                 doctorCards.forEach(card => {
-                    const cardText = card.textContent.toLowerCase();
-                    if (cardText.includes(searchTerm)) {
+                    const doctorInfo = card.textContent.toLowerCase();
+                    if (doctorInfo.includes(searchText)) {
                         card.classList.remove('hidden');
                         visibleCount++;
                     } else {
@@ -269,74 +256,151 @@
                     }
                 });
 
-                // Búsqueda en filas de tabla
+                // Filtrar filas de tabla para desktop
                 tableRows.forEach(row => {
-                    const rowText = row.textContent.toLowerCase();
-                    if (rowText.includes(searchTerm)) {
+                    const rowInfo = row.textContent.toLowerCase();
+                    if (rowInfo.includes(searchText)) {
                         row.classList.remove('hidden');
+                        visibleCount++;
                     } else {
                         row.classList.add('hidden');
                     }
                 });
 
-                // Mostrar mensaje cuando no hay resultados
-                if (visibleCount === 0 && doctorCards.length > 0 && searchTerm !== '') {
-                    noSearchResults.classList.remove('hidden');
-                    noVisibleResults.classList.add('hidden');
-                    paginateSection.classList.add('hidden');
-                } else if (visibleCount === 0 && doctorCards.length > 0) {
-                    noSearchResults.classList.add('hidden');
+                // Actualizar la visibilidad de los mensajes
+                updateVisibilityMessages(visibleCount, searchText);
+
+                return visibleCount;
+            }
+
+            // Actualizar mensajes de visibilidad
+            function updateVisibilityMessages(visibleCount, searchText) {
+                // Ocultar todos los mensajes primero
+                noSearchResults.classList.add('hidden');
+                noVisibleResults.classList.add('hidden');
+
+                // Mostrar tabla/cards según corresponda
+                if (visibleCount === 0 && searchText !== '') {
+                    // No hay resultados visibles
+                    if (tableSection) tableSection.classList.add('md:hidden');
+                    if (mobileView) mobileView.classList.add('hidden');
+                    if (paginateSection) paginateSection.classList.add('hidden');
+
+                    // Mostrar mensaje de no resultados locales
                     noVisibleResults.classList.remove('hidden');
-                    paginateSection.classList.add('hidden');
+
+                    // Añadir botón de búsqueda en servidor si no existe
+                    if (!document.getElementById('searchServerBtn')) {
+                        const searchAllBtn = document.createElement('button');
+                        searchAllBtn.id = 'searchServerBtn';
+                        searchAllBtn.className =
+                            'bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm transition-all duration-200';
+                        searchAllBtn.textContent = 'Buscar en todas las páginas';
+                        searchAllBtn.onclick = function(e) {
+                            e.preventDefault();
+                            searchForm.submit();
+                        };
+
+                        // Limpiar el contenedor antes de añadir el botón
+                        searchServerBtnContainer.innerHTML = '';
+                        searchServerBtnContainer.appendChild(searchAllBtn);
+                    }
                 } else {
-                    noSearchResults.classList.add('hidden');
-                    noVisibleResults.classList.add('hidden');
-                    paginateSection.classList.remove('hidden');
+                    // Hay resultados, mostrar tabla/cards
+                    if (tableSection) tableSection.classList.remove('md:hidden');
+                    if (mobileView) mobileView.classList.remove('hidden');
+                    if (paginateSection) paginateSection.classList.remove('hidden');
+                }
+            }
+
+            // Gestionar la búsqueda
+            function handleSearch() {
+                if (performingSearch) return;
+
+                const searchText = searchInput.value.trim();
+
+                // Si la búsqueda está vacía y es diferente a la actual, buscar en el servidor
+                if (searchText === '' && currentSearch !== '') {
+                    // Redirigir directamente a la página principal en lugar de hacer submit
+                    window.location.href = '{{ route('admin.doctors.index') }}';
+                    return;
+                }
+
+                // Para búsquedas que refinan la actual, filtrar localmente
+                if ((searchText.includes(currentSearch) || currentSearch.includes(searchText)) && searchText !==
+                    currentSearch) {
+                    filterLocalItems(searchText);
+                }
+                // Para cambios significativos, buscar en el servidor
+                else if (searchText !== currentSearch && searchText.length > 2) {
+                    // Mostrar indicador de carga
+                    performingSearch = true;
+
+                    // Eliminar indicador existente si hay
+                    const existingIndicator = document.getElementById('searchLoadingIndicator');
+                    if (existingIndicator) existingIndicator.remove();
+
+                    const loadingIndicator = document.createElement('div');
+                    loadingIndicator.id = 'searchLoadingIndicator';
+                    loadingIndicator.className = 'fixed top-0 left-0 right-0 bg-blue-500 h-1 z-50';
+                    loadingIndicator.style.width = '0%';
+                    document.body.appendChild(loadingIndicator);
+
+                    // Animar el indicador de carga
+                    let width = 0;
+                    const interval = setInterval(() => {
+                        width += 5;
+                        if (width > 90) clearInterval(interval);
+                        loadingIndicator.style.width = width + '%';
+                    }, 50);
+
+                    // Configurar un temporizador para evitar búsquedas múltiples rápidas
+                    setTimeout(() => {
+                        currentSearch = searchText;
+                        searchForm.submit();
+                    }, 300);
+                }
+            }
+
+            // Evento input con debounce
+            searchInput.addEventListener('input', function() {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    handleSearch();
+                }, 400);
+            });
+
+            // Evento submit para actualizar la búsqueda actual
+            searchForm.addEventListener('submit', function() {
+                currentSearch = searchInput.value.trim();
+                performingSearch = true;
+            });
+
+            // Si hay un valor de búsqueda al cargar, aplicarlo como filtro local
+            if (currentSearch !== '') {
+                filterLocalItems(currentSearch);
+            }
+
+            // Si el usuario presiona Enter, siempre buscar en el servidor
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    clearTimeout(timeout);
+                    currentSearch = searchInput.value.trim();
+                    searchForm.submit();
                 }
             });
 
-            // Configurar los botones de eliminar para mostrar el modal (vista desktop)
-            document.querySelectorAll('.delete-button').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    currentForm = this.closest('.delete-form');
-                    deleteModal.classList.remove('hidden');
-                    deleteModal.classList.add('flex');
+            // Limpiar búsqueda
+            const clearSearchButton = document.getElementById('clearSearch');
+            if (clearSearchButton) {
+                clearSearchButton.addEventListener('click', function() {
+                    searchInput.value = '';
+                    currentSearch = '';
+                    // Redirigir directamente en lugar de asignar y esperar el siguiente evento
+                    window.location.href = '{{ route('admin.doctors.index') }}';
                 });
-            });
+            }
 
-            // Configurar los botones de eliminar para móvil
-            document.querySelectorAll('.delete-button-mobile').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    currentForm = this.closest('div').querySelector('.delete-form-mobile');
-                    deleteModal.classList.remove('hidden');
-                    deleteModal.classList.add('flex');
-                });
-            });
-
-            // Cancelar eliminación
-            cancelDelete.addEventListener('click', function() {
-                deleteModal.classList.add('hidden');
-                deleteModal.classList.remove('flex');
-                currentForm = null;
-            });
-
-            // Confirmar eliminación
-            confirmDelete.addEventListener('click', function() {
-                if (currentForm) {
-                    currentForm.submit();
-                }
-            });
-
-            // Cerrar modal al hacer clic fuera
-            deleteModal.addEventListener('click', function(e) {
-                if (e.target === deleteModal) {
-                    deleteModal.classList.add('hidden');
-                    deleteModal.classList.remove('flex');
-                    currentForm = null;
-                }
-            });
         });
     </script>
 </x-app-layout>

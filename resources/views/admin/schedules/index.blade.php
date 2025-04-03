@@ -1,11 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Gestión de Horarios') }}
-            </h2>
-        </div>
-    </x-slot>
 
     <div class="py-4 sm:py-12">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
@@ -76,7 +69,7 @@
                                         <span class="font-semibold text-gray-900">{{ $schedule->day }}</span>
                                         <div class="flex items-center space-x-3">
                                             <a href="{{ route('admin.schedules.edit', $schedule) }}"
-                                                class="text-blue-600 hover:text-blue-900">
+                                                class="text-blue-600 hover:text-blue-800">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -84,17 +77,19 @@
                                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
                                             </a>
+                                            <button type="button"
+                                                class="text-red-600 hover:text-red-900 delete-button-mobile">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
                                             <form action="{{ route('admin.schedules.destroy', $schedule) }}"
-                                                method="POST" class="inline">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-900">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
-                                                </button>
+                                                method="POST" class="hidden delete-form-mobile">
+                                                @csrf
+                                                @method('DELETE')
                                             </form>
                                         </div>
                                     </div>
@@ -153,30 +148,36 @@
                                             </td>
                                             <td class="px-2 sm:px-4 py-3 text-sm text-center">
                                                 <div class="flex justify-center items-center space-x-3">
-                                                    <a href="{{ route('admin.schedules.edit', $schedule) }}"
-                                                        class="text-blue-600 hover:text-blue-900 font-medium">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                        </svg>
-                                                    </a>
-                                                    <form action="{{ route('admin.schedules.destroy', $schedule) }}"
-                                                        method="POST" class="inline">
-                                                        @csrf @method('DELETE')
-                                                        <button type="submit"
-                                                            class="text-red-600 hover:text-red-900 font-medium">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
-                                                                fill="none" viewBox="0 0 24 24"
-                                                                stroke="currentColor">
+                                                    <div class="flex justify-center items-center space-x-3">
+                                                        <a href="{{ route('admin.schedules.edit', $schedule) }}"
+                                                            class="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 flex items-center">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="h-4 w-4 mr-1" fill="none"
+                                                                viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                                     stroke-width="2"
-                                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                             </svg>
-                                                        </button>
-                                                    </form>
-                                                </div>
+                                                            <span>Editar</span>
+                                                        </a>
+                                                        <form
+                                                            action="{{ route('admin.schedules.destroy', $schedule) }}"
+                                                            method="POST" class="inline delete-form">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button"
+                                                                class="text-red-600 hover:text-red-900 font-medium transition-colors duration-200 flex items-center delete-button">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="h-4 w-4 mr-1" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                                </svg>
+                                                                <span>Eliminar</span>
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -196,28 +197,9 @@
             </div>
         </div>
     </div>
-    <div id="deleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-lg w-11/12 max-w-md mx-auto p-4 sm:p-6 shadow-xl">
-            <div class="text-center">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-10 w-10 sm:h-12 sm:w-12 text-red-500 mx-auto mb-3 sm:mb-4" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Confirmar Eliminación</h3>
-                <p class="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">¿Estás seguro que deseas eliminar este
-                    horario? Esta acción no se puede
-                    deshacer.</p>
-                <div class="flex justify-center space-x-3 sm:space-x-4">
-                    <button id="cancelDelete"
-                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-3 sm:px-4 rounded text-sm sm:text-base transition-colors duration-200">Cancelar</button>
-                    <button id="confirmDelete"
-                        class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-3 sm:px-4 rounded text-sm sm:text-base transition-colors duration-200">Confirmar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-delete-modal title="Confirmar eliminación"
+        content="¿Estás seguro que deseas eliminar este doctor? Esta acción no se puede deshacer." />
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('searchSchedule');
@@ -263,33 +245,6 @@
                 }
             });
 
-            // Funcionalidad para el modal de eliminación
-            const deleteButtons = document.querySelectorAll('form[action*="schedules/"]');
-            const deleteModal = document.getElementById('deleteModal');
-            const cancelDelete = document.getElementById('cancelDelete');
-            const confirmDelete = document.getElementById('confirmDelete');
-            let formToSubmit = null;
-
-            deleteButtons.forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    formToSubmit = this;
-                    deleteModal.classList.remove('hidden');
-                    deleteModal.classList.add('flex');
-                });
-            });
-
-            cancelDelete.addEventListener('click', function() {
-                deleteModal.classList.add('hidden');
-                deleteModal.classList.remove('flex');
-                formToSubmit = null;
-            });
-
-            confirmDelete.addEventListener('click', function() {
-                if (formToSubmit) {
-                    formToSubmit.submit();
-                }
-            });
         });
     </script>
 </x-app-layout>
