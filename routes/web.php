@@ -24,6 +24,11 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+Route::get('setup-password/{token}', [App\Http\Controllers\Auth\SetupPasswordController::class, 'showSetupForm'])->name('password.setup');
+Route::post('setup-password', [App\Http\Controllers\Auth\SetupPasswordController::class, 'setup'])->name('password.setup.update');
+Route::get('setup-password-complete', function () {
+    return view('auth.passwords.setup-complete');
+})->name('password.setup.complete');
 // routes admin
 Route::prefix('admin')->name('admin.')->middleware('auth', 'verified', 'admin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

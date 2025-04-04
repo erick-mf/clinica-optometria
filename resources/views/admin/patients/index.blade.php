@@ -57,14 +57,16 @@
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
-                            <input type="text" id="searchPatient" placeholder="Buscar por nombre, apellido o email..."
+                            <input type="text" id="searchPatient"
+                                placeholder="Buscar por nombre, apellido o email..."
                                 class="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring focus:ring-gray-300 focus:border-gray-300 text-sm sm:text-base">
                         </div>
 
                         <!-- Mensaje de no resultados para búsqueda -->
                         <div id="noSearchResults"
                             class="hidden bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
-                            <p class="text-gray-600 text-sm sm:text-base">No se encontraron pacientes con ese criterio de
+                            <p class="text-gray-600 text-sm sm:text-base">No se encontraron pacientes con ese criterio
+                                de
                                 búsqueda.</p>
                         </div>
 
@@ -99,8 +101,8 @@
                                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
                                             </button>
-                                            <form action="{{ route('admin.patients.destroy', $patient) }}" method="POST"
-                                                class="hidden delete-form-mobile">
+                                            <form action="{{ route('admin.patients.destroy', $patient) }}"
+                                                method="POST" class="hidden delete-form-mobile">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>

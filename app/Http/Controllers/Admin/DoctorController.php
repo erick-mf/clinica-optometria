@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\SetupPassword;
 use App\Repositories\Doctor\DoctorRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 
 class DoctorController extends Controller
 {
@@ -16,13 +18,7 @@ class DoctorController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
-
-        if ($search) {
-            $doctors = $this->repository->searchPaginate($search);
-        } else {
-            $doctors = $this->repository->paginate();
-        }
+        $doctors = $this->repository->paginate();
 
         return view('admin.doctors.index', compact('doctors'));
     }
@@ -60,6 +56,13 @@ class DoctorController extends Controller
         ]);
 
         $doctor = $this->repository->create($validated);
+
+        if (! $doctor) {
+            return back()->withInput()->with('error', 'Error al crear el doctor.');
+        }
+
+        $token = Password::createToken($doctor);
+        $doctor->notify(new SetupPassword($token));
 
         return redirect()
             ->route('admin.doctors.index')
