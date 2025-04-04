@@ -8,6 +8,8 @@ use App\Repositories\Schedule\EloquentScheduleRepository;
 use App\Repositories\Schedule\ScheduleRepositoryInterface;
 use App\Repositories\Patient\EloquentPatientRepository;
 use App\Repositories\Patient\PatientRepositoryInterface;
+use App\Repositories\Appointment\EloquentAppointmentRepository;
+use App\Repositories\Appointment\AppointmentRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -20,6 +22,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(DoctorRepositoryInterface::class, EloquentDoctorRepository::class);
         $this->app->bind(ScheduleRepositoryInterface::class, EloquentScheduleRepository::class);
         $this->app->bind(PatientRepositoryInterface::class, EloquentPatientRepository::class);
+        $this->app->bind(AppointmentRepositoryInterface::class, EloquentAppointmentRepository::class);
     }
 
     /**

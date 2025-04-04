@@ -29,8 +29,26 @@
 
             <!-- Page Content -->
             <main>
+                @if (session('success'))
+                    <div id="success-message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Éxito!</strong>
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                    </div>
+                @endif
                 {{ $slot }}
             </main>
         </div>
     </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const successMessage = document.getElementById('success-message');
+            if (successMessage) {
+                setTimeout(() => {
+                    successMessage.style.transition = 'opacity 0.5s ease';
+                    successMessage.style.opacity = '0';
+                    setTimeout(() => successMessage.remove(), 500);
+                }, 1000); // 1 segundo
+            }
+        });
+    </script>
 </html>
