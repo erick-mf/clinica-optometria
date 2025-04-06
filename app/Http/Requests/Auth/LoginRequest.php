@@ -31,7 +31,6 @@ class LoginRequest extends FormRequest
             'password' => ['required', 'string'],
         ];
     }
-
     /**
      * Attempt to authenticate the request's credentials.
      *
@@ -45,7 +44,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => trans('Credenciales incorrectas'),
             ]);
         }
 
@@ -68,7 +67,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            'email' => trans('Se ha superado el límite de intentos. Prueba nuevamente en :minutes minuto', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),

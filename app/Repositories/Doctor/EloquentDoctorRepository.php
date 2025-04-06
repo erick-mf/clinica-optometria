@@ -15,20 +15,31 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
 
     public function paginate(int $perPage = 10)
     {
-        return $this->model->query()->where('role', 'doctor')->orderBy('id', 'desc')->paginate($perPage);
-    }
+        $doctorsQuery = $this->model->query()->where('role', 'doctor')->orderBy('id', 'desc');
 
-    public function searchPaginate(string $search, int $perPage = 10)
-    {
-        return $this->model->query()
-            ->where('role', 'doctor')
-            ->where(function ($query) use ($search) {
-                $query->where('name', 'like', '%'.$search.'%')
-                    ->orWhere('surnames', 'like', '%'.$search.'%')
-                    ->orWhere('email', 'like', '%'.$search.'%');
-            })
-            ->orderBy('id', 'desc')
-            ->paginate($perPage);
+        // Si no hay doctores, devolver colección vacía
+        if ($doctorsQuery->count() == 0) {
+            return collect();
+        }
+
+        // Obtener y validar el número de página
+        $currentPage = (int) request()->get('page', 1);
+
+        // Asegurarse que la página no sea menor a 1
+        if ($currentPage < 1) {
+            $currentPage = 1;
+        }
+
+        // Crear el paginador inicial
+        $paginator = $doctorsQuery->paginate($perPage);
+
+        // Si la página solicitada es mayor que la última página disponible
+        if ($currentPage > $paginator->lastPage()) {
+            // Crear un nuevo paginador con la última página
+            return $doctorsQuery->paginate($perPage, ['*'], 'page', $paginator->lastPage());
+        }
+
+        return $paginator;
     }
 
     public function find($id)

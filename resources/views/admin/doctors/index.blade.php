@@ -11,7 +11,7 @@
                     </div>
 
 
-                    @if (!request('search') && $doctors->isEmpty())
+                    @if ($doctors->isEmpty())
                         <div class="bg-gray-50 rounded-lg p-4 sm:p-8 text-center">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-gray-400 mb-3 sm:mb-4" fill="none"
@@ -31,30 +31,6 @@
                             </a>
                         </div>
                     @else
-                        <!-- Mensaje de no resultados para búsqueda -->
-                        <div id="noSearchResults"
-                            class="{{ $doctors->isEmpty() && request('search') ? '' : 'hidden' }} bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
-                            <p class="text-gray-600 text-sm sm:text-base">No se encontraron doctores con ese criterio de
-                                búsqueda.</p>
-                            <a href="{{ route('admin.doctors.index') }}"
-                                class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm sm:text-base mt-2">
-                                <span>Volver a todos los doctores</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 ml-1"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                </svg>
-                            </a>
-                        </div>
-
-                        <!-- Mensaje cuando no hay resultados visibles localmente -->
-                        <div id="noVisibleResults"
-                            class="hidden bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
-                            <p class="text-gray-600 text-sm sm:text-base">No hay doctores visibles con ese criterio en
-                                esta página.</p>
-                            <div id="searchServerBtnContainer" class="mt-3"></div>
-                        </div>
-
                         <!-- Vista para móviles (card-based) -->
                         <div id="mobileView"
                             class="md:hidden space-y-3 mb-4 {{ $doctors->isEmpty() && request('search') ? 'hidden' : '' }}">
@@ -127,8 +103,7 @@
                             </table>
                         </div>
 
-                        <div class="mt-4 sm:mt-6" id="paginate"
-                            class="{{ $doctors->isEmpty() && request('search') ? 'hidden' : '' }}">
+                        <div class="mt-4 sm:mt-6" id="paginate" class="{{ $doctors->isEmpty() }}">
                             <x-custom-pagination :paginator="$doctors" />
                         </div>
                     @endif
