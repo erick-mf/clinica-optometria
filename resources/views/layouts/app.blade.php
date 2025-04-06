@@ -48,6 +48,18 @@
             {{ $slot }}
         </main>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = document.getElementById('success-message');
+            if (successMessage) {
+                setTimeout(() => {
+                    successMessage.style.transition = 'opacity 0.5s ease';
+                    successMessage.style.opacity = '0';
+                    setTimeout(() => successMessage.remove(), 500);
+                }, 1000); // 1 segundo
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -11,7 +11,7 @@
 <body class="bg-gradient-to-br {{ $bgGradient ?? 'from-gray-50 to-blue-100' }} min-h-screen flex items-center">
     <div class="container mx-auto px-4 py-16">
         <div class="max-w-3xl mx-auto text-center">
-            <!-- Logo/Icono dinámico -->
+            <!-- Icono-->
             @hasSection('icon')
                 @yield('icon')
             @else
@@ -22,15 +22,15 @@
                 </svg>
             @endif
 
-            <!-- Contenido principal dinámico -->
+            <!-- Contenido principal -->
             @yield('content')
 
-            <!-- Botón de acción (configurable) -->
+            <!-- Botón de acción-->
             <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
                 @hasSection('actions')
                     @yield('actions')
                 @else
-                    <a href="{{ url('/') }}"
+                    <a href="{{ route('home') }}"
                         class="px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white font-medium rounded-lg shadow-lg transition duration-300 transform hover:scale-105">
                         Volver al inicio
                     </a>
