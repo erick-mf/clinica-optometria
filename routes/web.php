@@ -39,3 +39,25 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'verified', 'admin')-
     Route::resource('patients', PatientController::class);
     Route::resource('appointments', AppointmentController::class);
 });
+// routes/web.php
+Route::get('/test/401', function () {
+    abort(401);
+});
+Route::get('/test/403', function () {
+    abort(403);
+});
+Route::get('/test/404', function () {
+    abort(404);
+});
+Route::get('/test/419', function () {
+    abort(419);
+});
+Route::get('/test/429', function () {
+    abort(429);
+});
+Route::get('/test/500', function () {
+    abort(500);
+});
+Route::get('/test/503', function () {
+    abort(503);
+});

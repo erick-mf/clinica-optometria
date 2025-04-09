@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Schedule;
+use App\Models\TimeSlot;
 use Illuminate\Database\Seeder;
 
-class ScheduleSeeder extends Seeder
+class TimeSlotSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Schedule::factory()->count(100)->create();
+        TimeSlot::factory(60)->create();
     }
 }
