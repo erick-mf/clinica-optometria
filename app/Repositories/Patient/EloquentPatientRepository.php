@@ -50,4 +50,14 @@ class EloquentPatientRepository implements PatientRepositoryInterface
     {
         return $user->delete();
     }
+
+    public function paginateByDoctor(int $doctorId, int $perPage = 10)
+    {
+        return $this->model->query()
+            ->whereHas('appointments', function ($query) use ($doctorId) {
+                $query->where('doctor_id', $doctorId);
+            })
+            ->orderBy('id', 'desc')
+            ->paginate($perPage);
+    }
 }
