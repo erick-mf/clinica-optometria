@@ -34,6 +34,11 @@ class EloquentTimeSlotRepository implements TimeSlotRepositoryInterface
         return $paginator;
     }
 
+    public function all()
+    {
+        return $this->model->query()->where('is_available', 1)->get();
+    }
+
     public function find(int $id)
     {
         return $this->model->find($id);

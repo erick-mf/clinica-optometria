@@ -16,8 +16,9 @@ return new class extends Migration
             $table->enum('type', ['normal', 'revision']);
             $table->string('details')->nullable();
             $table->timestamps();
-            $table->foreignId('patient_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('patient_id')->constrained()->onDelete('cascade');
+            $table->foreignId('time_slot_id')->constrained()->onDelete('cascade');
         });
     }
 

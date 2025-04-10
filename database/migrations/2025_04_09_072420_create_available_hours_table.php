@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->time('start_time');
             $table->time('end_time');
-            $table->boolean('is_available');
+            $table->boolean('is_available')->default(true);
             $table->foreignId('available_date_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

@@ -11,7 +11,9 @@ interface AppointmentRepositoryInterface
     public function searchPaginate(string $search, int $perPage = 10);
 
     public function find($id);
-    
+
+    public function appointmentTodayPaginated(int $perPage = 15);
+
     public function create(array $data);
 
     public function update(Appointment $appointment, array $data);

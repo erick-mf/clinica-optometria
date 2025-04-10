@@ -34,6 +34,19 @@ class EloquentAvailableDateRepository implements AvailableDateRepositoryInterfac
         return $paginator;
     }
 
+    public function all()
+    {
+        return $this->model->all();
+    }
+
+    public function allWithHoursAndSlotsPaginate(int $perPage = 10)
+    {
+        $query = $this->model->with('hours.timeSlots')->orderBy('date', 'asc');
+
+        return $query->paginate($perPage);
+
+    }
+
     public function find($id)
     {
         return $this->model->find($id);
@@ -51,8 +64,23 @@ class EloquentAvailableDateRepository implements AvailableDateRepositoryInterfac
         return $availableDate;
     }
 
-    public function delete(AvailableDate $availableDate)
+    public function delete(int $id)
     {
-        return $availableDate->delete();
+        $date = $this->model->find($id);
+        if (! $date) {
+            return false;
+        }
+
+        return $date->delete();
+    }
+
+    public function deleteAll()
+    {
+        return $this->model->query()->truncate();
+    }
+
+    public function getNextDate()
+    {
+        return $this->model->query()->where('date', '>', now())->orderBy('date', 'asc')->first();
     }
 }

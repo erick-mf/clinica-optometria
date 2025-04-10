@@ -21,6 +21,11 @@ class EloquentPatientRepository implements PatientRepositoryInterface
         return $this->model->query()->orderBy('id', 'desc')->paginate($perPage);
     }
 
+    public function all()
+    {
+        return $this->model->all();
+    }
+
     public function searchPaginate(string $search, int $perPage = 10)
     {
         return $this->model->query()
@@ -50,5 +55,10 @@ class EloquentPatientRepository implements PatientRepositoryInterface
     public function delete(Patient $user)
     {
         return $user->delete();
+    }
+
+    public function count()
+    {
+        return $this->model->query()->count();
     }
 }

@@ -10,6 +10,8 @@ interface PatientRepositoryInterface
 
     public function searchPaginate(string $search, int $perPage = 10);
 
+    public function all();
+
     public function find($id);
 
     public function create(array $data);
@@ -17,4 +19,6 @@ interface PatientRepositoryInterface
     public function update(Patient $user, array $data);
 
     public function delete(Patient $user);
+
+    public function count();
 }

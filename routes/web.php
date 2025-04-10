@@ -34,9 +34,9 @@ Route::get('setup-password-complete', function () {
 Route::prefix('admin')->name('admin.')->middleware('auth', 'verified', 'admin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('doctors', DoctorController::class);
-    Route::get('doctors/search', [DoctorController::class, 'search'])->name('admin.doctors.search');
-    Route::resource('schedules', ScheduleController::class);
     Route::resource('patients', PatientController::class);
+    Route::delete('schedules/destroy-all', [ScheduleController::class, 'destroyAll'])->name('schedules.destroyAll');
+    Route::resource('schedules', ScheduleController::class);
     Route::resource('appointments', AppointmentController::class);
 });
 // routes/web.php
