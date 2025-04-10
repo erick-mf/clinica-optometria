@@ -13,7 +13,15 @@ class TimeSlot extends Model
         'start_time',
         'end_time',
         'available_hour_id',
+        'is_available',
     ];
+
+    public function casts()
+    {
+        return [
+            'is_available' => 'boolean',
+        ];
+    }
 
     public function availableHour()
     {
