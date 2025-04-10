@@ -13,16 +13,12 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('patient_id'); 
-            $table->unsignedBigInteger('schedule_id'); 
-            $table->unsignedBigInteger('doctor_id');  
-            $table->enum('type', ['normal', 'revision']); 
+            $table->enum('type', ['normal', 'revision']);
             $table->string('details')->nullable();
             $table->timestamps();
-
-            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
-            $table->foreign('doctor_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('patient_id')->constrained()->onDelete('cascade');
+            $table->foreignId('time_slot_id')->constrained()->onDelete('cascade');
         });
     }
 

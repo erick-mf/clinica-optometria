@@ -19,7 +19,7 @@
                 @foreach ($paginator->getUrlRange(1, $paginator->lastPage()) as $page => $url)
                     @if ($page == $paginator->currentPage())
                         <span
-                            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 border border-gray-800 cursor-default rounded-md">
+                            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-teal-800 cursor-default rounded-md">
                             {{ $page }}
                         </span>
                     @else

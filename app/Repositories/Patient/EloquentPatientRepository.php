@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Repositories\Patient;
+
 use App\Models\Patient;
-use App\Repositories\Patient\PatientRepositoryInterface;
 
 class EloquentPatientRepository implements PatientRepositoryInterface
 {
     private Patient $model;
+
     /**
      * Create a new class instance.
      */
@@ -20,13 +21,18 @@ class EloquentPatientRepository implements PatientRepositoryInterface
         return $this->model->query()->orderBy('id', 'desc')->paginate($perPage);
     }
 
+    public function all()
+    {
+        return $this->model->all();
+    }
+
     public function searchPaginate(string $search, int $perPage = 10)
     {
         return $this->model->query()
-        ->where('name', 'like', '%' .$search. '%')
-        ->orWhere('surnames', 'like', '%' .$search. '%')
-        ->orderBy('id', 'desc')
-        ->paginate($perPage);
+            ->where('name', 'like', '%'.$search.'%')
+            ->orWhere('surnames', 'like', '%'.$search.'%')
+            ->orderBy('id', 'desc')
+            ->paginate($perPage);
     }
 
     public function find($id)
@@ -51,13 +57,8 @@ class EloquentPatientRepository implements PatientRepositoryInterface
         return $user->delete();
     }
 
-    public function paginateByDoctor(int $doctorId, int $perPage = 10)
+    public function count()
     {
-        return $this->model->query()
-            ->whereHas('appointments', function ($query) use ($doctorId) {
-                $query->where('doctor_id', $doctorId);
-            })
-            ->orderBy('id', 'desc')
-            ->paginate($perPage);
+        return $this->model->query()->count();
     }
 }

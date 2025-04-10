@@ -8,6 +8,8 @@ interface DoctorRepositoryInterface
 {
     public function paginate(int $perPage = 10);
 
+    public function all();
+
     public function find($id);
 
     public function create(array $data);
@@ -15,4 +17,6 @@ interface DoctorRepositoryInterface
     public function update(User $user, array $data);
 
     public function delete(User $user);
+
+    public function count();
 }

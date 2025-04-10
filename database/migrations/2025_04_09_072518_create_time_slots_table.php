@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('schedules', function (Blueprint $table) {
+        Schema::create('time_slots', function (Blueprint $table) {
             $table->id();
-            $table->string('day');  // lunes,martes,etc
-            $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
+            $table->boolean('is_available')->default(true);
+            $table->foreignId('available_hour_id')->constrained('available_hours')->onDelete('cascade'); // Relación con available_hours
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('schedules');
+        Schema::dropIfExists('time_slots');
     }
 };
