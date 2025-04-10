@@ -1,12 +1,18 @@
-@props(['appointment' => null, 'patients', 'doctors', 'schedules', 'action', 'isEdit' => false])
+@props([
+    'appointment' => null,
+    'patients',
+    'doctors',
+    'timeSlots',
+    'action',
+    'isEdit' => false,
+])
 
 <form action="{{ $action }}" method="POST" class="space-y-6">
     @csrf
-    @if($isEdit)
+    @if ($isEdit)
         @method('PUT')
     @endif
 
-    <!-- Datos personales -->
     <div class="bg-gray-50 p-4 sm:p-6 rounded-lg space-y-6">
         <h2 class="text-lg font-medium text-gray-900 border-b pb-2">Datos de la cita</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
@@ -17,7 +23,8 @@
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="" disabled selected>Selecciona el paciente</option>
                     @foreach ($patients as $patient)
-                        <option value="{{ $patient->id }}" {{ $appointment && $appointment->patient_id == $patient->id ? 'selected' : '' }}>
+                        <option value="{{ $patient->id }}"
+                            {{ $appointment && $appointment->patient_id == $patient->id ? 'selected' : '' }}>
                             {{ $patient->name }} {{ $patient->surnames }}
                         </option>
                     @endforeach
@@ -29,34 +36,36 @@
 
             <!-- Doctor -->
             <div>
-                <label for="doctor_id" class="block text-sm font-medium text-gray-700">Doctor *</label>
-                <select id="doctor_id" name="doctor_id" 
+                <label for="user_id" class="block text-sm font-medium text-gray-700">Doctor *</label>
+                <select id="user_id" name="user_id"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="" disabled selected>Selecciona el doctor</option>
                     @foreach ($doctors as $doctor)
-                        <option value="{{ $doctor->id }}" {{ $appointment && $appointment->doctor_id == $doctor->id ? 'selected' : '' }}>
+                        <option value="{{ $doctor->id }}"
+                            {{ $appointment && $appointment->user_id == $doctor->id ? 'selected' : '' }}>
                             {{ $doctor->name }} {{ $doctor->surnames }}
                         </option>
                     @endforeach
                 </select>
-                @error('doctor_id')
+                @error('user_id')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Horario -->
             <div>
-                <label for="schedule_id" class="block text-sm font-medium text-gray-700">Horario *</label>
-                <select id="schedule_id" name="schedule_id" 
+                <label for="time_slot_id" class="block text-sm font-medium text-gray-700">Horario *</label>
+                <select id="time_slot_id" name="time_slot_id"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="" disabled selected>Selecciona el horario</option>
-                    @foreach ($schedules as $schedule)
-                        <option value="{{ $schedule->id }}" {{ $appointment && $appointment->schedule_id == $schedule->id ? 'selected' : '' }}>
-                            {{ $schedule->date }} ({{ $schedule->start_time }} - {{ $schedule->end_time }})
+                    @foreach ($timeSlots as $timeSlot)
+                        <option value="{{ $timeSlot->id }}"
+                            {{ $appointment && $appointment->time_slot_id == $timeSlot->id ? 'selected' : '' }}>
+                            {{ $timeSlot->date }} ({{ $timeSlot->start_time }} - {{ $timeSlot->end_time }})
                         </option>
                     @endforeach
                 </select>
-                @error('schedule_id')
+                @error('time_slot_id')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
@@ -64,11 +73,13 @@
             <!-- Tipo de cita -->
             <div>
                 <label for="type" class="block text-sm font-medium text-gray-700">Tipo de Cita *</label>
-                <select id="type" name="type" 
+                <select id="type" name="type"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="" disabled selected>Selecciona el tipo de cita</option>
-                    <option value="normal" {{ $appointment && $appointment->type == 'normal' ? 'selected' : '' }}>Normal</option>
-                    <option value="revision" {{ $appointment && $appointment->type == 'revision' ? 'selected' : '' }}>Revisión</option>
+                    <option value="normal" {{ $appointment && $appointment->type == 'normal' ? 'selected' : '' }}>
+                        Normal</option>
+                    <option value="revision" {{ $appointment && $appointment->type == 'revision' ? 'selected' : '' }}>
+                        Revisión</option>
                 </select>
                 @error('type')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -76,7 +87,7 @@
             </div>
 
             <!-- Detalles de la cita -->
-            <div>
+            <div class="sm:col-span-2">
                 <label for="details" class="block text-sm font-medium text-gray-700">Detalles de la Cita</label>
                 <textarea id="details" name="details" rows="4"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
@@ -95,7 +106,7 @@
             Cancelar
         </a>
         <button type="submit"
-            class="w-full sm:w-auto px-4 py-2 text-center text-white bg-gray-800 rounded-md hover:bg-gray-700 transition-colors duration-150 ease-in-out">
+            class="w-full sm:w-auto px-4 py-2 text-center text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors duration-150 ease-in-out">
             {{ $isEdit ? 'Guardar cambios' : 'Crear cita' }}
         </button>
     </div>

@@ -2,7 +2,7 @@
 
 <form action="{{ $action }}" method="POST" class="space-y-6">
     @csrf
-    @if($isEdit)
+    @if ($isEdit)
         @method('PUT')
     @endif
 
@@ -63,7 +63,7 @@
             Cancelar
         </a>
         <button type="submit"
-            class="w-full sm:w-auto px-4 py-2 text-center text-white bg-gray-800 rounded-md hover:bg-gray-700 transition-colors duration-150 ease-in-out">
+            class="w-full sm:w-auto px-4 py-2 text-center border  rounded-md text-white bg-primary hover:bg-teal-800 transition-colors duration-150 ease-in-out">
             {{ $isEdit ? 'Guardar cambios' : 'Crear doctor' }}
         </button>
     </div>
