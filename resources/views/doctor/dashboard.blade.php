@@ -9,12 +9,12 @@
                         pacientes, citas y horarios.</p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-white">
-                        <a href="{{ route('admin.appointments.index') }}"
+                        <a href="{{ route('appointments.index') }}"
                             class="block p-6 bg-primary hover:bg-[#66a499] rounded-lg transition duration-300">
                             <h2 class="text-xl font-semibold mb-2">Mis Citas</h2>
                             <p>Revisa tus citas programadas</p>
                         </a>
-                        <a href="{{ route('admin.patients.index') }}"
+                        <a href="{{ route('patients.index') }}"
                             class="block p-6 bg-primary hover:bg-[#66a499] rounded-lg transition duration-300">
                             <h2 class="text-xl font-semibold mb-2">Mis Pacientes</h2>
                             <p>Revisa tus pacientes y su información</p>

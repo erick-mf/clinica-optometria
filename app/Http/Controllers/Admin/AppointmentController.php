@@ -54,7 +54,7 @@ class AppointmentController extends Controller
      */
     public function show(Appointment $appointment)
     {
-        return view('ShowDetails', compact('appointment'));
+        return view('show-details', compact('appointment'));
     }
 
     /**

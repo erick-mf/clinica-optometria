@@ -15,7 +15,7 @@
                     <div
                         class="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <h1 class="text-lg font-bold sm:text-2xl">Listado de Citas</h1>
-                        <a href="{{ route('admin.appointments.create') }}"
+                        <a href="{{ route('appointments.create') }}"
                             class="bg-gray-800 hover:bg-gray-700 text-white py-2 px-4 rounded-md transition duration-150 ease-in-out
                             w-full sm:w-auto text-center flex items-center justify-center text-sm sm:text-base">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 mr-2" fill="none"
@@ -64,11 +64,6 @@
                                     <!-- Paciente -->
                                     <div class="mb-2">
                                         <h3 class="text-lg font-semibold text-gray-900">{{ $appointment->patient->name }} {{ $appointment->patient->surnames }}</h3>
-                                    </div>
-
-                                    <!-- Doctor -->
-                                    <div class="mb-2">
-                                        <h4 class="text-md font-medium text-gray-900">{{ $appointment->doctor->name }} {{ $appointment->doctor->surnames }}</h4>
                                     </div>
 
                                     <!-- Fecha y Hora -->
@@ -140,10 +135,6 @@
                                         </th>
                                         <th scope="col"
                                             class="px-3 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Doctor
-                                        </th>
-                                        <th scope="col"
-                                            class="px-3 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Paciente
                                         </th>
                                         <th scope="col"
@@ -153,10 +144,6 @@
                                         <th scope="col"
                                             class="px-3 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Detalles
-                                        </th>
-                                        <th scope="col"
-                                            class="px-3 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Acciones
                                         </th>
                                     </tr>
                                 </thead>
@@ -176,13 +163,6 @@
                                                 </div>
                                             </td>
 
-                                            <!-- Doctor -->
-                                            <td class="px-3 sm:px-4 py-3">
-                                                <div class="text-sm font-medium text-gray-500">
-                                                    {{ $appointment->doctor->name }} {{ $appointment->doctor->surnames }}
-                                                </div>
-                                            </td>
-
                                             <!-- Paciente -->
                                             <td class="px-3 sm:px-4 py-3">
                                                 <div class="text-sm font-medium text-gray-500">
@@ -199,41 +179,10 @@
 
                                             <!-- Ver Detalles -->
                                             <td class="px-3 sm:px-4 py-3 text-sm text-center">
-                                                <a href="{{ route('admin.appointments.show', $appointment) }}"
+                                                <a href="{{ route('appointments.show', $appointment) }}"
                                                 class="text-green-600 hover:text-green-800 font-medium transition-colors duration-200 flex items-center">
                                                     <span>Ver Detalles</span>
                                                 </a>
-                                            </td>
-
-                                            <td class="px-3 sm:px-4 py-3 text-sm text-center">
-                                                <div class="flex justify-center items-center space-x-3">
-                                                    <a href="{{ route('admin.appointments.edit', $appointment) }}"
-                                                        class="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 flex items-center">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                        </svg>
-                                                        <span>Editar</span>
-                                                    </a>
-                                                    <form action="{{ route('admin.appointments.destroy', $appointment) }}"
-                                                        method="POST" class="inline delete-form">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button"
-                                                            class="text-red-600 hover:text-red-900 font-medium transition-colors duration-200 flex items-center delete-button">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                class="h-4 w-4 mr-1" fill="none"
-                                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2"
-                                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                            </svg>
-                                                            <span>Eliminar</span>
-                                                        </button>
-                                                    </form>
-                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
