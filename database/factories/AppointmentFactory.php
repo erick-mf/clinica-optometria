@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Patient;
+use App\Models\TimeSlot;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,11 +20,11 @@ class AppointmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'patient_id' => \App\Models\Patient::factory(),
-            'schedule_id' => \App\Models\Schedule::factory(),
-            'doctor_id' => \App\Models\User::factory(),
-            'type' => fake()->randomElement(['consultation', 'follow-up']),
-            'details' => fake()->text(200),  
+            'type' => $this->faker->randomElement(['normal', 'revision']),
+            'details' => $this->faker->sentence(),
+            'user_id' => User::factory(),
+            'patient_id' => Patient::factory(),
+            'time_slot_id' => TimeSlot::factory(),
         ];
     }
 }

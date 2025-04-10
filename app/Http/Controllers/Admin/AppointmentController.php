@@ -3,36 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Appointment;
-use App\Models\Patient;
-use App\Models\Schedule;
-use App\Models\User;
 use App\Repositories\Appointment\AppointmentRepositoryInterface;
+use App\Repositories\Doctor\DoctorRepositoryInterface;
+use App\Repositories\Patient\PatientRepositoryInterface;
+use App\Repositories\TimeSlot\TimeSlotRepositoryInterface;
+use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
-    private AppointmentRepositoryInterface $repository;
-
     /**
      * Constructor: Inyecta el repositorio de citas.
      */
-    public function __construct(AppointmentRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(
+        private readonly AppointmentRepositoryInterface $appoinmentRepository,
+        private readonly DoctorRepositoryInterface $doctorRepository,
+        private readonly PatientRepositoryInterface $patientRepository,
+        private readonly TimeSlotRepositoryInterface $timeSlotRepository
+    ) {}
 
     /**
      * Muestra una lista de citas con paginación y búsqueda.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-        if ($search) {
-            $appointments = $this->repository->searchPaginate($search);
-        } else {
-            $appointments = $this->repository->paginate();
-        }
+        $appointments = $this->appoinmentRepository->paginate();
 
         return view('admin.appointments.index', compact('appointments'));
     }
@@ -42,9 +37,9 @@ class AppointmentController extends Controller
      */
     public function create()
     {
-        $patients = Patient::all();
-        $schedules = Schedule::all();
-        $doctors = User::where('role', 'doctor')->get();
+        $patients = $this->patientRepository->all();
+        $schedules = $this->timeSlotRepository->all();
+        $doctors = $this->doctorRepository->all();
 
         return view('admin.appointments.create', compact('patients', 'schedules', 'doctors'));
     }
@@ -64,18 +59,18 @@ class AppointmentController extends Controller
     {
         $validated = $request->validate([
             'patient_id' => 'required|exists:patients,id',
-            'schedule_id' => 'required|exists:schedules,id',
-            'doctor_id' => 'required|exists:users,id',
+            'time_slot_id' => 'required|exists:time_slots,id',
+            'user_id' => 'required|exists:users,id',
             'type' => 'required|in:normal,revision',
             'details' => 'nullable|string|max:255',
-        ],[
+        ], [
             'patient_id.required' => 'El paciente es obligatorio.',
-            'schedule_id.required' => 'El horario es obligatorio.',
-            'doctor_id.required' => 'El doctor es obligatorio.',
+            'time_slot_id.required' => 'El horario es obligatorio.',
+            'user_id.required' => 'El doctor es obligatorio.',
             'type.required' => 'El tipo es obligatorio.',
         ]);
 
-        $this->repository->create($validated);
+        $this->appoinmentRepository->create($validated);
 
         return redirect()
             ->route('admin.appointments.index')
@@ -87,9 +82,9 @@ class AppointmentController extends Controller
      */
     public function edit(Appointment $appointment)
     {
-        $patients = Patient::all();
-        $schedules = Schedule::all();
-        $doctors = User::where('role', 'doctor')->get();
+        $patients = $this->patientRepository->all();
+        $schedules = $this->timeSlotRepository->all();
+        $doctors = $this->doctorRepository->all();
 
         return view('admin.appointments.edit', compact('appointment', 'patients', 'schedules', 'doctors'));
     }
@@ -101,13 +96,13 @@ class AppointmentController extends Controller
     {
         $validated = $request->validate([
             'patient_id' => 'required|exists:patients,id',
-            'schedule_id' => 'required|exists:schedules,id',
-            'doctor_id' => 'required|exists:users,id',
+            'time_slot_id' => 'required|exists:time_slots,id',
+            'user_id' => 'required|exists:users,id',
             'type' => 'required|in:normal,revision',
             'details' => 'nullable|string|max:255',
         ]);
 
-        $this->repository->update($appointment, $validated);
+        $this->appoinmentRepository->update($appointment, $validated);
 
         return redirect()
             ->route('admin.appointments.index')
@@ -119,7 +114,7 @@ class AppointmentController extends Controller
      */
     public function destroy(Appointment $appointment)
     {
-        $this->repository->delete($appointment);
+        $this->appoinmentRepository->delete($appointment);
         session()->flash('success', 'Cita eliminada correctamente.');
 
         return redirect()

@@ -5,10 +5,10 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\ScheduleController;
-use App\Http\Controllers\Doctor\DashboardController as DoctorDashboard;
-use App\Http\Controllers\Doctor\AppointmentController as DoctorAppointment;
-use App\Http\Controllers\Doctor\PatientController as DoctorPatient;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Doctor\AppointmentController as DoctorAppointment;
+use App\Http\Controllers\Doctor\DashboardController as DoctorDashboard;
+use App\Http\Controllers\Doctor\PatientController as DoctorPatient;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -52,9 +52,9 @@ Route::get('setup-password-complete', function () {
 Route::prefix('admin')->name('admin.')->middleware('auth', 'verified', 'admin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('doctors', DoctorController::class);
-    Route::get('doctors/search', [DoctorController::class, 'search'])->name('admin.doctors.search');
-    Route::resource('schedules', ScheduleController::class);
     Route::resource('patients', PatientController::class);
+    Route::delete('schedules/destroy-all', [ScheduleController::class, 'destroyAll'])->name('schedules.destroyAll');
+    Route::resource('schedules', ScheduleController::class);
     Route::resource('appointments', AppointmentController::class);
 });
 

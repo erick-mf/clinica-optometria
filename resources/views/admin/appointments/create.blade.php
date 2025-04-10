@@ -6,8 +6,10 @@
             </h2>
             <a href="{{ route('admin.appointments.index') }}"
                 class="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-150 ease-in-out flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
                 <span>Volver al listado</span>
             </a>
@@ -20,13 +22,8 @@
                 <div class="p-4 sm:p-6 text-gray-900">
                     <h1 class="text-xl font-bold sm:text-2xl mb-6">Crear nueva cita</h1>
 
-                    <x-appointment-form
-                        :action="route('admin.appointments.store')"
-                        :patients="$patients"
-                        :doctors="$doctors"
-                        :schedules="$schedules"
-                        :isEdit="false"
-                    />
+                    <x-appointment-form :action="route('admin.appointments.store')" :patients="$patients" :doctors="$doctors" :schedules="$schedules"
+                        :isEdit="false" />
                 </div>
             </div>
         </div>

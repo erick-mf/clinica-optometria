@@ -19,12 +19,12 @@ class UserSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        for ($i = 1; $i < 20; $i++) {
-            User::factory()->create([
-                'email' => 'user'.$i.'@example.com',
-                'password' => bcrypt('1234567890'),
-                'role' => 'doctor',
-            ]);
-        }
+        // for ($i = 1; $i < 20; $i++) {
+        //     User::factory()->create([
+        //         'email' => 'user'.$i.'@example.com',
+        //         'password' => bcrypt('1234567890'),
+        //         'role' => 'doctor',
+        //     ]);
+        // }
     }
 }

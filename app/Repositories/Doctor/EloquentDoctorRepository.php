@@ -47,6 +47,11 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
         return $this->model->find($id);
     }
 
+    public function all()
+    {
+        return $this->model->where('role', 'doctor')->get();
+    }
+
     public function create(array $data)
     {
         $data['role'] = 'doctor';
@@ -64,5 +69,10 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
     public function delete(User $user)
     {
         return $user->delete();
+    }
+
+    public function count()
+    {
+        return $this->model->where('role', 'doctor')->count();
     }
 }
