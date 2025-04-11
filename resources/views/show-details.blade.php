@@ -93,7 +93,7 @@
                                 <p class="text-sm text-gray-500">Tipo:</p>
                                 <p class="font-medium">
                                     <span
-                                        class="px-2 py-1 rounded-full {{ $appointment->type === 'normal' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
+                                        class="px-2 py-1 rounded-full {{ $appointment->type === 'Primera cita' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
                                         {{ ucfirst($appointment->type) }}
                                     </span>
                                 </p>

@@ -2,7 +2,7 @@
 
 <form action="{{ $action }}" method="POST" class="space-y-6">
     @csrf
-    @if($isEdit)
+    @if ($isEdit)
         @method('PUT')
     @endif
 
@@ -17,7 +17,8 @@
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="" disabled selected>Selecciona el paciente</option>
                     @foreach ($patients as $patient)
-                        <option value="{{ $patient->id }}" {{ $appointment && $appointment->patient_id == $patient->id ? 'selected' : '' }}>
+                        <option value="{{ $patient->id }}"
+                            {{ $appointment && $appointment->patient_id == $patient->id ? 'selected' : '' }}>
                             {{ $patient->name }} {{ $patient->surnames }}
                         </option>
                     @endforeach
@@ -35,11 +36,12 @@
             <!-- Horario -->
             <div>
                 <label for="schedule_id" class="block text-sm font-medium text-gray-700">Horario *</label>
-                <select id="schedule_id" name="schedule_id" 
+                <select id="schedule_id" name="schedule_id"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="" disabled selected>Selecciona el horario</option>
                     @foreach ($schedules as $schedule)
-                        <option value="{{ $schedule->id }}" {{ $appointment && $appointment->schedule_id == $schedule->id ? 'selected' : '' }}>
+                        <option value="{{ $schedule->id }}"
+                            {{ $appointment && $appointment->schedule_id == $schedule->id ? 'selected' : '' }}>
                             {{ $schedule->date }} ({{ $schedule->start_time }} - {{ $schedule->end_time }})
                         </option>
                     @endforeach
@@ -52,11 +54,14 @@
             <!-- Tipo de cita -->
             <div>
                 <label for="type" class="block text-sm font-medium text-gray-700">Tipo de Cita *</label>
-                <select id="type" name="type" 
+                <select id="type" name="type"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="" disabled selected>Selecciona el tipo de cita</option>
-                    <option value="normal" {{ $appointment && $appointment->type == 'normal' ? 'selected' : '' }}>Normal</option>
-                    <option value="revision" {{ $appointment && $appointment->type == 'revision' ? 'selected' : '' }}>Revisión</option>
+                    <option value="primera cita"
+                        {{ $appointment && $appointment->type == 'primera cita' ? 'selected' : '' }}>Primera Cita
+                    </option>
+                    <option value="revision" {{ $appointment && $appointment->type == 'revision' ? 'selected' : '' }}>
+                        Revisión</option>
                 </select>
                 @error('type')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

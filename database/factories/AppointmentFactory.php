@@ -20,7 +20,7 @@ class AppointmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => $this->faker->randomElement(['normal', 'revision']),
+            'type' => $this->faker->randomElement(['primera cita', 'revision']),
             'details' => $this->faker->sentence(),
             'user_id' => User::factory(),
             'patient_id' => Patient::factory(),

@@ -61,7 +61,7 @@ class AppointmentController extends Controller
             'patient_id' => 'required|exists:patients,id',
             'time_slot_id' => 'required|exists:time_slots,id',
             'user_id' => 'required|exists:users,id',
-            'type' => 'required|in:normal,revision',
+            'type' => 'required|in:primera cita,revision',
             'details' => 'nullable|string|max:255',
         ], [
             'patient_id.required' => 'El paciente es obligatorio.',
@@ -98,7 +98,7 @@ class AppointmentController extends Controller
             'patient_id' => 'required|exists:patients,id',
             'time_slot_id' => 'required|exists:time_slots,id',
             'user_id' => 'required|exists:users,id',
-            'type' => 'required|in:normal,revision',
+            'type' => 'required|in:primera cita,revision',
             'details' => 'nullable|string|max:255',
         ]);
 

@@ -44,7 +44,7 @@
                                             {{ ucfirst($appointment->patient->surnames) }}
                                         </span>
                                         <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
-                                            {{ $appointment->type === 'normal' ? 'Normal' : 'Revisión' }}
+                                            {{ $appointment->type === 'primera cita' ? 'Primera Cita' : 'Revisión' }}
                                         </span>
                                     </div>
 

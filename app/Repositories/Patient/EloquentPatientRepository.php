@@ -35,9 +35,9 @@ class EloquentPatientRepository implements PatientRepositoryInterface
             ->paginate($perPage);
     }
 
-    public function find($id)
+    public function find($dni)
     {
-        return $this->model->find($id);
+        return $this->model->query()->where('dni', $dni)->first();
     }
 
     public function create(array $data)

@@ -12,7 +12,7 @@ interface PatientRepositoryInterface
 
     public function all();
 
-    public function find($id);
+    public function find($dni);
 
     public function create(array $data);
 

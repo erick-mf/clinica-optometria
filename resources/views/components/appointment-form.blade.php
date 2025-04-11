@@ -76,8 +76,9 @@
                 <select id="type" name="type"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="" disabled selected>Selecciona el tipo de cita</option>
-                    <option value="normal" {{ $appointment && $appointment->type == 'normal' ? 'selected' : '' }}>
-                        Normal</option>
+                    <option value="primera cita"
+                        {{ $appointment && $appointment->type == 'primera cita' ? 'selected' : '' }}>
+                        Primera Cita</option>
                     <option value="revision" {{ $appointment && $appointment->type == 'revision' ? 'selected' : '' }}>
                         Revisión</option>
                 </select>

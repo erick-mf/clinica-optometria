@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['normal', 'revision']);
+            $table->enum('type', ['primera cita', 'revision'])->default('primera cita');
             $table->string('details')->nullable();
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
