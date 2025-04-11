@@ -1,160 +1,185 @@
 <x-app-layout>
-    <!-- Sección de redes sociales -->
-    <div class="bg-gray-800 py-2">
-        <div class="max-w-7xl mx-auto flex items-center justify-start space-x-4 px-4 sm:px-6">
-            <h3 class="text-xl font-bold text-white">Síguenos en redes sociales</h3>
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-                <img src="/assets/icons/facebook.svg" alt="Facebook" class="w-6 h-6 object-contain">
-            </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                <img src="/assets/icons/instagram.svg" alt="Instagram" class="w-6 h-6 object-contain">
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                <img src="/assets/icons/twitter.svg" alt="Twitter" class="w-6 h-6 object-contain">
-            </a>
-        </div>
-    </div>
+    <x-rrss />
 
     <!-- Sección con imagen de fondo y formulario -->
     <div class="relative py-12 bg-gray-100">
         <!-- Imagen de fondo -->
         <div class="absolute inset-0 z-0">
-            <img src="/images/img1.webp" alt="Fondo" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+            <picture>
+                <source srcset="{{ asset('images/img1.webp') }}" type="image/webp">
+                <img src="{{ asset('images/img1.jpg') }}" alt="Imagen de fondo" class="w-full h-full object-cover">
+            </picture>
         </div>
-        
+
         <!-- Contenedor del formulario con márgenes -->
-        <div class="relative z-10 max-w-2xl mx-auto px-4 sm:px-0 my-8">
-            <div class="bg-white p-6 rounded-lg shadow-lg">
+        <div class="relative z-10 max-w-[1216px] mx-auto px-4 sm:px-0 my-8">
+            <div class="bg-white px-6 py-4 rounded-lg shadow-lg">
                 <!-- Contenido del formulario -->
-                <form class="space-y-4">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Pida su cita</h2>
+                <form method="POST" action="{{ route('book-appointment.store') }}" class="space-y-4">
+                    @csrf
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Reserva tu cita</h2>
 
                     <!-- Campos del formulario -->
-                    <div class="space-y-4">
+                    <h3 class="text-lg font-medium text-gray-800">Datos personales</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 border-b-2 border-primary pb-6">
                         <!-- Nombre -->
                         <div class="text-left">
-                            <label for="name" class="block text-lg font-bold text-gray-700 mb-2">Nombre:</label>
-                            <input type="text" id="name" name="name" placeholder="Ingrese su nombre" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre:</label>
+                            <input type="text" id="name" name="name" placeholder="Ingrese su nombre"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                            @error('name')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Apellidos -->
                         <div class="text-left">
-                            <label for="surnames" class="block text-lg font-bold text-gray-700 mb-2">Apellidos:</label>
-                            <input type="text" id="surnames" name="surnames" placeholder="Ingrese sus apellidos" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
+                            <label for="surnames"
+                                class="block text-sm font-medium text-gray-700 mb-1">Apellidos:</label>
+                            <input type="text" id="surnames" name="surnames" placeholder="Ingrese sus apellidos"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                            @error('surnames')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Fecha de Nacimiento -->
                         <div class="text-left">
-                            <label for="birthdate" class="block text-lg font-bold text-gray-700 mb-2">Fecha de Nacimiento:</label>
-                            <input type="date" id="birthdate" name="birthdate" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
+                            <label for="birthdate" class="block text-sm font-medium text-gray-700 mb-1">Fecha de
+                                Nacimiento:</label>
+                            <input type="date" id="birthdate" name="birthdate"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                            @error('birthdate')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Correo -->
                         <div class="text-left">
-                            <label for="email" class="block text-lg font-bold text-gray-700 mb-2">Correo:</label>
-                            <input type="email" id="email" name="email" placeholder="Ingrese su correo" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo:</label>
+                            <input type="email" id="email" name="email" placeholder="Ingrese su correo"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                            @error('email')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Teléfono -->
                         <div class="text-left">
-                            <label for="phone" class="block text-lg font-bold text-gray-700 mb-2">Teléfono:</label>
-                            <input type="tel" id="phone" name="phone" placeholder="Ingrese su teléfono" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Teléfono:</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Ingrese su teléfono"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                            @error('phone')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- DNI -->
                         <div class="text-left">
-                            <label for="dni" class="block text-lg font-bold text-gray-700 mb-2">DNI:</label>
-                            <input type="text" id="dni" name="dni" placeholder="Ingrese su DNI" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
+                            <label for="dni" class="block text-sm font-medium text-gray-700 mb-1">DNI:</label>
+                            <input type="text" id="dni" name="dni" placeholder="Ingrese su DNI"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                            @error('dni')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
+                    </div>
 
-                        <!-- Fecha de Cita -->
-                        <div class="text-left">
-                            <label for="tipo-cita" class="block text-lg font-bold text-gray-700 mb-2">Fecha de la cita:</label>
-                            <select id="tipo-cita" name="tipo-cita" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
-                                <option value="primera">Abril</option>
-                                <option value="seguimiento">Mayo</option>
-                            </select>
-                        </div>
+                    <!-- Sección de Citas Disponibles -->
+                    <h3 class="text-lg font-medium text-gray-800 w-full">Seleccione una
+                        fecha
+                        y hora para su cita </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="text-left md:col-span-2 sm:grid md:grid-cols-2 gap-6">
+                            <!-- Calendario de fechas disponibles -->
+                            <div class="mb-4 sm:mb-0">
+                                <label for="appointment_date" class="block text-sm font-medium text-gray-700 mb-1">Fecha
+                                    de la cita:</label>
+                                <div class="relative">
+                                    <input type="text" id="appointment_date" name="appointment_date" readonly
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150"
+                                        placeholder="Seleccione una fecha disponible">
+                                </div>
+                                <p class="text-sm text-gray-500 mt-1">Solo se muestran fechas con disponibilidad</p>
+                                @error('appointment_date')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                        <!-- Horario de Cita -->
-                        <div class="text-left">
-                            <label for="tipo-cita" class="block text-lg font-bold text-gray-700 mb-2">Seleccione un horario disponible:</label>
-                            <select id="tipo-cita" name="tipo-cita" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
-                                <option value="primera">08:00</option>
-                                <option value="seguimiento">09:00</option>
-                            </select>
+                            <!-- Selector de horarios disponibles -->
+                            <div>
+                                <label for="appointment_time"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Horario
+                                    disponible:</label>
+                                <select id="appointment_time" name="appointment_time" disabled
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                                    <option value="">Primero seleccione una fecha</option>
+                                </select>
+                                @error('appointment_time')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+
+                                <!-- Indicador de carga para disponibilidad en tiempo real -->
+                                <div id="availability-status" class="text-sm text-gray-600 mt-2 hidden">
+                                    <div class="flex items-center">
+                                        <svg class="animate-spin h-4 w-4 mr-2 text-primary"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                            </path>
+                                        </svg>
+                                        Verificando disponibilidad en tiempo real...
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Detalles -->
-                        <div class="text-left">
-                            <label for="details" class="block text-lg font-bold text-gray-700 mb-2">Detalles:</label>
-                            <textarea id="details" name="details" rows="4" placeholder="Escriba los detalles aquí..."
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"></textarea>
+                        <div class="text-left md:col-span-2">
+                            <label for="details" class="block text-sm font-medium text-gray-700 mb-1">Detalles
+                                adicionales:</label>
+                            <textarea id="details" name="details" rows="4" placeholder="Escribe los detalles de la cita aqui..."
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150"></textarea>
+                            @error('details')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Aceptar Política de Privacidad -->
-                        <div class="text-left">
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" id="privacy-policy" name="privacy-policy" required
-                                    class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
-                                <span class="ml-2 text-gray-700">Acepto la <a href="#" class="text-primary hover:underline">política de privacidad</a></span>
-                            </label>
+                        <div class="text-left md:col-span-2">
+                            <div class="flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input type="checkbox" id="privacy-policy" name="privacy-policy"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="privacy-policy" class="text-gray-700">Acepto la <a
+                                            href="{{ route('privacy-policy') }}"
+                                            class="text-primary hover:underline font-medium">política de
+                                            privacidad</a></label>
+                                </div>
+                            </div>
+                            @error('privacy-policy')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
                     <!-- Botón -->
-                    <button type="submit" class="w-full bg-primary hover:bg-[#66a499] text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out mt-6">
-                        Ver Disponibilidad
-                    </button>
+                    <div class="mt-6">
+                        <button type="submit"
+                            class="w-full px-6 py-3 bg-primary hover:bg-primary-dark text-white font-medium rounded-md shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Reservar Cita
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
-    
-    <!-- Footer -->
-    <footer class="bg-[#66a499] text-white py-6">
-        <div class="max-w-7xl mx-auto px-6 sm:px-8">
-            <div class="grid grid-cols-2 gap-8 items-center sm:grid-cols-4 lg:grid-cols-7">
-                <a href="https://www.ugr.es/" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-ugr.svg" alt="Universidad de Granada" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://www.arqus-alliance.eu/" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-arqus-alliance.svg" alt="Arqus European University Alliance" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://www.universia.net/" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-universia.svg" alt="Universia" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://euraxess.ec.europa.eu/jobs/hrs4r" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-excelencia.svg" alt="HR Excellence In Research" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://www.aepd.es/es/pacto-digital" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-pactodigital.svg" alt="Pacto Digital para la Protección de las Personas" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://www.universidades.gob.es/" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-transparencia-universidades.svg" alt="Universidades 2024" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://www.universidadespublicasdeandalucia.es/" target="_blank" rel="noopener noreferrer" class="col-span-2 sm:col-span-1 justify-self-center">
-                    <img src="/assets/icons/logo-aupa.svg" alt="Universidades de Andalucía" class="w-32 h-32 mx-auto object-contain">
-                </a>
-            </div>
-        </div>
-    </footer>
-    <footer class="bg-primary text-white py-6">
-        <div class="max-w-7xl mx-auto px-6 sm:px-8 flex flex-col sm:flex-row justify-between items-center">
-            <div class="flex space-x-4">
-                <a href="{{ route('privacy-policy') }}" class="text-sm hover:underline border-r-2 border-white pr-4">Política de privacidad</a>
-                <a href="{{ route('terms-conditions') }}" class="text-sm hover:underline">Términos y condiciones</a>
-            </div>
-            <p class="text-sm text-center sm:text-left mb-4 sm:mb-0">© 2025 Clínica Universitaria de Visión y Optometría. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+
+    <x-footer />
+    <!-- Datos de disponibilidad para JavaScript -->
+    <div id="booking-data" data-available-slots="{{ json_encode($availableSlots) }}" style="display: none;"></div>
 </x-app-layout>

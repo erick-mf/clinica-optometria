@@ -20,22 +20,15 @@
 
     <div class="mb-8">
         <div class="inline-block bg-white rounded-lg shadow-md px-6 py-4">
-            <span class="text-2xl font-mono font-bold text-blue-600">Volvemos en <span id="countdown">05:00</span></span>
+            <span class="text-2xl font-mono font-bold text-blue-600">Volvemos en <span id="countdown">30:00</span></span>
         </div>
     </div>
-@endsection
-
-@section('actions')
-    <a href="{{ route('home') }}"
-        class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-lg transition duration-300 transform hover:scale-105">
-        Ir al inicio
-    </a>
 @endsection
 
 @section('scripts')
     <script>
         // Contador regresivo de 5 minutos
-        let timeLeft = 300;
+        let timeLeft = 1800;
         const countdownElement = document.getElementById('countdown');
         const countdownInterval = setInterval(() => {
             timeLeft--;

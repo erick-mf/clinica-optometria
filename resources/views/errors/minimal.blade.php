@@ -25,19 +25,9 @@
             <!-- Contenido principal -->
             @yield('content')
 
-            <!-- Botón de acción-->
-            <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                @hasSection('actions')
-                    @yield('actions')
-                @else
-                    <a href="{{ route('home') }}"
-                        class="px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white font-medium rounded-lg shadow-lg transition duration-300 transform hover:scale-105">
-                        Volver al inicio
-                    </a>
-                @endif
-            </div>
         </div>
     </div>
+    @yield('scripts')
 </body>
 
 </html>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -43,6 +44,10 @@ class SetupPasswordController extends Controller
         );
 
         if ($status === Password::PASSWORD_RESET) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
             // Redirigir a una página de confirmación en lugar del dashboard
             return redirect()->route('password.setup.complete');
         }
