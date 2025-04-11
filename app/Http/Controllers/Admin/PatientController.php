@@ -4,15 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
-use Illuminate\Http\Request;
 use App\Repositories\Patient\PatientRepositoryInterface;
+use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
-    public function __construct(private readonly PatientRepositoryInterface $repository)
-    {
+    public function __construct(private readonly PatientRepositoryInterface $repository) {}
 
-    }
     /**
      * Display a listing of the resource.
      */
@@ -55,6 +53,7 @@ class PatientController extends Controller
             'email' => 'required|email|unique:users,email,',
             'phone' => 'nullable|string|max:9|regex:/^[0-9\s\-]+$/',
             'dni' => 'required|max:9|regex:/^[XYZ]?\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i',
+            'birthdate' => 'required|date',
         ], [
             'name.required' => 'El nombre es obligatorio.',
             'name.max' => 'El nombre no puede tener más de 255 caracteres.',
@@ -70,6 +69,8 @@ class PatientController extends Controller
             'dni.required' => 'El DNI es obligatorio.',
             'dni.max' => 'El DNI no puede tener más de 9 caracteres.',
             'dni.regex' => 'El DNI solo puede contener 8 números y 1 letra.',
+            'birthdate.required' => 'La fecha de nacimiento es obligatoria.',
+            'birthdate.date' => 'La fecha de nacimiento debe ser una fecha v&aacute;lida.',
         ]);
 
         $patient = $this->repository->create($validated);
