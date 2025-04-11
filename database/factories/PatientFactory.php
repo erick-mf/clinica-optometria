@@ -19,6 +19,7 @@ class PatientFactory extends Factory
         return [
             'name' => fake()->name(),
             'surnames' => fake()->name(),
+            'birthdate' => fake()->date(),
             'phone' => '111222333',
             'email' => fake()->unique()->safeEmail(),
             'dni' => fake()->unique()->numberBetween(10000000, 99999999),
