@@ -20,6 +20,7 @@
         <div class="absolute top-1/4 right-4 sm:right-20 bg-white bg-opacity-90 p-6 rounded-lg shadow-lg w-11/12 sm:w-80 text-center">
             <form action="{{ route('book-appointment') }}" method="GET">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">Pida su cita</h2>
+                <br>
                 <label for="tipo-cita" class="block text-lg font-bold text-gray-700 mb-2 text-left">Tipo de cita:</label>
                 <select id="tipo-cita" name="tipo-cita" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary mb-4">
                     <option value="" disabled selected>Seleccione una opción</option>

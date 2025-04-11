@@ -106,7 +106,7 @@
                             <label class="inline-flex items-center">
                                 <input type="checkbox" id="privacy-policy" name="privacy-policy" required
                                     class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
-                                <span class="ml-2 text-gray-700">Acepto la <a href="#" class="text-primary hover:underline">política de privacidad</a></span>
+                                <span class="ml-2 text-gray-700">Acepto la <a href="{{ route('privacy-policy') }}" class="text-primary hover:underline">política de privacidad</a></span>
                             </label>
                         </div>
                     </div>
