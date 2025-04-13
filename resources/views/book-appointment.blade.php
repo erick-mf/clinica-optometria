@@ -48,6 +48,8 @@
                             <label for="birthdate" class="block text-sm font-medium text-gray-700 mb-1">Fecha de
                                 Nacimiento:</label>
                             <input type="date" id="birthdate" name="birthdate"
+                                min="{{ \Carbon\Carbon::now()->subYears(100)->format('Y-m-d') }}"
+                                max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
                             @error('birthdate')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>

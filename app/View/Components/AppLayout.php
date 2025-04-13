@@ -12,6 +12,8 @@ class AppLayout extends Component
      */
     public function render(): View
     {
-        return view('layouts.app');
+        $token = hash_hmac('sha256', 'secure-access', config('app.key'));
+
+        return view('layouts.app', ['appointmentToken' => $token]);
     }
 }
