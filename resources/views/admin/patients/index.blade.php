@@ -30,8 +30,7 @@
                         </div>
                     </div>
 
-                    <!-- Mensaje de Sin Resultados -->
-                    @if ($patients->isEmpty())
+                    @if (!request('s') && $patients->isEmpty())
                         <div class="bg-gradient-to-br from-gray-50 to-teal-50 rounded-lg p-8 sm:p-12 text-center border border-gray-200 shadow-sm"
                             style="background: linear-gradient(to bottom right, #f9fafb, rgba(21, 117, 100, 0.1));">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-6 opacity-80"
@@ -42,27 +41,20 @@
                             <h3 class="text-xl font-semibold text-gray-800 mb-2">No hay pacientes registrados</h3>
                             <p class="text-gray-600 mb-6">Comienza agregando tu primer paciente al sistema</p>
                         </div>
-                    @else
+                    @elseif (request('s') && $patients->isEmpty())
                         <!-- Buscador -->
-                        <div class="mb-5 relative">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #9ca3af;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                            </div>
-                            <input type="text" id="searchPatient"
-                                placeholder="Buscar por nombre, apellido o email..."
-                                class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-teal-500 focus:border-teal-600 text-sm sm:text-base">
-                        </div>
+                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre, apellido o email...'" />
 
                         <!-- Mensaje de no resultados para búsqueda -->
-                        <div id="noSearchResults"
-                            class="hidden bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
-                            <p class="text-gray-600 text-sm sm:text-base">No se encontraron pacientes con ese criterio
+                        <div class="bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
+                            <p class="text-gray-600 text-sm sm:text-base">No se encontraron pacientes con ese
+                                criterio
                                 de búsqueda.</p>
                         </div>
+                    @else
+                        <!-- Buscador -->
+                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre, apellido o email...'" />
+
 
                         <!-- Vista para Móviles (Tarjetas) -->
                         <div class="sm:hidden space-y-4 mb-6">

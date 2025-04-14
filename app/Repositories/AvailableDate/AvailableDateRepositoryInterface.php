@@ -23,4 +23,12 @@ interface AvailableDateRepositoryInterface
     public function deleteAll();
 
     public function getNextDate();
+
+    public function getAvailableDatesWithSlots();
+
+    public function getAvailableSlotsForDate(string $date);
+
+    public function getAvailableDates();
+
+    public function reserveTimeSlot(int $slotId);
 }

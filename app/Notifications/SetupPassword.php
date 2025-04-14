@@ -39,14 +39,8 @@ class SetupPassword extends Notification
         ], false));
 
         return (new MailMessage)
-            ->subject('Configuración de contraseña')
-            ->greeting('Hola '.$notifiable->name)
-            ->line('Has sido registrado como doctor en nuestro sistema.')
-            ->line('Por favor, configura tu contraseña para poder acceder a tu cuenta.')
-            ->action('Configurar contraseña', $url)
-            ->line('Este enlace expirará en '.config('auth.passwords.'.config('auth.defaults.passwords').'.expire').' minutos.')
-            ->line('Si no has solicitado esta cuenta, puedes ignorar este mensaje.')
-            ->salutation('Saludos,');
+            ->view('email.setup-password', ['url' => $url, 'notifiable' => $notifiable])
+            ->subject('Configuración de contraseña');
     }
 
     /**

@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
-use App\Models\Patient;
-use App\Models\Schedule;
-use App\Models\User;
 use App\Repositories\Appointment\AppointmentRepositoryInterface;
 use App\Repositories\Doctor\DoctorRepositoryInterface;
 use App\Repositories\Patient\PatientRepositoryInterface;
@@ -41,10 +38,10 @@ class AppointmentController extends Controller
     public function create()
     {
         $patients = $this->patientRepository->all();
-        $timeSlots = $this->timeSlotRepository->all();
+        $schedules = $this->timeSlotRepository->all();
         $doctors = $this->doctorRepository->all();
 
-        return view('admin.appointments.create', compact('patients', 'timeSlots', 'doctors'));
+        return view('admin.appointments.create', compact('patients', 'schedules', 'doctors'));
     }
 
     /**
@@ -64,7 +61,7 @@ class AppointmentController extends Controller
             'patient_id' => 'required|exists:patients,id',
             'time_slot_id' => 'required|exists:time_slots,id',
             'user_id' => 'required|exists:users,id',
-            'type' => 'required|in:normal,revision',
+            'type' => 'required|in:primera cita,revision',
             'details' => 'nullable|string|max:255',
         ], [
             'patient_id.required' => 'El paciente es obligatorio.',
@@ -85,9 +82,9 @@ class AppointmentController extends Controller
      */
     public function edit(Appointment $appointment)
     {
-        $patients = Patient::all();
-        $schedules = Schedule::all();
-        $doctors = User::where('role', 'doctor')->get();
+        $patients = $this->patientRepository->all();
+        $schedules = $this->timeSlotRepository->all();
+        $doctors = $this->doctorRepository->all();
 
         return view('admin.appointments.edit', compact('appointment', 'patients', 'schedules', 'doctors'));
     }
@@ -99,9 +96,9 @@ class AppointmentController extends Controller
     {
         $validated = $request->validate([
             'patient_id' => 'required|exists:patients,id',
-            'schedule_id' => 'required|exists:schedules,id',
-            'doctor_id' => 'required|exists:users,id',
-            'type' => 'required|in:normal,revision',
+            'time_slot_id' => 'required|exists:time_slots,id',
+            'user_id' => 'required|exists:users,id',
+            'type' => 'required|in:primera cita,revision',
             'details' => 'nullable|string|max:255',
         ]);
 

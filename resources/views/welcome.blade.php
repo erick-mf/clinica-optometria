@@ -1,111 +1,158 @@
 <x-app-layout>
-    <!-- Sección de redes sociales -->
-    <div class="bg-gray-800 py-2">
-        <div class="max-w-7xl mx-auto flex items-center justify-start space-x-4 px-4 sm:px-6">
-            <h3 class="text-xl font-bold text-white">Síguenos en redes sociales</h3>
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-                <img src="/assets/icons/facebook.svg" alt="Facebook" class="w-6 h-6 object-contain">
-            </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                <img src="/assets/icons/instagram.svg" alt="Instagram" class="w-6 h-6 object-contain">
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                <img src="/assets/icons/twitter.svg" alt="Twitter" class="w-6 h-6 object-contain">
-            </a>
-        </div>
-    </div>
+    <!-- Barra de redes sociales -->
+    <x-rrss />
 
-    <!-- Sección con imagen de fondo y formulario -->
-    <div class="hero-section relative h-[38rem] bg-cover bg-center" style="background-image: url('/images/img5.webp');">
-        <div class="absolute top-1/4 right-4 sm:right-20 bg-white bg-opacity-90 p-6 rounded-lg shadow-lg w-11/12 sm:w-80 text-center">
-            <form action="{{ route('book-appointment') }}" method="GET">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Pida su cita</h2>
-                <label for="tipo-cita" class="block text-lg font-bold text-gray-700 mb-2 text-left">Tipo de cita:</label>
-                <select id="tipo-cita" name="tipo-cita" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary mb-4">
-                    <option value="" disabled selected>Seleccione una opción</option>
-                    <option value="primera">Primera cita</option>
-                    <option value="seguimiento">Revisión</option>
-                </select>
-                <button type="submit" class="w-full bg-primary hover:bg-[#66a499] text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
-                    Ver Disponibilidad
-                </button>
-            </form>
+    <!-- Hero Section-->
+    <section class="relative w-full sm:h-[83svh] h-[50svh] min-h-[500px] max-h-[900px] overflow-hidden">
+        <div class="absolute inset-0">
+            <picture>
+                <source media="(min-width: 768px)" srcset="/images/img5.webp" type="image/webp">
+                <source srcset="/images/img5-mobile.webp" type="image/webp">
+                <img src="/images/img5-mobile.jpg" alt="Profesional realizando examen de la vista"
+                    class="w-full h-full object-cover object-center md:object-[center_30%]" loading="eager"
+                    decoding="async" fetchpriority="high">
+            </picture>
         </div>
-    </div>
 
-    <!-- Sección con mapa y texto -->
-    <div class="location-section max-w-7xl mx-auto py-12 px-6 sm:px-8">
-        <h3 class="text-2xl font-bold text-gray-800 text-center mb-8">¿Dónde encontrarnos?</h3>
-        <div class="flex flex-col sm:flex-row items-center gap-8">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3178.805430064723!2d-3.6053723886933993!3d37.18109467202474!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd71fcea8c8d04d7%3A0xbcd461fa8bdad6b6!2sHospital%20San%20Rafael!5e0!3m2!1ses!2ses!4v1712148575847!5m2!1ses!2ses" 
-                class="w-full sm:w-1/2 h-64 sm:h-80 rounded-lg shadow-md" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <div class="info-text w-full sm:w-1/2">
-                <p class="text-gray-800 font-bold mb-4">Hospital San Rafael, C/ San Juan de Dios, 19, Centro, 18001 Granada.</p>
-                <ul class="list-disc list-inside text-gray-600">
-                    <li>1º Periodo: Octubre - Noviembre</li>
-                    <li>2º Periodo: Marzo - Abril</li>
-                    <li>3º Periodo: Abril - Junio</li>
-                </ul>
-                <br>
-                <p class="text-gray-800 font-bold mb-4">Nuestros Horarios (Aproximados):</p>
-                <ul class="list-disc list-inside text-gray-600">
-                    <li>Lunes, Miércoles, Jueves, Viernes de 08:00 a 13:30 h</li>
-                    <li>Lunes a Jueves de 15:00 h a 20:30 h</li>
-                </ul>
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/90 flex flex-col justify-center items-center px-6 sm:px-8 text-center">
+            <div class="max-w-4xl mx-auto space-y-6">
+                <h1
+                    class="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight drop-shadow-xl animate-fade-in">
+                    Tu visión, nuestra prioridad.
+                </h1>
+                <p
+                    class="text-xl sm:text-2xl text-white/90 leading-relaxed max-w-2xl mx-auto drop-shadow-md animate-fade-in [animation-delay:100ms]">
+                    Expertos en el cuidado integral de tus ojos. Pide tu cita hoy mismo.
+                </p>
+                <div class="animate-fade-in [animation-delay:200ms]">
+                    <a href="{{ route('book-appointment') }}"
+                        class="inline-flex items-center justify-center bg-primary hover:bg-primary-dark text-white font-medium rounded-full px-8 py-4 sm:px-10 sm:py-4 text-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Pedir Cita
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Sección de contacto -->
-    <div class="max-w-7xl mx-auto py-12 px-6 sm:px-8">
-        <h3 class="text-2xl font-bold text-gray-800 text-center mb-8">¿Quieres ponerte en contacto con nosotros?</h3>
-        <p class="text-gray-600 text-center mb-4 mx-auto max-w-3xl">
-            Si desea comunicarse con nosotros por dudas, sugerencias, quejas o cualquier otro motivo, 
-            puede hacerlo a través del formulario disponible en el siguiente enlace.
-            Estaremos encantados de atenderle a la mayor brevedad posible.
-        </p>
-        <div class="flex justify-center">
-            <a href="{{ route('contact') }}" class="w-auto bg-primary hover:bg-[#66a499] text-white font-medium py-2 px-6 rounded-md transition duration-150 ease-in-out">
-                Contáctenos
-            </a>
+    <!-- Sección de ubicación - Rediseñada para mejor flujo -->
+    <section class="bg-white py-14 sm:py-20 lg:py-22">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div class="text-center mb-12 sm:mb-16">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">¿Dónde encontrarnos?</h2>
+                <div class="w-20 h-1 bg-primary mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12">
+                <div
+                    class="relative rounded-xl overflow-hidden shadow-xl h-[400px] lg:h-[500px] transform transition-all duration-300 hover:shadow-2xl">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3178.805430064723!2d-3.6053723886933993!3d37.18109467202474!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd71fcea8c8d04d7%3A0xbcd461fa8bdad6b6!2sHospital%20San%20Rafael!5e0!3m2!1ses!2ses!4v1712148575847!5m2!1ses!2ses"
+                        class="absolute inset-0 w-full h-full border-none" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade" title="Ubicación en mapa"></iframe>
+                </div>
+
+                <!-- Información de contacto mejorada -->
+                <div
+                    class="bg-gray-50 rounded-xl p-8 sm:p-10 shadow-sm border border-gray-100 transform transition-all duration-300 hover:shadow-2xl">
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-900 mb-3">Nuestra Dirección</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                <svg class="w-5 h-5 inline-block mr-2 text-primary" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                    </path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                Hospital San Rafael, C/ San Juan de Dios, 19, Centro, 18001 Granada.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                                    <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                    Periodos de atención
+                                </h4>
+                                <ul class="space-y-2 text-gray-700">
+                                    <li class="flex items-start">
+                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        Octubre - Noviembre
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        Marzo - Abril
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        Abril - Junio
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                                    <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Horarios
+                                </h4>
+                                <ul class="space-y-2 text-gray-700">
+                                    <li class="flex items-start">
+                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        Lunes, Miércoles, Jueves, Viernes: 08:00 - 13:30
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        Lunes a Jueves: 15:00 - 20:30
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Footer -->
-    <footer class="bg-[#66a499] text-white py-6">
-        <div class="max-w-7xl mx-auto px-6 sm:px-8">
-            <div class="grid grid-cols-2 gap-8 items-center sm:grid-cols-4 lg:grid-cols-7">
-                <a href="https://www.ugr.es/" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-ugr.svg" alt="Universidad de Granada" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://www.arqus-alliance.eu/" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-arqus-alliance.svg" alt="Arqus European University Alliance" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://www.universia.net/" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-universia.svg" alt="Universia" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://euraxess.ec.europa.eu/jobs/hrs4r" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-excelencia.svg" alt="HR Excellence In Research" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://www.aepd.es/es/pacto-digital" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-pactodigital.svg" alt="Pacto Digital para la Protección de las Personas" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://www.universidades.gob.es/" target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/icons/logo-transparencia-universidades.svg" alt="Universidades 2024" class="w-32 h-32 mx-auto object-contain">
-                </a>
-                <a href="https://www.universidadespublicasdeandalucia.es/" target="_blank" rel="noopener noreferrer" class="col-span-2 sm:col-span-1 justify-self-center">
-                    <img src="/assets/icons/logo-aupa.svg" alt="Universidades de Andalucía" class="w-32 h-32 mx-auto object-contain">
+    <!-- Sección de contacto  -->
+    <section class="bg-gradient-to-r bg-gray-100 py-14 sm:py-20 lg:py-22">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
+            <div
+                class="bg-white rounded-2xl p-8 sm:p-10 shadow-2xl transform transition-all duration-300 hover:scale-[1.01]">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">¿Necesitas contactarnos?</h2>
+                <p class="text-lg sm:text-xl text-gray-700 mb-8 leading-relaxed">
+                    Estamos aquí para resolver tus dudas y atender tus consultas. No dudes en ponerte en contacto con
+                    nuestro equipo de especialistas.
+                </p>
+                <a href="{{ route('contact') }}"
+                    class="inline-flex items-center justify-center bg-primary hover:bg-primary-darker text-white font-medium rounded-full px-8 py-4 text-lg transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95">
+                    Contáctenos
+                    <svg class="ml-3 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
                 </a>
             </div>
         </div>
-    </footer>
-    <footer class="bg-primary text-white py-6">
-        <div class="max-w-7xl mx-auto px-6 sm:px-8 flex flex-col sm:flex-row justify-between items-center">
-            <div class="flex space-x-4">
-                <a href="{{ route('privacy-policy') }}" class="text-sm hover:underline border-r-2 border-white pr-4">Política de privacidad</a>
-                <a href="{{ route('terms-conditions') }}" class="text-sm hover:underline">Términos y condiciones</a>
-            </div>
-            <p class="text-sm text-center sm:text-left mb-4 sm:mb-0">© 2025 Clínica Universitaria de Visión y Optometría. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+    </section>
+
+    <x-footer />
 </x-app-layout>

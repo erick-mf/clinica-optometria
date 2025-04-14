@@ -2,7 +2,7 @@
 
 <form action="{{ $action }}" method="POST" class="space-y-6">
     @csrf
-    @if($isEdit)
+    @if ($isEdit)
         @method('PUT')
     @endif
 
@@ -61,6 +61,18 @@
                     value="{{ old('dni', $patient ? $patient->dni : '') }}"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                 @error('dni')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Birthdate -->
+            <div>
+                <label for="birthdate" class="block text-sm font-medium text-gray-700 mb-1">Fecha de nacimiento
+                    *</label>
+                <input type="date" name="birthdate" id="dni"
+                    value="{{ old('birthdate', $patient ? $patient->birthdate : '') }}"
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                @error('birthdate')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>

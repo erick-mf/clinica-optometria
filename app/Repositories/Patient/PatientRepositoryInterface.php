@@ -8,11 +8,11 @@ interface PatientRepositoryInterface
 {
     public function paginate(int $perPage = 10);
 
-    public function searchPaginate(string $search, int $perPage = 10);
+    public function search(string $search);
 
     public function all();
 
-    public function find($id);
+    public function find($dni);
 
     public function create(array $data);
 

@@ -46,7 +46,8 @@
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
-                            <input type="text" id="searchAppointment" placeholder="Buscar por nombre, apellido o email..."
+                            <input type="text" id="searchAppointment"
+                                placeholder="Buscar por nombre, apellido o email..."
                                 class="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring focus:ring-gray-300 focus:border-gray-300 text-sm sm:text-base">
                         </div>
 
@@ -60,19 +61,23 @@
                         <!-- Vista para móviles (card-based) -->
                         <div class="md:hidden space-y-3 mb-4">
                             @foreach ($appointments as $appointment)
-                                <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4" data-appointment-card>
+                                <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4"
+                                    data-appointment-card>
                                     <!-- Paciente -->
                                     <div class="mb-2">
-                                        <h3 class="text-lg font-semibold text-gray-900">{{ $appointment->patient->name }} {{ $appointment->patient->surnames }}</h3>
+                                        <h3 class="text-lg font-semibold text-gray-900">
+                                            {{ $appointment->patient->name }} {{ $appointment->patient->surnames }}</h3>
                                     </div>
 
                                     <!-- Fecha y Hora -->
                                     <div class="mb-2">
                                         <p class="text-sm text-gray-900">
-                                            <strong>Fecha:</strong> {{ $appointment->schedule->date }}
+                                            <strong>Fecha:</strong>
+                                            {{ $appointment->timeSlot->availableHour->availableDate->date }}
                                         </p>
                                         <p class="text-sm text-gray-900">
-                                            <strong>Hora:</strong> {{ $appointment->schedule->start_time }} - {{ $appointment->schedule->end_time }}
+                                            <strong>Hora:</strong> {{ $appointment->timeSlot->start_time }} -
+                                            {{ $appointment->timeSlot->end_time }}
                                         </p>
                                     </div>
 
@@ -94,7 +99,8 @@
                                     <div class="flex justify-between items-center">
                                         <a href="{{ route('admin.appointments.show', $appointment) }}"
                                             class="text-green-600 hover:text-green-800 font-medium transition-colors duration-200 flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M15 12h.01M12 15h.01M9 12h.01M12 9h.01M21 12c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8z" />
                                             </svg>
@@ -102,19 +108,25 @@
                                         </a>
                                         <div class="flex items-center space-x-3">
                                             <a href="{{ route('admin.appointments.edit', $appointment) }}"
-                                            class="text-blue-600 hover:text-blue-800">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                class="text-blue-600 hover:text-blue-800">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
                                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
                                             </a>
-                                            <button type="button" class="text-red-600 hover:text-red-900 delete-button-mobile">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            <button type="button"
+                                                class="text-red-600 hover:text-red-900 delete-button-mobile">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
                                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
                                             </button>
-                                            <form action="{{ route('admin.appointments.destroy', $appointment) }}" method="POST" class="hidden delete-form-mobile">
+                                            <form action="{{ route('admin.appointments.destroy', $appointment) }}"
+                                                method="POST" class="hidden delete-form-mobile">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
@@ -139,7 +151,7 @@
                                         </th>
                                         <th scope="col"
                                             class="px-3 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Tipo 
+                                            Tipo
                                         </th>
                                         <th scope="col"
                                             class="px-3 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -153,20 +165,21 @@
                                             <!-- Fecha de la cita -->
                                             <td class="px-3 sm:px-4 py-3">
                                                 <div class="text-sm font-medium text-gray-900">
-                                                    {{ $appointment->schedule->date }}
+                                                    {{ $appointment->timeSlot->availableHour->availableDate->date }}
                                                 </div>
                                                 <div class="text-sm text-gray-500">
-                                                    {{ ucfirst($appointment->schedule->day) }}
-                                                </div>
-                                                <div class="text-sm text-gray-500">
-                                                    {{ $appointment->schedule->start_time }} - {{ $appointment->schedule->end_time }}
+                                                    {{ \Carbon\Carbon::parse($appointment->timeSlot->start_time)->format('H:i') }}
+                                                    -
+                                                    {{ \Carbon\Carbon::parse($appointment->timeSlot->end_time)->format('H:i') }}
+                                                    | {{ $appointment->timeSlot->availableHour->availableDate->date }}
                                                 </div>
                                             </td>
 
                                             <!-- Paciente -->
                                             <td class="px-3 sm:px-4 py-3">
                                                 <div class="text-sm font-medium text-gray-500">
-                                                    {{ $appointment->patient->name }} {{ $appointment->patient->surnames }}
+                                                    {{ $appointment->patient->name }}
+                                                    {{ $appointment->patient->surnames }}
                                                 </div>
                                             </td>
 
@@ -180,7 +193,7 @@
                                             <!-- Ver Detalles -->
                                             <td class="px-3 sm:px-4 py-3 text-sm text-center">
                                                 <a href="{{ route('appointments.show', $appointment) }}"
-                                                class="text-green-600 hover:text-green-800 font-medium transition-colors duration-200 flex items-center">
+                                                    class="text-green-600 hover:text-green-800 font-medium transition-colors duration-200 flex items-center">
                                                     <span>Ver Detalles</span>
                                                 </a>
                                             </td>

@@ -2,7 +2,7 @@
     'appointment' => null,
     'patients',
     'doctors',
-    'timeSlots',
+    'schedules',
     'action',
     'isEdit' => false,
 ])
@@ -36,10 +36,10 @@
 
             <!-- Doctor -->
             <div>
-                <label for="user_id" class="block text-sm font-medium text-gray-700">Doctor *</label>
+                <label for="user_id" class="block text-sm font-medium text-gray-700">Profesional *</label>
                 <select id="user_id" name="user_id"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="" disabled selected>Selecciona el doctor</option>
+                    <option value="" disabled selected>Selecciona el profesional</option>
                     @foreach ($doctors as $doctor)
                         <option value="{{ $doctor->id }}"
                             {{ $appointment && $appointment->user_id == $doctor->id ? 'selected' : '' }}>
@@ -58,9 +58,9 @@
                 <select id="time_slot_id" name="time_slot_id"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="" disabled selected>Selecciona el horario</option>
-                    @foreach ($timeSlots as $timeSlot)
+                    @foreach ($schedules as $timeSlot)
                         <option value="{{ $timeSlot->id }}"
-                            {{ $appointment && $appointment->time_slot_id == $timeSlot->id ? 'selected' : '' }}>
+                            {{ $appointment && $appointment->timeSlot->time_slot_id == $timeSlot->id ? 'selected' : '' }}>
                             {{ $timeSlot->date }} ({{ $timeSlot->start_time }} - {{ $timeSlot->end_time }})
                         </option>
                     @endforeach
@@ -76,8 +76,9 @@
                 <select id="type" name="type"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="" disabled selected>Selecciona el tipo de cita</option>
-                    <option value="normal" {{ $appointment && $appointment->type == 'normal' ? 'selected' : '' }}>
-                        Normal</option>
+                    <option value="primera cita"
+                        {{ $appointment && $appointment->type == 'primera cita' ? 'selected' : '' }}>
+                        Primera Cita</option>
                     <option value="revision" {{ $appointment && $appointment->type == 'revision' ? 'selected' : '' }}>
                         Revisión</option>
                 </select>
@@ -90,7 +91,7 @@
             <div class="sm:col-span-2">
                 <label for="details" class="block text-sm font-medium text-gray-700">Detalles de la Cita</label>
                 <textarea id="details" name="details" rows="4"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
                     placeholder="Escribe los detalles de la cita aquí...">{{ old('details', $appointment ? $appointment->details : '') }}</textarea>
                 @error('details')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

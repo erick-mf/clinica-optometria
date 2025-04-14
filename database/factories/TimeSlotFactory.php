@@ -21,7 +21,7 @@ class TimeSlotFactory extends Factory
             'start_time' => fake()->time('H:i'),
             'end_time' => fake()->time('H:i'),
             'is_available' => fake()->boolean(),
-            'available_hour_id' => AvailableHour::factory(),
+            'available_hour_id' => $this->faker->randomElement(AvailableHour::all())->id,
         ];
     }
 }

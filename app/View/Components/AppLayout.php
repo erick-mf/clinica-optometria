@@ -2,6 +2,8 @@
 
 namespace App\View\Components;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -12,6 +14,12 @@ class AppLayout extends Component
      */
     public function render(): View
     {
-        return view('layouts.app');
+        $token = [
+            'value' => bin2hex(random_bytes(16)),
+            'expires_at' => Carbon::now()->addMinutes(15)->timestamp,
+        ];
+        $encryptedToken = Crypt::encrypt($token);
+
+        return view('layouts.app', ['appointmentToken' => $encryptedToken]);
     }
 }

@@ -12,7 +12,7 @@
             <!-- Center section (for non-authenticated users) - Hidden on mobile -->
             @if (!Auth::check())
                 <div class="hidden md:flex items-center space-x-8">
-                    <p class="text-sm text-white">{{ __('Eres parte de nuestro equipo?') }}</p>
+                    <p class="text-white">{{ __('Eres parte de nuestro equipo?') }}</p>
                     <x-nav-link :href="route('login')" :active="request()->routeIs('login')" class="text-white text-sm hover:text-gray-100">
                         {{ __('Iniciar sesión') }}
                     </x-nav-link>
@@ -36,8 +36,8 @@
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
                                 <button
-                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white hover:text-gray-200 focus:outline-none transition ease-in-out duration-150">
-                                    <div>{{ Auth::user()->name }}</div>
+                                    class="inline-flex items-center  px-3 py-2 border border-transparent leading-4 font-medium rounded-md text-white hover:text-gray-200 focus:outline-none transition ease-in-out duration-150">
+                                    <div>{{ ucfirst(Auth::user()->name) }}</div>
                                     <div class="ms-1">
                                         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20">

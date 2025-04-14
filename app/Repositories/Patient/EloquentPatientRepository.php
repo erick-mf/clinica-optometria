@@ -26,18 +26,29 @@ class EloquentPatientRepository implements PatientRepositoryInterface
         return $this->model->all();
     }
 
-    public function searchPaginate(string $search, int $perPage = 10)
+    public function search(string $search)
     {
-        return $this->model->query()
-            ->where('name', 'like', '%'.$search.'%')
-            ->orWhere('surnames', 'like', '%'.$search.'%')
+        $query = $this->model->query();
+
+        // Buscar solo por DNI
+        if (preg_match('/^[XYZ\d]\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i', $search)) {
+            return $query->where('dni', strtoupper($search))
+                ->orderBy('id', 'desc')
+                ->paginate();
+        }
+
+        // Buscar en nombre y apellidos
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%$search%")
+                ->orWhere('surnames', 'like', "%$search%");
+        })
             ->orderBy('id', 'desc')
-            ->paginate($perPage);
+            ->paginate();
     }
 
-    public function find($id)
+    public function find($dni)
     {
-        return $this->model->find($id);
+        return $this->model->query()->where('dni', $dni)->first();
     }
 
     public function create(array $data)

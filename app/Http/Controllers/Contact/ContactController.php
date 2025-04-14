@@ -40,7 +40,7 @@ class ContactController extends Controller
         $content = [
             'name' => $validated['name'],
             'surnames' => $validated['surnames'],
-            'contact_method' =>$validated['contact_method'],
+            'contact_method' => $validated['contact_method'],
             'email' => $validated['email'],
             'phone' => $validated['phone'],
             'content_message' => $validated['content_message'],
@@ -48,9 +48,7 @@ class ContactController extends Controller
 
         // Enviar el correo
         Mail::send('email.contact-email', $content, function ($message) {
-            $message->to('trivinomarindaniel@gmail.com')
-                ->subject('Nuevo mensaje de contacto')
-                ->from('no-reply@example.com', 'Clínica Universitaria de Visión y Optometría');
+            $message->subject('Nuevo mensaje de contacto');
         });
 
         // Redirigir con un mensaje de éxito

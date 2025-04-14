@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\Doctor\AppointmentController as DoctorAppointment;
 use App\Http\Controllers\Doctor\DashboardController as DoctorDashboard;
 use App\Http\Controllers\Doctor\PatientController as DoctorPatient;
@@ -16,9 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/book-appointment', function () {
-    return view('book-appointment');
-})->name('book-appointment');
+Route::get('/book-appointment', [BookAppointmentController::class, 'index'])->name('book-appointment');
+Route::post('/book-appointment', [BookAppointmentController::class, 'store'])->name('book-appointment.store');
+Route::get('/api/available-slots/{date}', [BookAppointmentController::class, 'getAvailableSlots'])->middleware('throttle:10,1', 'verify.appointment.token');
 
 Route::get('/contact', function () {
     return view('contact');

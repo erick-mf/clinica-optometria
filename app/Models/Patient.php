@@ -15,7 +15,15 @@ class Patient extends Model
         'email',
         'phone',
         'dni',
+        'birthdate',
     ];
+
+    protected function casts()
+    {
+        return [
+            'birthdate' => 'string',
+        ];
+    }
 
     public function appointments()
     {

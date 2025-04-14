@@ -44,7 +44,7 @@
                                             {{ ucfirst($appointment->patient->surnames) }}
                                         </span>
                                         <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
-                                            {{ $appointment->type === 'normal' ? 'Normal' : 'Revisión' }}
+                                            {{ $appointment->type === 'primera cita' ? 'Primera Cita' : 'Revisión' }}
                                         </span>
                                     </div>
 
@@ -76,19 +76,36 @@
                                         </div>
                                     </div>
 
-                                    <div class="flex space-x-2 pt-3 border-t border-gray-100">
-                                        <a href="{{ route('admin.appointments.show', $appointment) }}"
-                                            class="flex-1 inline-flex justify-center items-center px-4 py-2 bg-teal-50 text-teal-700 hover:bg-teal-100 font-medium rounded-lg transition-colors duration-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                            Ver más
-                                        </a>
+                                    <!-- Versión mejorada de la vista móvil con botones -->
+                                    <div class="flex flex-col pt-3 border-t border-gray-100 gap-2">
+                                        <div class="flex space-x-2">
+                                            <a href="{{ route('admin.appointments.show', $appointment) }}"
+                                                class="flex-1 inline-flex justify-center items-center px-3 py-2 bg-teal-50 text-teal-700 hover:bg-teal-100 font-medium rounded-lg transition-colors duration-200">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                                Ver más
+                                            </a>
+
+                                            <a href="{{ route('admin.appointments.edit', $appointment) }}"
+                                                class="flex-1 inline-flex justify-center items-center px-3 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium rounded-lg transition-colors duration-200">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                </svg>
+                                                Editar
+                                            </a>
+                                        </div>
 
                                         <button type="button"
-                                            class="delete-button-mobile flex-1 inline-flex justify-center items-center px-4 py-2 bg-red-100 text-red-700 hover:bg-red-200 font-medium rounded-lg transition-colors duration-200">
+                                            class="delete-button-mobile w-full inline-flex justify-center items-center px-3 py-2 bg-red-100 text-red-700 hover:bg-red-200 font-medium rounded-lg transition-colors duration-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5"
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -117,10 +134,7 @@
                                             Paciente</th>
                                         <th
                                             class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Doctor</th>
-                                        <th
-                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Hora</th>
+                                            Profesional</th>
                                         <th
                                             class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Fecha</th>
@@ -132,28 +146,22 @@
                                 <tbody class="divide-y divide-gray-200">
                                     @foreach ($appointments as $appointment)
                                         <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-gray-900">Dr.
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900">
                                                     {{ ucfirst($appointment->patient->name) }}
                                                     {{ ucfirst($appointment->patient->surnames) }}
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-4 py-4 whitespace-nowrap">
                                                 <div class="text-sm text-gray-900">Prof.
                                                     {{ ucfirst($appointment->user->surnames) }}</div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-gray-900">
-                                                    {{ $appointment->timeSlot->start_time }} -
-                                                    {{ $appointment->timeSlot->end_time }}
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-4 py-4 whitespace-nowrap">
                                                 <div class="text-sm text-gray-900">
                                                     {{ \Carbon\Carbon::parse($appointment->timeSlot->availableHour->availableDate->date)->format('d/m/Y') }}
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                            <td class="px-4 py-4 whitespace-nowrap text-center">
                                                 <div class="flex justify-center space-x-2">
                                                     <a href="{{ route('admin.appointments.show', $appointment) }}"
                                                         class="inline-flex items-center px-3 py-1.5 bg-teal-50 text-teal-700 hover:bg-teal-100 font-medium rounded-lg transition-colors duration-200">
@@ -161,9 +169,23 @@
                                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 stroke-width="2"
-                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                         </svg>
-                                                        Ver más
+                                                        Ver más
+                                                    </a>
+
+                                                    <a href="{{ route('admin.appointments.edit', $appointment) }}"
+                                                        class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium rounded-lg transition-colors duration-200">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                        </svg>
+                                                        Editar
                                                     </a>
 
                                                     <button type="button"

@@ -22,7 +22,7 @@
                 <div class="p-4 sm:p-6 text-gray-900">
                     <h1 class="text-xl font-bold sm:text-2xl mb-6">Crear nueva cita</h1>
 
-                    <x-appointment-form :action="route('admin.appointments.store')" :patients="$patients" :doctors="$doctors" :timeSlots="$timeSlots"
+                    <x-appointment-form :action="route('admin.appointments.store')" :patients="$patients" :doctors="$doctors" :schedules="$schedules"
                         :isEdit="false" />
                 </div>
             </div>
