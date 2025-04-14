@@ -91,8 +91,8 @@
                         <!-- DNI -->
                         <div class="text-left">
                             <label for="dni"
-                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">DNI:</label>
-                            <input type="text" id="dni" name="dni" placeholder="Ingrese su DNI"
+                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">DNI/NIE:</label>
+                            <input type="text" id="dni" name="dni" placeholder="Ingrese su DNI/NIE"
                                 value="{{ old('dni') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
                             @error('dni')
@@ -108,14 +108,23 @@
 
                     <!-- Tipo de cita -->
                     <div class="text-left w-full">
-                        <label for="type" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Tipo
-                            de cita:</label>
-                        <input type="radio" id="type" name="type" value="primera cita">
-                        <label for="type" class="text-sm sm:text-base font-medium text-gray-700 mb-1">Primera
-                            cita</label>
-                        <input type="radio" id="type" name="type" value="revision" class="ml-4">
-                        <label for="type"
-                            class="text-sm sm:text-base font-medium text-gray-700 mb-1">Revisión</label>
+                        <label for="type" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Tipo de
+                            cita:</label>
+
+                        <div class="flex items-center space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="type" value="primera cita"
+                                    class="form-radio h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+                                <span class="ml-2 text-sm sm:text-base font-medium text-gray-700">Primera cita</span>
+                            </label>
+
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="type" value="revision"
+                                    class="form-radio h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+                                <span class="ml-2 text-sm sm:text-base font-medium text-gray-700">Revisión</span>
+                            </label>
+                        </div>
+
                         @error('type')
                             <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -178,8 +187,8 @@
                             <label for="details"
                                 class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Detalles
                                 adicionales:</label>
-                            <textarea id="details" name="details" rows="3" placeholder="Escribe los detalles de la cita aqui..."
-                                class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150"></textarea>
+                            <textarea id="details" name="details" rows="3" placeholder="Escribe los detalles de la cita aqui..." maxlength="255"
+                                class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150 resize-none"></textarea>
                             @error('details')
                                 <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
                             @enderror

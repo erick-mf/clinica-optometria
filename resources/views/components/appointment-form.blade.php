@@ -91,7 +91,7 @@
             <div class="sm:col-span-2">
                 <label for="details" class="block text-sm font-medium text-gray-700">Detalles de la Cita</label>
                 <textarea id="details" name="details" rows="4"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
                     placeholder="Escribe los detalles de la cita aquí...">{{ old('details', $appointment ? $appointment->details : '') }}</textarea>
                 @error('details')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

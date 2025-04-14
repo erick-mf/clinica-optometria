@@ -8,7 +8,7 @@ interface PatientRepositoryInterface
 {
     public function paginate(int $perPage = 10);
 
-    public function searchPaginate(string $search, int $perPage = 10);
+    public function search(string $search);
 
     public function all();
 
