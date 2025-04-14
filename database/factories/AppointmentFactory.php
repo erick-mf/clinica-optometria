@@ -22,9 +22,9 @@ class AppointmentFactory extends Factory
         return [
             'type' => $this->faker->randomElement(['primera cita', 'revision']),
             'details' => $this->faker->sentence(),
-            'user_id' => User::factory(),
-            'patient_id' => Patient::factory(),
-            'time_slot_id' => TimeSlot::factory(),
+            'user_id' => $this->faker->randomElement(User::all())->id,
+            'patient_id' => $this->faker->randomElement(Patient::all())->id,
+            'time_slot_id' => $this->faker->randomElement(TimeSlot::all())->id,
         ];
     }
 }

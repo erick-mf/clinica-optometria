@@ -2,8 +2,7 @@ import "./bootstrap";
 import Alpine from "alpinejs";
 import { modal } from "./modal";
 import { flatpickrInit } from "./datepicker";
-// import "./book-appointment";
-import "./book-appointment-back";
+import "./book-appointment";
 
 window.Alpine = Alpine;
 

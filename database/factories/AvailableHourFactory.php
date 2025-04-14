@@ -21,7 +21,7 @@ class AvailableHourFactory extends Factory
             'start_time' => fake()->time('H:i'),
             'end_time' => fake()->time('H:i'),
             'is_available' => fake()->boolean(),
-            'available_date_id' => AvailableDate::factory(),
+            'available_date_id' => $this->faker->randomElement(AvailableDate::all())->id,
         ];
     }
 }

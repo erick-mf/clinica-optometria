@@ -16,40 +16,44 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
 
     public function paginate(int $perPage = 10)
     {
-        return $this->model->with([
-            'patient',
-            'user',
-            'timeSlot.availableHour.availableDate',
-        ])
-            ->orderBy('created_at', 'asc')
+        return $this->model->query()
+            ->with([
+                'patient',
+                'user',
+                'timeSlot.availableHour.availableDate', // Carga las relaciones necesarias
+            ])
+            ->select('appointments.*')
+            ->join('time_slots', 'appointments.time_slot_id', '=', 'time_slots.id')
+            ->join('available_hours', 'time_slots.available_hour_id', '=', 'available_hours.id')
+            ->join('available_dates', 'available_hours.available_date_id', '=', 'available_dates.id')
+            ->orderBy('available_dates.date', 'asc') // Orden principal por fecha
+            ->orderBy('time_slots.start_time', 'asc') // Orden secundario por hora
             ->paginate($perPage);
     }
 
-    public function searchPaginate(string $search, int $perPage = 10)
+    public function appointmentTodayPaginated($perPage = 10)
     {
         return $this->model->query()
-            ->where(function ($query) use ($search) {
-                $query->whereHas('patient', function ($query) use ($search) {
-                    $query->where('name', 'like', '%'.$search.'%')
-                        ->orWhere('surnames', 'like', '%'.$search.'%');
-                })
-                    ->orWhereHas('user', function ($query) use ($search) {
-                        $query->where('name', 'like', '%'.$search.'%')
-                            ->orWhere('surnames', 'like', '%'.$search.'%');
-                    });
+            ->whereHas('timeSlot.availableHour.availableDate', function ($query) {
+                $query->where('date', '>=', now()->format('Y-m-d')); // Citas desde hoy en adelante
             })
-            ->with(['patient', 'user', 'timeSlot.availableHour.availableDate'])
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
-    }
-
-    public function appointmentTodayPaginated($perPage = 15)
-    {
-        return $this->model->query()->whereHas('timeSlot.availableHour.availableDate', function ($query) {
-            $query->where('date', '>=', now()->format('Y-m-d'));
-        })
-            ->with(['patient', 'user', 'timeSlot'])
-            ->orderBy('created_at', 'asc')
+            ->with([
+                'patient',
+                'user',
+                'timeSlot.availableHour.availableDate', // Carga las relaciones necesarias
+            ])
+            ->select('appointments.*') // Asegura que seleccionamos solo campos de appointments
+            ->join('time_slots', 'appointments.time_slot_id', '=', 'time_slots.id')
+            ->join('available_hours', 'time_slots.available_hour_id', '=', 'available_hours.id')
+            ->join('available_dates', 'available_hours.available_date_id', '=', 'available_dates.id')
+            ->orderByRaw("
+            CASE
+                WHEN available_dates.date = DATE('now') THEN 0
+                ELSE 1
+            END
+        ")
+            ->orderBy('available_dates.date', 'asc')
+            ->orderBy('time_slots.start_time', 'asc')
             ->paginate($perPage);
     }
 

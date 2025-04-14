@@ -37,7 +37,7 @@
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
-                            <input type="text" id="searchPatient" onkeyup="searchPatients()"
+                            <input type="text" id="searchPatient"
                                 placeholder="Buscar por nombre, apellido, DNI, teléfono o email..."
                                 class="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring focus:ring-gray-300 focus:border-gray-300 text-sm sm:text-base">
                         </div>
@@ -45,7 +45,8 @@
                         <!-- Mensaje de no resultados para búsqueda -->
                         <div id="noSearchResults"
                             class="hidden bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
-                            <p class="text-gray-600 text-sm sm:text-base">No se encontraron pacientes con ese criterio de
+                            <p class="text-gray-600 text-sm sm:text-base">No se encontraron pacientes con ese criterio
+                                de
                                 búsqueda.</p>
                         </div>
 
@@ -140,54 +141,4 @@
             </div>
         </div>
     </div>
-    <script>
-        function searchPatients() {
-            let searchTerm = document.getElementById('searchPatient').value.toLowerCase();
-            let noResults = true;
-
-            // Búsqueda en la vista de móviles
-            let patientCards = document.querySelectorAll('#patientsListMobile .patient-card');
-            patientCards.forEach(card => {
-                let name = card.querySelector('.patient-name').textContent.toLowerCase();
-                let email = card.querySelector('.patient-email').textContent.toLowerCase();
-                let phone = card.querySelector('.patient-phone').textContent.toLowerCase();
-                let dni = card.querySelector('.patient-dni').textContent.toLowerCase();
-
-                if (name.includes(searchTerm) || email.includes(searchTerm) || phone.includes(searchTerm) || dni
-                    .includes(searchTerm)) {
-                    card.style.display = ''; // Mostrar el card
-                    noResults = false;
-                } else {
-                    card.style.display = 'none'; // Ocultar el card
-                }
-            });
-
-            // Búsqueda en la vista de escritorio
-            let patientRows = document.querySelectorAll('#patientsTableBody .patient-row');
-            patientRows.forEach(row => {
-                let name = row.querySelector('.patient-name').textContent.toLowerCase();
-                let email = row.querySelector('.patient-email').textContent.toLowerCase();
-                let phone = row.querySelector('.patient-phone').textContent.toLowerCase();
-                let dni = row.querySelector('.patient-dni').textContent.toLowerCase();
-
-                if (name.includes(searchTerm) || email.includes(searchTerm) || phone.includes(searchTerm) || dni
-                    .includes(searchTerm)) {
-                    row.style.display = ''; // Mostrar la fila
-                    noResults = false;
-                } else {
-                    row.style.display = 'none'; // Ocultar la fila
-                }
-            });
-
-            // Mostrar/ocultar el mensaje de no resultados
-            let noSearchResultsDiv = document.getElementById('noSearchResults');
-            if (noResults) {
-                noSearchResultsDiv.classList.remove('hidden');
-            } else {
-                noSearchResultsDiv.classList.add('hidden');
-            }
-        }
-    </script>
 </x-app-layout>
-
-

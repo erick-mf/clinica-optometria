@@ -76,9 +76,9 @@ class ScheduleController extends Controller
             $turns = $validated['turns'];
 
             // Contadores para estadísticas
-            $createdDates = 0;
-            $createdHours = 0;
-            $createdSlots = 0;
+            // $createdDates = 0;
+            // $createdHours = 0;
+            // $createdSlots = 0;
 
             // Iterar desde la fecha inicial hasta la final
             $currentDate = clone $startDate;
@@ -92,8 +92,6 @@ class ScheduleController extends Controller
                     ]);
 
                     if ($availableDate) {
-                        $createdDates++;
-
                         // Procesar cada turno
                         foreach ($turns as $turn) {
                             // Crear objetos Carbon para las horas solo hora, sin fecha
@@ -108,8 +106,6 @@ class ScheduleController extends Controller
                             ]);
 
                             if ($availableHour) {
-                                $createdHours++;
-
                                 // Generar slots de tiempo
                                 $slotStart = clone $startTime;
                                 $slotNumber = 1;
@@ -132,11 +128,6 @@ class ScheduleController extends Controller
                                             'slot_number' => $slotNumber,
                                             'available' => true,
                                         ]);
-
-                                        if ($timeSlot) {
-                                            $createdSlots++;
-                                            $slotNumber++;
-                                        }
                                     }
 
                                     // Avanzar al siguiente intervalo
@@ -154,7 +145,7 @@ class ScheduleController extends Controller
             DB::commit();
 
             return redirect()->route('admin.schedules.index')
-                ->with('success', "Horarios creados: $createdDates fechas, $createdHours turnos, $createdSlots citas");
+                ->with('success', 'Horarios creados exitosamente');
         } catch (\Exception $e) {
             DB::rollBack();
 

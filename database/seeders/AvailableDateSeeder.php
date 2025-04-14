@@ -12,6 +12,8 @@ class AvailableDateSeeder extends Seeder
      */
     public function run(): void
     {
-        AvailableDate::factory()->count(30)->create();
+        for ($i = 0; $i <= 9; $i++) {
+            AvailableDate::factory()->create(['date' => '2025-06-1'.$i]);
+        }
     }
 }
