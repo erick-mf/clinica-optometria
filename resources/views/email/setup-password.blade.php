@@ -107,7 +107,7 @@
         <div class="content">
             <p>Hola <strong>{{ $notifiable->name }}</strong>,</p>
 
-            <p>Has sido registrado como doctor en nuestro sistema.</p>
+            <p>Has sido registrado en nuestro sistema.</p>
 
             <div class="info-box">
                 <p>Para acceder a tu cuenta, necesitas configurar una contraseña personal siguiendo estos pasos:</p>

@@ -64,7 +64,7 @@
         </a>
         <button type="submit"
             class="w-full sm:w-auto px-4 py-2 text-center border  rounded-md text-white bg-primary hover:bg-teal-800 transition-colors duration-150 ease-in-out">
-            {{ $isEdit ? 'Guardar cambios' : 'Crear doctor' }}
+            {{ $isEdit ? 'Guardar cambios' : 'Crear profesional' }}
         </button>
     </div>
 </form>

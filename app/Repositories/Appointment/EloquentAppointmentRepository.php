@@ -21,7 +21,7 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
             'user',
             'timeSlot.availableHour.availableDate',
         ])
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->paginate($perPage);
     }
 

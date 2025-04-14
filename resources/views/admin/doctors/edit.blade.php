@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Editar Doctor') }}
+                {{ __('Editar Profesional') }}
             </h2>
             <a href="{{ route('admin.doctors.index') }}"
                 class="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-150 ease-in-out flex items-center">
@@ -20,7 +20,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 sm:p-6 text-gray-900">
-                    <h1 class="text-xl font-bold sm:text-2xl mb-6">Editar doctor</h1>
+                    <h1 class="text-xl font-bold sm:text-2xl mb-6">Editar profesional</h1>
 
                     <x-doctor-form :doctor="$doctor" :action="route('admin.doctors.update', $doctor)" :isEdit="true" />
                 </div>

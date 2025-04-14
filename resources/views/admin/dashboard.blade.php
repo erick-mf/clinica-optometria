@@ -25,8 +25,8 @@
                             </svg>
                         </div>
                         <div>
-                            <h2 class="text-lg font-semibold text-gray-800">Doctores</h2>
-                            <p class="text-sm text-gray-600">Administra perfiles médicos</p>
+                            <h2 class="text-lg font-semibold text-gray-800">Profesores</h2>
+                            <p class="text-sm text-gray-600">Administra perfiles de profesores</p>
                         </div>
                     </div>
                 </a>

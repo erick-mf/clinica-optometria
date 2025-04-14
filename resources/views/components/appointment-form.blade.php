@@ -36,10 +36,10 @@
 
             <!-- Doctor -->
             <div>
-                <label for="user_id" class="block text-sm font-medium text-gray-700">Doctor *</label>
+                <label for="user_id" class="block text-sm font-medium text-gray-700">Profesional *</label>
                 <select id="user_id" name="user_id"
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="" disabled selected>Selecciona el doctor</option>
+                    <option value="" disabled selected>Selecciona el profesional</option>
                     @foreach ($doctors as $doctor)
                         <option value="{{ $doctor->id }}"
                             {{ $appointment && $appointment->user_id == $doctor->id ? 'selected' : '' }}>
