@@ -4,26 +4,24 @@ namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Patient\PatientRepositoryInterface;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Patient;
 
 class PatientController extends Controller
 {
-    private PatientRepositoryInterface $repository;
-
-    public function __construct(PatientRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(private readonly PatientRepositoryInterface $repository){}
 
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        // Obtener los pacientes del doctor autenticado con paginación
-        $doctorId = auth()->id();
-        $patients = $this->repository->paginateByDoctor($doctorId, 10);
-
+        $patients = $this->repository->paginate();
         return view('doctor.patients.index', compact('patients'));
+    }
+
+    public function show(Patient $patient)
+    {
+        return view('ShowDetailsPatient', compact('patient'));
     }
 }
