@@ -3,6 +3,7 @@ import Alpine from "alpinejs";
 import { modal } from "./modal";
 import { flatpickrInit } from "./datepicker";
 import "./book-appointment";
+import "./toast";
 
 window.Alpine = Alpine;
 

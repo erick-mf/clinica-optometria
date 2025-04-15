@@ -86,7 +86,7 @@ class PatientController extends Controller
 
         return redirect()
             ->route('admin.patients.index')
-            ->with('success', 'Paciente creado correctamente.');
+            ->with('toast', ['type' => 'success', 'message' => 'Paciente creado correctamente.']);
     }
 
     /**
@@ -121,7 +121,7 @@ class PatientController extends Controller
 
         return redirect()
             ->route('admin.patients.index')
-            ->with('success', 'Paciente actualizado correctamente.');
+            ->with('toast', ['type' => 'success', 'message' => 'Paciente actualizado correctamente.']);
     }
 
     /**
@@ -133,6 +133,6 @@ class PatientController extends Controller
 
         return redirect()
             ->route('admin.patients.index')
-            ->with('success', 'Paciente eliminado correctamente.');
+            ->with('toast', ['type' => 'success', 'message' => 'Paciente eliminado correctamente.']);
     }
 }

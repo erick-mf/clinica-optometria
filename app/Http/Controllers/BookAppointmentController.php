@@ -98,7 +98,7 @@ class BookAppointmentController extends Controller
                 ->first();
 
             if (! $slot) {
-                return redirect()->back()->with('error', 'El horario seleccionado ya no está disponible')->withInput();
+                return redirect()->back()->with('toast', ['type' => 'error', 'message' => 'El slot seleccionado no està; disponible.'])->withInput();
             }
 
             // Marcar el slot como reservado
@@ -121,11 +121,11 @@ class BookAppointmentController extends Controller
             $this->sendAppointmentEmail($patient, $appointment, $timeSlot, $dateAppointment);
             DB::commit();
 
-            return redirect()->route('home')->with('success', 'Cita reservada correctamente');
+            return redirect()->route('home')->with('toast', ['type' => 'success', 'message' => 'Cita reservada correctamente.']);
         } catch (\Exception $e) {
             DB::rollBack(); // Esto revierte todas las operaciones de BD, incluyendo la reserva del slot
 
-            return redirect()->back()->with('error', 'Error al reservar la cita: '.$e->getMessage())->withInput();
+            return redirect()->back()->with('toast', ['type' => 'error', 'message' => 'Error al reservar la cita.'])->withInput();
         }
     }
 

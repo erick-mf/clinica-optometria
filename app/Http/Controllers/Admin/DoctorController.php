@@ -58,7 +58,7 @@ class DoctorController extends Controller
         $doctor = $this->repository->create($validated);
 
         if (! $doctor) {
-            return back()->withInput()->with('error', 'Error al crear el doctor.');
+            return back()->withInput()->with('error', 'Error al crear al profesor/a.');
         }
 
         $token = Password::createToken($doctor);
@@ -66,7 +66,7 @@ class DoctorController extends Controller
 
         return redirect()
             ->route('admin.doctors.index')
-            ->with('success', 'Doctor creado correctamente.');
+            ->with('toast', ['type' => 'success', 'message' => 'Profesor/a creado correctamente.']);
     }
 
     /**
@@ -105,7 +105,7 @@ class DoctorController extends Controller
 
         return redirect()
             ->route('admin.doctors.index')
-            ->with('success', 'Doctor actualizado correctamente.');
+            ->with('toast', ['type' => 'success', 'message' => 'Profesor/a actualizado correctamente.']);
     }
 
     /**
@@ -117,6 +117,6 @@ class DoctorController extends Controller
 
         return redirect()
             ->route('admin.doctors.index')
-            ->with('success', 'Doctor eliminado correctamente.');
+            ->with('toast', ['type' => 'success', 'message' => 'Profesor/a eliminado correctamente.']);
     }
 }

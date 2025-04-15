@@ -75,11 +75,6 @@ class ScheduleController extends Controller
             $intervalMinutes = (int) $validated['interval_minutes']; // Asegurarse que sea entero
             $turns = $validated['turns'];
 
-            // Contadores para estadísticas
-            // $createdDates = 0;
-            // $createdHours = 0;
-            // $createdSlots = 0;
-
             // Iterar desde la fecha inicial hasta la final
             $currentDate = clone $startDate;
             while ($currentDate->lte($endDate)) {
@@ -145,7 +140,7 @@ class ScheduleController extends Controller
             DB::commit();
 
             return redirect()->route('admin.schedules.index')
-                ->with('success', 'Horarios creados exitosamente');
+                ->with('toast', ['type' => 'success', 'message' => 'Horario creado correctamente.']);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -198,7 +193,7 @@ class ScheduleController extends Controller
 
             $schedule = $this->availableDateRepository->find($id);
             if (! $schedule) {
-                return redirect()->route('admin.schedules.index')->with('error', 'Horario no encontrado');
+                return redirect()->route('admin.schedules.index')->with('toast', ['type' => 'error', 'message' => 'Horario no encontrado']);
             }
 
             $intervalMinutes = $validated['interval_minutes'];
@@ -258,11 +253,11 @@ class ScheduleController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.schedules.index')->with('success', 'Horario actualizado correctamente');
+            return redirect()->route('admin.schedules.index')->with('toast', ['type' => 'success', 'message' => 'Horario actualizado correctamente']);
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->withInput()->withErrors(['error' => 'Ocurrió un error al actualizar el horario: '.$e->getMessage()]);
+            return back()->withInput()->withErrors('toast', ['type' => 'error', 'message' => 'Error al actualizar el horario']);
         }
     }
 
@@ -274,10 +269,10 @@ class ScheduleController extends Controller
         try {
             $this->availableDateRepository->delete((int) $id);
 
-            return redirect()->route('admin.schedules.index')->with('success', 'Horario eliminado correctamente');
+            return redirect()->route('admin.schedules.index')->with('toast', ['type' => 'success', 'message' => 'Horario eliminado correctamente']);
         } catch (\Exception $e) {
 
-            return redirect()->route('admin.schedules.index')->with('error', 'Error al eliminar el horario');
+            return redirect()->route('admin.schedules.index')->with('toast', ['type' => 'error', 'message' => 'Error al eliminar el horario']);
         }
     }
 

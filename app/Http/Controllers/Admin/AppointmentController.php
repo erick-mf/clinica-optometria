@@ -74,7 +74,7 @@ class AppointmentController extends Controller
 
         return redirect()
             ->route('admin.appointments.index')
-            ->with('success', 'Cita creada correctamente.');
+            ->with('toast', ['type' => 'success', 'message' => 'Cita creada correctamente.']);
     }
 
     /**
@@ -106,7 +106,7 @@ class AppointmentController extends Controller
 
         return redirect()
             ->route('admin.appointments.index')
-            ->with('success', 'Cita actualizada correctamente.');
+            ->with('toast', ['type' => 'success', 'message' => 'Cita actualizada correctamente.']);
     }
 
     /**
@@ -115,10 +115,9 @@ class AppointmentController extends Controller
     public function destroy(Appointment $appointment)
     {
         $this->appoinmentRepository->delete($appointment);
-        session()->flash('success', 'Cita eliminada correctamente.');
 
         return redirect()
             ->route('admin.appointments.index')
-            ->with('success', 'Cita eliminada correctamente.');
+            ->with('toast', ['type' => 'success', 'message' => 'Cita eliminada correctamente.']);
     }
 }

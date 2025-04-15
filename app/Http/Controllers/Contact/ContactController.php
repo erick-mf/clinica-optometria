@@ -52,6 +52,6 @@ class ContactController extends Controller
         });
 
         // Redirigir con un mensaje de éxito
-        return redirect()->back()->with('success', 'El mensaje se ha enviado correctamente.');
+        return redirect()->back()->with('toast', ['type' => 'success', 'message' => 'El mensaje se ha enviado correctamente.']);
     }
 }
