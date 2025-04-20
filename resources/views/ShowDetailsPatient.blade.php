@@ -4,17 +4,10 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg border border-gray-200">
                 <div class="p-6 sm:p-8 text-gray-900">
                     <!-- Encabezado -->
-                    <div class="flex justify-between items-center mb-8">
-                        <h1 class="text-3xl font-bold text-gray-800">Detalles del Paciente</h1>
-                        <a href="{{ route('patients.index') }}"
-                            class="inline-flex items-center px-4 py-2 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition duration-150">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
-                            Volver al listado
-                        </a>
+                    <div class="flex justify-between items-start mb-6">
+                        <h1 class="text-xl font-bold sm:text-2xl">Detalles del Paciente</h1>
+
+                        <x-back-link :url="route('patients.index')" />
                     </div>
 
                     <!-- Información del Paciente -->
@@ -32,23 +25,28 @@
                         <div class="space-y-4">
                             <div>
                                 <p class="text-sm text-gray-500">Nombre completo:</p>
-                                <p class="text-lg font-medium text-gray-800">{{ ucfirst($patient->name) }} {{ ucfirst($patient->surnames) }}</p>
+                                <p class="text-lg font-medium text-gray-800">{{ ucfirst($patient->name) }}
+                                    {{ ucfirst($patient->surnames) }}</p>
                             </div>
                             <div>
                                 <p class="text-sm text-gray-500">Email:</p>
-                                <p class="text-lg font-medium text-gray-800">{{ $patient->email ?? 'No especificado' }}</p>
+                                <p class="text-lg font-medium text-gray-800">{{ $patient->email ?? 'No especificado' }}
+                                </p>
                             </div>
                             <div>
                                 <p class="text-sm text-gray-500">Fecha de nacimiento:</p>
-                                <p class="text-lg font-medium text-gray-800">{{ $patient->birthdate ?? 'No especificado' }}</p>
+                                <p class="text-lg font-medium text-gray-800">
+                                    {{ $patient->birthdate ?? 'No especificado' }}</p>
                             </div>
                             <div>
                                 <p class="text-sm text-gray-500">Teléfono:</p>
-                                <p class="text-lg font-medium text-gray-800">{{ $patient->phone ?? 'No especificado' }}</p>
+                                <p class="text-lg font-medium text-gray-800">{{ $patient->phone ?? 'No especificado' }}
+                                </p>
                             </div>
                             <div>
                                 <p class="text-sm text-gray-500">DNI:</p>
-                                <p class="text-lg font-medium text-gray-800">{{ $patient->dni ?? 'No especificado' }}</p>
+                                <p class="text-lg font-medium text-gray-800">{{ $patient->dni ?? 'No especificado' }}
+                                </p>
                             </div>
                         </div>
                     </div>

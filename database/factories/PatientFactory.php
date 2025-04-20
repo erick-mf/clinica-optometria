@@ -23,7 +23,6 @@ class PatientFactory extends Factory
             'phone' => '111222333',
             'email' => fake()->unique()->safeEmail(),
             'dni' => fake()->unique()->numberBetween(10000000, 99999999),
-            'birthdate' => fake()->date(),
         ];
     }
 }

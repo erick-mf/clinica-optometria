@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('patient_id')->constrained()->onDelete('cascade');
             $table->foreignId('time_slot_id')->constrained()->onDelete('cascade');
+            $table->unique(['user_id', 'patient_id', 'time_slot_id'], 'unique_appointment');
         });
     }
 

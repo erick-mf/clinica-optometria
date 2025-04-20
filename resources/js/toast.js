@@ -1,5 +1,5 @@
 class Toast {
-    static show(type, message, duration = 3000) {
+    static show(type, message, duration = 3500) {
         const container = document.getElementById("toast-container") || this.createContainer();
         const toast = this.createToast(type, message);
 
@@ -45,7 +45,7 @@ class Toast {
         toast.classList.remove("show");
         setTimeout(() => {
             toast.remove();
-        }, 200);
+        }, 300);
     }
 
     static success(message, duration) {
@@ -71,7 +71,6 @@ window.Toast = Toast;
 // Manejar toasts desde session (PHP)
 document.addEventListener("DOMContentLoaded", () => {
     if (window.toastData) {
-        console.log(window.toastData);
         Toast.show(window.toastData.type, window.toastData.message);
     }
 });

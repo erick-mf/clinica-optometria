@@ -5,12 +5,7 @@
         <input type="hidden" name="token" value="{{ $token }}">
 
         <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Correo electrónico')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="$email ?? old('email')" required
-                autocomplete="email" readonly />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <input id="email" type="hidden" name="email" value="{{ $email }}" />
 
         <!-- Password -->
         <div class="mt-4">

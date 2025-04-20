@@ -8,6 +8,8 @@ interface AppointmentRepositoryInterface
 {
     public function paginate(int $perPage = 10);
 
+    public function paginateByDoctor(int $doctorId, int $perPage = 10);
+
     public function find($id);
 
     public function appointmentTodayPaginated(int $perPage = 15);
@@ -17,4 +19,6 @@ interface AppointmentRepositoryInterface
     public function update(Appointment $appointment, array $data);
 
     public function delete(Appointment $appointment);
+
+    public function isAlreadyBooked($patientId, $date);
 }

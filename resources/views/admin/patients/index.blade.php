@@ -16,17 +16,7 @@
                         </h1>
 
                         <div class="flex flex-wrap gap-3 w-full sm:w-auto">
-                            <a href="{{ route('admin.patients.create') }}"
-                                class="bg-teal-700 hover:bg-teal-800 text-white py-2 px-4 rounded-lg transition duration-150 ease-in-out
-                                w-full sm:w-auto text-center flex items-center justify-center text-sm sm:text-base"
-                                style="background-color: #157564;">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 mr-2"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                                Nuevo Paciente
-                            </a>
+                            <x-add-button :action="route('admin.patients.create')" :text="'Agregar Paciente'" />
                         </div>
                     </div>
 
@@ -43,7 +33,7 @@
                         </div>
                     @elseif (request('s') && $patients->isEmpty())
                         <!-- Buscador -->
-                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre, apellido o email...'" />
+                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre, apellido o dni...'" />
 
                         <!-- Mensaje de no resultados para búsqueda -->
                         <div class="bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
@@ -53,7 +43,7 @@
                         </div>
                     @else
                         <!-- Buscador -->
-                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre, apellido o email...'" />
+                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre, apellido o dni...'" />
 
 
                         <!-- Vista para Móviles (Tarjetas) -->
@@ -95,33 +85,19 @@
                                         </span>
                                     </div>
 
-                                    <div class="flex space-x-2 pt-3 border-t border-gray-100">
-                                        <a href="{{ route('admin.patients.edit', $patient) }}"
-                                            class="flex-1 inline-flex justify-center items-center px-4 py-2 bg-teal-50 text-teal-700 hover:bg-teal-100 font-medium rounded-lg transition-colors duration-200"
-                                            style="background-color: rgba(21, 117, 100, 0.1); color: #157564;">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                            Editar
-                                        </a>
+                                    <!-- Vista para Móviles (Tarjetas) -->
+                                    <div class="flex flex-col pt-3 border-t border-gray-100 gap-2">
+                                        <div class="flex space-x-2">
+                                            <x-action-button action=" {{ route('admin.patients.edit', $patient) }}"
+                                                text="Editar" icon="edit" color="teal" />
 
-                                        <!-- Botón eliminar -->
-                                        <button type="button"
-                                            class="delete-button-mobile flex-1 inline-flex justify-center items-center px-4 py-2 bg-red-100 text-red-700 hover:bg-red-200 font-medium rounded-lg transition-colors duration-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                            Eliminar
-                                        </button>
-                                        <form action="{{ route('admin.patients.destroy', $patient) }}" method="POST"
-                                            class="delete-form hidden">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
+                                            <x-action-button
+                                                action="{{ route('admin.appointments.create.withPatient', $patient->id) }}"
+                                                text="Crear cita" icon="appointment" color="blue" />
+                                        </div>
+
+                                        <x-action-delete-button
+                                            action="{{ route('admin.patients.destroy', $patient->id) }}" />
                                     </div>
                                 </div>
                             @endforeach
@@ -151,10 +127,6 @@
                                             Teléfono
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            DNI
-                                        </th>
-                                        <th scope="col"
                                             class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Acciones
                                         </th>
@@ -176,38 +148,19 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                                 {{ $patient->phone }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                {{ $patient->dni }}
-                                            </td>
+                                            <!-- Vista para Tablets/Desktop (Tabla) - Botones con ancho fijo -->
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                                 <div class="flex justify-center space-x-2">
-                                                    <a href="{{ route('admin.patients.edit', $patient) }}"
-                                                        class="inline-flex items-center px-3 py-1.5 bg-teal-50 text-teal-700 hover:bg-teal-100 font-medium rounded-lg transition-colors duration-200"
-                                                        style="background-color: rgba(21, 117, 100, 0.1); color: #157564;">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                        </svg>
-                                                        Editar
-                                                    </a>
+                                                    <x-action-button
+                                                        action=" {{ route('admin.patients.edit', $patient) }}"
+                                                        text="Editar" icon="edit" color="teal" />
 
-                                                    <button type="button"
-                                                        class="delete-button-mobile inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 font-medium rounded-lg transition-colors duration-200">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                        </svg>
-                                                        Eliminar
-                                                    </button>
-                                                    <form action="{{ route('admin.patients.destroy', $patient) }}"
-                                                        method="POST" class="delete-form hidden">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
+                                                    <x-action-button
+                                                        action="{{ route('admin.appointments.create.withPatient', $patient->id) }}"
+                                                        text="Crear cita" icon="appointment" color="blue" />
+
+                                                    <x-action-delete-button
+                                                        action="{{ route('admin.patients.destroy', $patient->id) }}" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -236,5 +189,4 @@
     <!-- Modal de confirmación mejorado -->
     <x-delete-modal title="Confirmar eliminación"
         content="¿Estás seguro que deseas eliminar este paciente? Esta acción no se puede deshacer." />
-
 </x-app-layout>

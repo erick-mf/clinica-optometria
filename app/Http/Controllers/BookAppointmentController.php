@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookAppointmentRequest;
 use App\Repositories\Appointment\AppointmentRepositoryInterface;
 use App\Repositories\AvailableDate\AvailableDateRepositoryInterface;
+use App\Repositories\Doctor\DoctorRepositoryInterface;
 use App\Repositories\Patient\PatientRepositoryInterface;
-use Illuminate\Http\Request;
+use App\Repositories\TimeSlot\TimeSlotRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class BookAppointmentController extends Controller
@@ -14,13 +18,21 @@ class BookAppointmentController extends Controller
     public function __construct(
         private readonly AvailableDateRepositoryInterface $availableDateRepository,
         private readonly AppointmentRepositoryInterface $appointmentRepository,
-        private readonly PatientRepositoryInterface $patientRepository
+        private readonly PatientRepositoryInterface $patientRepository,
+        private readonly DoctorRepositoryInterface $doctorRepository,
+        private readonly TimeSlotRepositoryInterface $timeSlotRepository
     ) {}
 
     public function index()
     {
         // Obtener fechas disponibles con formato correcto
         $availableDates = $this->availableDateRepository->getAvailableDatesWithSlots();
+        // Obtener doctores disponibles
+        $availableDoctors = $this->doctorRepository->getDoctorWithSchedule();
+
+        if ($availableDoctors->isEmpty()) {
+            return redirect()->route('home')->with('toast', ['type' => 'info', 'message' => 'No hay citas disponibles']);
+        }
 
         return view('book-appointment', [
             'availableSlots' => $availableDates,
@@ -35,88 +47,39 @@ class BookAppointmentController extends Controller
         return response()->json($slots);
     }
 
-    public function store(Request $request)
+    public function store(BookAppointmentRequest $request)
     {
-        // Validación de los datos del formulario
-        $validator = $request->validate([
-            'name' => 'required|string|regex:/^[A-Za-z\s]+$/|max:255',
-            'surnames' => 'required|string|regex:/^[A-Za-z\s]+$/|max:255',
-            'birthdate' => 'required|date',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|digits:9|regex:/^[6-9]\d{8}$/',
-            'dni' => 'required|max:9|regex:/^[XYZ]?\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i',
-            'type' => 'required|in:primera cita,revision',
-            'appointment_date' => 'required|date_format:Y-m-d',
-            'appointment_time' => 'required|integer|exists:time_slots,id',
-            'details' => 'nullable|string|regex:/^[A-Za-z\s]+$/|max:255',
-            'privacy-policy' => 'required|accepted',
-        ], [
-            'name.required' => 'El campo de nombre es obligatorio.',
-            'name.string' => 'El campo de nombre debe ser una cadena de texto.',
-            'name.regex' => 'El campo de nombre solo puede contener letras y espacios.',
-            'surnames.required' => 'El campo de apellidos es obligatorio.',
-            'surnames.string' => 'El campo de apellidos debe ser una cadena de texto.',
-            'surnames.regex' => 'El campo de apellidos solo puede contener letras y espacios.',
-            'birthdate.required' => 'El campo de fecha de nacimiento es obligatorio.',
-            'email.required' => 'El campo de correo electr&oacute;nico es obligatorio.',
-            'phone.required' => 'El campo del teléfono es obligatorio.',
-            'phone.digits' => 'El campo de teléfono debe tener 9 dígitos.',
-            'phone.regex' => 'El campo de teléfono debe tener un formato valido.',
-            'dni.required' => 'El campo de DNI es obligatorio.',
-            'dni.max' => 'El campo de DNI no puede tener m&aacute;s de 9 caracteres.',
-            'dni.regex' => 'El campo de DNI debe tener un formato v&aacute;lido.',
-            'type.required' => 'El campo de tipo de cita es obligatorio.',
-            'type.in' => 'El campo de tipo de cita debe ser "Primera cita" o "Revisión".',
-            'appointment_date.required' => 'El campo de fecha de la cita es obligatorio.',
-            'appointment_time.required' => 'El campo de hora de la cita es obligatorio.',
-            'details.string' => 'El campo de detalles debe ser una cadena de texto.',
-            'details.regex' => 'El campo de detalles solo puede contener letras y espacios.',
-            'privacy-policy.required' => 'Debes aceptar la pol&iacute;tica de privacidad.',
-            'privacy-policy.accepted' => 'Debes aceptar la pol&iacute;tica de privacidad.',
-        ]);
-
-        $patient = $this->patientRepository->find($request->dni);
+        $validated = $request->validated();
+        $patient = $this->patientRepository->findByIdentity($validated);
 
         if (! $patient) {
-            $patient = $this->patientRepository->create([
-                'name' => $request->name,
-                'surnames' => $request->surnames,
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'dni' => $request->dni,
-                'birthdate' => $request->birthdate,
-            ]);
+            $patient = $this->patientRepository->create($validated);
+        }
+
+        // Verificar si el paciente ya tiene una cita agendada
+        $alreadyHasAppointment = $this->appointmentRepository->isAlreadyBooked($patient->id, $validated['appointment_date']);
+        if ($alreadyHasAppointment === true) {
+            return back()->with('toast', ['type' => 'info', 'message' => 'El paciente ya tiene una cita agendada ese día.'])->withInput();
+        }
+
+        // Verificar disponibilidad del slot
+        $slot = $this->timeSlotRepository->isAvailable($validated['appointment_time']);
+        if (! $slot) {
+            return back()->with('toast', ['type' => 'info', 'message' => 'La hora seleccionada no está disponible.'])->withInput();
         }
 
         try {
             DB::beginTransaction();
-
-            // Verificar disponibilidad del slot
-            $slot = DB::table('time_slots')
-                ->where('id', $request->appointment_time)
-                ->where('is_available', true)
-                ->first();
-
-            if (! $slot) {
-                return redirect()->back()->with('toast', ['type' => 'error', 'message' => 'El slot seleccionado no està; disponible.'])->withInput();
-            }
-
-            // Marcar el slot como reservado
-            $this->availableDateRepository->reserveTimeSlot($request->appointment_time);
-
             // Crear la cita
-            $appointment = $this->appointmentRepository->create([
-                'type' => $request->type,
-                'details' => $request->details,
-                'user_id' => 2,
-                'patient_id' => $patient->id,
-                'time_slot_id' => $request->appointment_time,
-            ]);
+            $validated['time_slot_id'] = $validated['appointment_time'];
+            $validated['patient_id'] = $patient->id;
+            $validated['user_id'] = $this->lastAssignedDoctorId();
+            $appointment = $this->appointmentRepository->create($validated);
 
             // Obtenemos la información completa del time_slot
-            $timeSlot = DB::table('time_slots')->where('id', $request->appointment_time)->first();
+            $timeSlot = $this->timeSlotRepository->find($validated['appointment_time']);
 
-            $dateAppointment = $request->appointment_date;
+            $dateAppointment = $validated['appointment_date'];
 
             $this->sendAppointmentEmail($patient, $appointment, $timeSlot, $dateAppointment);
             DB::commit();
@@ -124,22 +87,60 @@ class BookAppointmentController extends Controller
             return redirect()->route('home')->with('toast', ['type' => 'success', 'message' => 'Cita reservada correctamente.']);
         } catch (\Exception $e) {
             DB::rollBack(); // Esto revierte todas las operaciones de BD, incluyendo la reserva del slot
+            Log::error('Error al reservar la cita: '.$e);
 
-            return redirect()->back()->with('toast', ['type' => 'error', 'message' => 'Error al reservar la cita.'])->withInput();
+            return back()->with('toast', ['type' => 'error', 'message' => 'Error al reservar la cita.'])->withInput();
         }
+    }
+
+    public function lastAssignedDoctorId()
+    {
+        $availableDoctors = $this->doctorRepository->getDoctorWithSchedule();
+
+        $lastAssignedDoctorId = Cache::get('last_assigned_doctor_id');
+
+        // Seleccionar el siguiente doctor
+        if (! $lastAssignedDoctorId) {
+            $assignedDoctor = $availableDoctors->first();
+        } else {
+            $nextIndex = $availableDoctors->search(function ($doctor) use ($lastAssignedDoctorId) {
+                return $doctor->id > $lastAssignedDoctorId;
+            });
+
+            $assignedDoctor = $nextIndex !== false
+                ? $availableDoctors[$nextIndex]
+                : $availableDoctors->first();
+        }
+
+        // Guardar el último doctor asignado
+        Cache::put('last_assigned_doctor_id', $assignedDoctor->id);
+
+        return $assignedDoctor->id;
     }
 
     public function sendAppointmentEmail($patient, $appointment, $timeSlot, $dateAppointment)
     {
-        // Enviar el correo
-        Mail::send('email.appointment-email', [
-            'patient' => $patient,
-            'appointment' => $appointment,
-            'time_slot' => $timeSlot,
-            'date_appointment' => $dateAppointment,
-        ], function ($message) use ($patient) {
-            $message->to($patient->email, $patient->name.' '.$patient->surnames)
-                ->subject('Confirmación de su cita - Clínica Universitaria de Visión y Optometría');
-        });
+        $age = date_diff(date_create($patient->birthdate), date_create('now'))->y;
+        if ($age >= 18) {
+            Mail::send('email.appointment-email', [
+                'patient' => $patient,
+                'appointment' => $appointment,
+                'time_slot' => $timeSlot,
+                'date_appointment' => $dateAppointment,
+            ], function ($message) use ($patient) {
+                $message->to($patient->email, $patient->name.' '.$patient->surnames)
+                    ->subject('Confirmación de su cita - Clínica Universitaria de Visión y Optometría');
+            });
+        } else {
+            Mail::send('email.appointment-email-child', [
+                'patient' => $patient,
+                'appointment' => $appointment,
+                'time_slot' => $timeSlot,
+                'date_appointment' => $dateAppointment,
+            ], function ($message) use ($patient) {
+                $message->to($patient->tutor_email, $patient->tutor_name)
+                    ->subject('Confirmación de su cita - Clínica Universitaria de Visión y Optometría');
+            });
+        }
     }
 }

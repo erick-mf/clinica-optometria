@@ -15,7 +15,7 @@
                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
                 <input type="text" name="name" id="name"
                     value="{{ old('name', $doctor ? $doctor->name : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
                 @error('name')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -26,7 +26,7 @@
                 <label for="surnames" class="block text-sm font-medium text-gray-700 mb-1">Apellidos *</label>
                 <input type="text" name="surnames" id="surnames"
                     value="{{ old('surnames', $doctor ? $doctor->surnames : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
                 @error('surnames')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -37,7 +37,7 @@
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
                 <input type="email" name="email" id="email"
                     value="{{ old('email', $doctor ? $doctor->email : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
                 @error('email')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -48,7 +48,7 @@
                 <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
                 <input type="tel" name="phone" id="phone"
                     value="{{ old('phone', $doctor ? $doctor->phone : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
                 @error('phone')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror

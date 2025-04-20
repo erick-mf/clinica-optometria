@@ -12,6 +12,8 @@ interface AvailableDateRepositoryInterface
 
     public function allWithHoursAndSlotsPaginate(int $perPage = 10);
 
+    public function allWithHoursAndSlotsByDoctorPaginate(int $doctorId, int $perPage = 10);
+
     public function find($id);
 
     public function create(array $data);

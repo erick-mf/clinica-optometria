@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const timeSelect = document.getElementById("appointment_time");
     const statusElement = document.getElementById("availability-status");
     const token = document.querySelector('meta[name="x-appointment-token"]').getAttribute("content");
-    // Verificar que los elementos existen
+
     if (!dateInput || !timeSelect) return;
 
     // Obtener datos de disponibilidad
@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const availableSlots = bookingData ? JSON.parse(bookingData.dataset.availableSlots || "{}") : {};
 
     // Configurar Flatpickr
+    dateInput.value = ""
     const fp = flatpickr(dateInput, {
         locale: "es",
         minDate: "today",
@@ -91,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         } catch (error) {
             console.error("Error al verificar disponibilidad:", error);
-            timeSelect.innerHTML = '<option value="">Error al cargar horarios. Intente nuevamente.</option>';
+            timeSelect.innerHTML = '<option value="">Error al cargar horarios. Intente recargar la página.</option>';
             timeSelect.disabled = true;
         } finally {
             statusElement.classList.add("hidden");

@@ -71,8 +71,19 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
         return $user->delete();
     }
 
-    public function count()
+    public function getScheduleByDoctor($id)
     {
-        return $this->model->where('role', 'doctor')->count();
+        // Agrupa los horarios por fecha
+        return $this->model->where('role', 'doctor')->with('hours.availableDate')->findOrFail($id)->hours->groupBy(function ($hour) {
+            return $hour->availableDate->date;
+        });
+    }
+
+    public function getDoctorWithSchedule()
+    {
+        return $this->model
+            ->where('role', 'doctor')
+            ->whereHas('availableHours') // Solo doctores que tengan horas configuradas
+            ->get();
     }
 }

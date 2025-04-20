@@ -48,6 +48,13 @@ class EloquentAvailableDateRepository implements AvailableDateRepositoryInterfac
 
     }
 
+    public function allWithHoursAndSlotsByDoctorPaginate(int $doctorId, int $perPage = 10)
+    {
+        $query = $this->model->with('hours.timeSlots')->where('doctor_id', $doctorId)->orderBy('date', 'asc');
+
+        return $query->paginate($perPage);
+    }
+
     public function find($id)
     {
         return $this->model->find($id);

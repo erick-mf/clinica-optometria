@@ -51,9 +51,37 @@ class EloquentPatientRepository implements PatientRepositoryInterface
         return $this->model->query()->where('dni', $dni)->first();
     }
 
+    public function findByIdentity($data)
+    {
+        return $this->model->query()
+            ->when(
+                isset($data['dni']),
+                function ($query) use ($data) {
+                    $query->where('dni', $data['dni']);
+                },
+                function ($query) use ($data) {
+                    $query->where('name', $data['name'])
+                        ->where('surnames', $data['surnames'])
+                        ->whereDate('birthdate', $data['birthdate'])
+                        ->where('tutor_dni', $data['tutor_dni']);
+                })
+            ->first();
+    }
+
     public function create(array $data)
     {
-        return $this->model->create($data);
+        return $this->model->create([
+            'name' => $data['name'],
+            'surnames' => $data['surnames'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
+            'dni' => $data['dni'],
+            'birthdate' => $data['birthdate'],
+            'tutor_name' => $data['tutor_name'],
+            'tutor_email' => $data['tutor_email'],
+            'tutor_dni' => $data['tutor_dni'],
+            'tutor_phone' => $data['tutor_phone'],
+        ]);
     }
 
     public function update(Patient $user, array $data)
@@ -66,10 +94,5 @@ class EloquentPatientRepository implements PatientRepositoryInterface
     public function delete(Patient $user)
     {
         return $user->delete();
-    }
-
-    public function count()
-    {
-        return $this->model->query()->count();
     }
 }

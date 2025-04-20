@@ -114,32 +114,34 @@
 
         <!-- Contenido -->
         <div class="content">
-            <p>Estimado/a <strong>{{ $patient->name }} {{ $patient->surnames }}</strong>,</p>
+            <p>Estimado/a tutor/a <strong>{{ $patient->tutor_name }}</strong>,</p>
 
-            <p>Su cita en la <strong>Clínica Universitaria de Visión y Optometría</strong> ha sido confirmada con éxito.
-                A continuación encontrará los detalles de su cita:</p>
+            <p>La cita en la <strong>Clínica Universitaria de Visión y Optometría</strong> para su tutelado/a
+                <strong>{{ $patient->name }} {{ $patient->surnames ?? '' }}</strong> ha sido confirmada con éxito. A
+                continuación encontrará los detalles de la cita:
+            </p>
 
             <div class="appointment-info">
-                <p><strong>Paciente:</strong> {{ $patient->name }} {{ $patient->surnames }}</p>
-                <p><strong>Fecha:</strong> {{ date('d/m/Y', strtotime($date_appointment)) }}
-                </p>
+                <p><strong>Paciente:</strong> {{ $patient->name }} {{ $patient->surnames ?? '' }}</p>
+                <p><strong>Fecha:</strong> {{ date('d/m/Y', strtotime($date_appointment)) }}</p>
                 <p><strong>Hora:</strong> {{ date('H:i', strtotime($time_slot->start_time)) }} -
                     {{ date('H:i', strtotime($time_slot->end_time)) }}</p>
                 <p><strong>Lugar:</strong> Hospital San Rafael</p>
                 <p><strong>Dirección:</strong> Calle San Juan de Dios, 19, centro, 18001 Granada</p>
             </div>
 
-            <p>Su código de cita es:</p>
+            <p>El código de cita es:</p>
             <div class="appointment-code">
                 LKJKLSJDSJDALSJD
             </div>
 
-            <p><strong>Recomendaciones:</strong></p>
+            <p><strong>Recomendaciones para la cita del menor:</strong></p>
             <ul>
-                <li>Por favor, llegue 10 minutos antes de su cita.</li>
-                <li>Traiga consigo su DNI o documento de identificación.</li>
-                <li>Si utiliza gafas o lentes de contacto, tráigalos a la consulta.</li>
-                <li>Si necesita cancelar o reprogramar su cita, hágalo con al menos 24 horas de antelación.</li>
+                <li>Por favor, llegue 10 minutos antes de la cita.</li>
+                <li>Traiga consigo el DNI o documento de identificación del menor y el suyo propio como tutor.</li>
+                <li>Si el menor utiliza gafas o lentes de contacto, tráigalos a la consulta.</li>
+                <li>Como tutor legal, su presencia será requerida durante la consulta.</li>
+                <li>Si necesita cancelar o reprogramar la cita, hágalo con al menos 24 horas de antelación.</li>
             </ul>
 
             <p>Si tiene alguna pregunta o necesita más información, no dude en contactarnos en el siguiente enlace:<a
