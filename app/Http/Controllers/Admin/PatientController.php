@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use App\Repositories\Patient\PatientRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PatientController extends Controller
 {
@@ -16,9 +17,9 @@ class PatientController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('s');
+        $search = $request->input('search');
         $validated = $request->validate([
-            's' => 'nullable|string|min:3|max:100',  function ($attribute, $value, $fail) {
+            'search' => 'nullable|string|min:3|max:100',  function ($attribute, $value, $fail) {
                 // Permitir texto con espacios para nombres
                 $isText = preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u', $value);
                 // Validar formato DNI/NIE
@@ -26,8 +27,8 @@ class PatientController extends Controller
             },
         ]);
 
-        if ($request->filled('s')) {
-            $patients = $this->repository->search($validated['s']);
+        if ($request->filled('search')) {
+            $patients = $this->repository->search($validated['search']);
         } else {
             $patients = $this->repository->paginate();
         }
@@ -81,12 +82,20 @@ class PatientController extends Controller
             'birthdate.required' => 'La fecha de nacimiento es obligatoria.',
             'birthdate.date' => 'La fecha de nacimiento debe ser una fecha v&aacute;lida.',
         ]);
+        try {
+            $patient = $this->repository->create($validated);
 
-        $patient = $this->repository->create($validated);
+            return redirect()
+                ->route('admin.patients.index')
+                ->with('toast', ['type' => 'success', 'message' => 'Paciente creado correctamente.']);
 
-        return redirect()
-            ->route('admin.patients.index')
-            ->with('toast', ['type' => 'success', 'message' => 'Paciente creado correctamente.']);
+        } catch (\Exception $e) {
+            Log::error("Error al crear el paciente: {$e->getMessage()}");
+
+            return back()
+                ->with('toast', ['type' => 'error', 'message' => 'Error al crear el paciente.'])
+                ->withInput();
+        }
     }
 
     /**
@@ -117,11 +126,17 @@ class PatientController extends Controller
             'dni.regex' => 'El DNI solo puede contener 8 números y 1 letra.',
         ]);
 
-        $this->repository->update($patient, $validated);
+        try {
+            $this->repository->update($patient, $validated);
 
-        return redirect()
-            ->route('admin.patients.index')
-            ->with('toast', ['type' => 'success', 'message' => 'Paciente actualizado correctamente.']);
+            return redirect()
+                ->route('admin.patients.index')
+                ->with('toast', ['type' => 'success', 'message' => 'Paciente actualizado correctamente.']);
+        } catch (\Exception $e) {
+            Log::error("Error al actualizar al paciente: {$e->getMessage()}");
+
+            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al actualizar al paciente.']);
+        }
     }
 
     /**
@@ -129,10 +144,16 @@ class PatientController extends Controller
      */
     public function destroy(Patient $patient)
     {
-        $this->repository->delete($patient);
+        try {
+            $this->repository->delete($patient);
 
-        return redirect()
-            ->route('admin.patients.index')
-            ->with('toast', ['type' => 'success', 'message' => 'Paciente eliminado correctamente.']);
+            return redirect()
+                ->route('admin.patients.index')
+                ->with('toast', ['type' => 'success', 'message' => 'Paciente eliminado correctamente.']);
+        } catch (\Exception $e) {
+            Log::error("Error al eliminar al paciente: {$e->getMessage()}");
+
+            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al eliminar al paciente.']);
+        }
     }
 }

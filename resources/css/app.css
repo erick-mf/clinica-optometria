@@ -14,7 +14,7 @@ input:focus {
 /* Contenedor principal de toasts */
 .toast-container {
     position: fixed;
-    top: 1rem;
+    bottom: 1rem;
     right: 1rem;
     left: 1rem;
     z-index: 1000;

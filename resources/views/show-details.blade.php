@@ -6,15 +6,11 @@
                     <div class="flex justify-between items-start mb-6">
                         <h1 class="text-xl font-bold sm:text-2xl">Detalles de la Cita</h1>
 
-                        <a href="{{ route('admin.appointments.index') }}"
-                            class="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-150 ease-in-out flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
-                            <span>Volver al listado</span>
-                        </a>
+                        @if (auth() && auth()->user()->role == 'admin')
+                            <x-back-link :url="route('admin.appointments.index')" />
+                        @else
+                            <x-back-link :url="route('appointments.index')" />
+                        @endif
                     </div>
 
                     <!-- Información principal -->
@@ -41,30 +37,6 @@
 
                                 <p class="text-sm text-gray-500">Teléfono:</p>
                                 <p class="font-medium">{{ $appointment->patient->phone ?? 'No especificado' }}</p>
-                            </div>
-                        </div>
-
-                        <!-- Tarjeta Doctor -->
-                        <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-                            <div class="flex items-center mb-4">
-                                <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-semibold">Profesional</h3>
-                            </div>
-                            <div class="space-y-2">
-                                <p class="text-sm text-gray-500">Nombre:</p>
-                                <p class="font-medium">Prof. {{ ucfirst($appointment->user->surnames) }}</p>
-
-                                <p class="text-sm text-gray-500">Especialidad:</p>
-                                <p class="font-medium">{{ $appointment->user->specialty ?? 'General' }}</p>
-
-                                <p class="text-sm text-gray-500">Consultorio:</p>
-                                <p class="font-medium">{{ $appointment->user->office ?? 'No especificado' }}</p>
                             </div>
                         </div>
 
@@ -97,6 +69,30 @@
                                         {{ ucfirst($appointment->type) }}
                                     </span>
                                 </p>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Doctor -->
+                        <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold">Profesional</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-sm text-gray-500">Nombre:</p>
+                                <p class="font-medium">Prof. {{ ucfirst($appointment->user->surnames) }}</p>
+
+                                <p class="text-sm text-gray-500">Especialidad:</p>
+                                <p class="font-medium">{{ $appointment->user->specialty ?? 'General' }}</p>
+
+                                <p class="text-sm text-gray-500">Consultorio:</p>
+                                <p class="font-medium">{{ $appointment->user->office ?? 'No especificado' }}</p>
                             </div>
                         </div>
                     </div>

@@ -1,95 +1,109 @@
-@props(['appointment' => null, 'patients', 'doctor', 'schedules', 'action', 'isEdit' => false])
+@props(['patient', 'doctor', 'schedules', 'action', 'availableSlots', 'isEdit' => false])
 
-<form action="{{ $action }}" method="POST" class="space-y-6">
+<form method="POST" action="{{ $action }} " class="space-y-4 md:space-y-6">
     @csrf
     @if ($isEdit)
         @method('PUT')
     @endif
+    <!-- Datos para la cita -->
+    <input type="hidden" name="doctor_id" value="{{ $doctor }}">
+    <input type="hidden" name="patient_id" value="{{ $patient }}">
+    <!-- Tipo de cita -->
+    <div class="text-left w-full">
+        <label for="type" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Tipo de
+            cita:</label>
 
-    <!-- Datos personales -->
-    <div class="bg-gray-50 p-4 sm:p-6 rounded-lg space-y-6">
-        <h2 class="text-lg font-medium text-gray-900 border-b pb-2">Datos de la cita</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-            <!-- Paciente -->
+        <div class="flex items-center space-x-4">
+            <label class="inline-flex items-center">
+                <input type="radio" name="type" value="primera cita"
+                    class="form-radio h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+                <span class="ml-2 text-sm sm:text-base font-medium text-gray-700">Primera cita</span>
+            </label>
+
+            <label class="inline-flex items-center">
+                <input type="radio" name="type" value="revision"
+                    class="form-radio h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+                <span class="ml-2 text-sm sm:text-base font-medium text-gray-700">Revisión</span>
+            </label>
+        </div>
+
+        @error('type')
+            <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <!-- Calendario y horarios -->
+        <div class="md:col-span-2 space-y-4 sm:space-y-0 sm:grid md:grid-cols-2 gap-6">
+            <!-- Calendario -->
+            <div class="mb-4 sm:mb-0">
+                <label for="appointment_date" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Fecha de
+                    la
+                    cita:</label>
+                <div class="relative">
+                    <input type="text" id="appointment_date" name="appointment_date" readonly
+                        class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150"
+                        placeholder="Seleccione una fecha disponible">
+                </div>
+                <p class="text-xs sm:text-sm text-gray-500 mt-1">Solo se muestran fechas con
+                    disponibilidad</p>
+                @error('appointment_date')
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Horarios -->
             <div>
-                <label for="patient_id" class="block text-sm font-medium text-gray-700">Paciente *</label>
-                <select id="patient_id" name="patient_id"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="" disabled selected>Selecciona el paciente</option>
-                    @foreach ($patients as $patient)
-                        <option value="{{ $patient->id }}"
-                            {{ $appointment && $appointment->patient_id == $patient->id ? 'selected' : '' }}>
-                            {{ $patient->name }} {{ $patient->surnames }}
-                        </option>
-                    @endforeach
+                <label for="appointment_time" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Horario
+                    disponible:</label>
+                <select id="appointment_time" name="appointment_time" disabled
+                    class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                    <option value="">Primero seleccione una fecha</option>
                 </select>
-                @error('patient_id')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                <p class="text-xs sm:text-sm text-gray-500 mt-1">Se agrupan horarios con múltiples
+                    citas disponibles</p>
+                @error('appointment_time')
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
                 @enderror
-            </div>
 
-            <!-- Doctor -->
-            <div>
-                <input type="hidden" name="doctor_id" id="doctor_id" value="{{ $doctor }}">
+                <!-- Indicador de carga -->
+                <div id="availability-status" class="text-xs sm:text-sm text-gray-600 mt-2 hidden">
+                    <div class="flex items-center">
+                        <svg class="animate-spin h-4 w-4 mr-2 text-primary" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        Verificando disponibilidad en tiempo real...
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <!-- Horario -->
-            <div>
-                <label for="schedule_id" class="block text-sm font-medium text-gray-700">Horario *</label>
-                <select id="schedule_id" name="schedule_id"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="" disabled selected>Selecciona el horario</option>
-                    @foreach ($schedules as $schedule)
-                        <option value="{{ $schedule->id }}"
-                            {{ $appointment && $appointment->schedule_id == $schedule->id ? 'selected' : '' }}>
-                            {{ $schedule->date }} ({{ $schedule->start_time }} - {{ $schedule->end_time }})
-                        </option>
-                    @endforeach
-                </select>
-                @error('schedule_id')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Tipo de cita -->
-            <div>
-                <label for="type" class="block text-sm font-medium text-gray-700">Tipo de Cita *</label>
-                <select id="type" name="type"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="" disabled selected>Selecciona el tipo de cita</option>
-                    <option value="primera cita"
-                        {{ $appointment && $appointment->type == 'primera cita' ? 'selected' : '' }}>Primera Cita
-                    </option>
-                    <option value="revision" {{ $appointment && $appointment->type == 'revision' ? 'selected' : '' }}>
-                        Revisión</option>
-                </select>
-                @error('type')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Detalles de la cita -->
-            <div>
-                <label for="details" class="block text-sm font-medium text-gray-700">Detalles de la Cita</label>
-                <textarea id="details" name="details" rows="4"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="Escribe los detalles de la cita aquí...">{{ old('details', $appointment ? $appointment->details : '') }}</textarea>
-                @error('details')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
+        <!-- Detalles -->
+        <div class="text-left md:col-span-2">
+            <label for="details" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Detalles
+                adicionales:</label>
+            <textarea id="details" name="details" rows="3" placeholder="Escribe los detalles de la cita aqui..."
+                maxlength="255"
+                class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150 resize-none"></textarea>
+            <p class="text-xs sm:text-sm text-gray-500 mt-1"><span id="char-count">0</span>/255</p>
+            @error('details')
+                <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
+            @enderror
         </div>
     </div>
 
-    <!-- Botones de acción -->
-    <div class="flex flex-col sm:flex-row items-center justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
-        <a href="{{ route('appointments.index') }}"
-            class="w-full sm:w-auto px-4 py-2 text-center border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-150 ease-in-out">
-            Cancelar
-        </a>
+    <div class="mt-6">
         <button type="submit"
-            class="w-full sm:w-auto px-4 py-2 text-center text-white bg-gray-800 rounded-md hover:bg-gray-700 transition-colors duration-150 ease-in-out">
-            {{ $isEdit ? 'Guardar cambios' : 'Crear cita' }}
+            class="w-full px-4 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-3 bg-primary hover:bg-primary-dark text-white font-medium rounded-md shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+            Reservar Cita
         </button>
     </div>
 </form>
+
+<!-- Datos de disponibilidad para JavaScript -->
+<div id="booking-data" data-available-slots="{{ json_encode($availableSlots) }}" style="display: none;"></div>

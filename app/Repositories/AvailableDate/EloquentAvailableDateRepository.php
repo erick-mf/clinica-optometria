@@ -48,6 +48,13 @@ class EloquentAvailableDateRepository implements AvailableDateRepositoryInterfac
 
     }
 
+    public function allWithHoursAndSlotsByDoctorPaginate(int $doctorId, int $perPage = 10)
+    {
+        $query = $this->model->with('hours.timeSlots')->where('doctor_id', $doctorId)->orderBy('date', 'asc');
+
+        return $query->paginate($perPage);
+    }
+
     public function find($id)
     {
         return $this->model->find($id);
@@ -116,28 +123,45 @@ class EloquentAvailableDateRepository implements AvailableDateRepositoryInterfac
 
     public function getAvailableSlotsForDate(string $date)
     {
-        $dateRecord = $this->model
-            ->where('date', $date)
-            ->with(['hours.timeSlots' => function ($query) {
-                $query->where('is_available', true);
-            }])
-            ->first();
+ $dateRecord = $this->model
+        ->where('date', $date)
+        ->with(['hours.timeSlots' => function ($query) {
+            $query->where('is_available', true);
+        }])
+        ->first();
 
-        if (! $dateRecord) {
-            return collect();
-        }
+    if (! $dateRecord) {
+        return collect();
+    }
 
-        return $dateRecord->hours->flatMap(function ($hour) {
-            return $hour->timeSlots->map(function ($slot) use ($hour) {
-                return [
-                    'id' => $slot->id,
-                    'start_time' => $slot->start_time,
-                    'end_time' => $slot->end_time,
-                    'available' => $slot->is_available,
-                    'hour_id' => $hour->id,
-                ];
-            });
+    $allSlotsForDate = $dateRecord->hours->flatMap(function ($hour) {
+        return $hour->timeSlots->map(function ($slot) use ($hour) {
+            return [
+                'id' => $slot->id,
+                'start_time' => $slot->start_time,
+                'end_time' => $slot->end_time,
+                'available' => $slot->is_available,
+                'hour_id' => $hour->id,
+            ];
         });
+    });
+
+    $groupedSlots = $allSlotsForDate->groupBy(function ($slot) {
+        return $slot['start_time'] . '-' . $slot['end_time'];
+    })->map(function ($group) {
+        $availableCount = $group->where('available', true)->count();
+        if ($availableCount > 0) {
+            return [
+                'id' => $group->first()['id'], // ID de uno de los slots del intervalo
+                'start_time' => $group->first()['start_time'],
+                'end_time' => $group->first()['end_time'],
+                'available_count' => $availableCount,
+            ];
+        }
+        return null; // Excluir intervalos sin slots disponibles
+    })->filter()->values(); // Eliminar los null y reindexar
+
+    return $groupedSlots;
     }
 
     public function getAvailableDates()

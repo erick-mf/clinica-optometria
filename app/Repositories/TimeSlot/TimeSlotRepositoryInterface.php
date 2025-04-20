@@ -14,7 +14,11 @@ interface TimeSlotRepositoryInterface
 
     public function create(array $data);
 
-    public function update(TimeSlot $timeSlot, array $data);
+    public function update($timeSlotId, array $data);
 
     public function delete(TimeSlot $timeSlot);
+
+    public function isAvailable($timeSlotId);
+
+    public function reserveTimeSlot($timeSlotId);
 }

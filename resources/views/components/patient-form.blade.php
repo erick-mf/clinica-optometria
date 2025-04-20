@@ -15,7 +15,7 @@
                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
                 <input type="text" name="name" id="name"
                     value="{{ old('name', $patient ? $patient->name : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
                 @error('name')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -26,7 +26,7 @@
                 <label for="surnames" class="block text-sm font-medium text-gray-700 mb-1">Apellidos *</label>
                 <input type="text" name="surnames" id="surnames"
                     value="{{ old('surnames', $patient ? $patient->surnames : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
                 @error('surnames')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -37,7 +37,7 @@
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
                 <input type="email" name="email" id="email"
                     value="{{ old('email', $patient ? $patient->email : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
                 @error('email')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -48,7 +48,7 @@
                 <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Teléfono *</label>
                 <input type="tel" name="phone" id="phone"
                     value="{{ old('phone', $patient ? $patient->phone : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
                 @error('phone')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -59,7 +59,7 @@
                 <label for="dni" class="block text-sm font-medium text-gray-700 mb-1">DNI *</label>
                 <input type="text" name="dni" id="dni"
                     value="{{ old('dni', $patient ? $patient->dni : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
                 @error('dni')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -71,7 +71,7 @@
                     *</label>
                 <input type="date" name="birthdate" id="dni"
                     value="{{ old('birthdate', $patient ? $patient->birthdate : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
                 @error('birthdate')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -85,9 +85,6 @@
             class="w-full sm:w-auto px-4 py-2 text-center border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-150 ease-in-out">
             Cancelar
         </a>
-        <button type="submit"
-            class="w-full sm:w-auto px-4 py-2 text-center text-white bg-gray-800 rounded-md hover:bg-gray-700 transition-colors duration-150 ease-in-out">
-            {{ $isEdit ? 'Guardar cambios' : 'Crear paciente' }}
-        </button>
+        <x-primary-button type="submit">{{ $isEdit ? 'Guardar cambios' : 'Crear paciente' }}</x-primary-button>
     </div>
 </form>

@@ -25,6 +25,8 @@
             <!-- Contenido principal -->
             @yield('content')
 
+            <!-- Acciones adicionales -->
+            @yield('actions')
         </div>
     </div>
     @yield('scripts')
