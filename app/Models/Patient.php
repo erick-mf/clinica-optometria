@@ -17,6 +17,10 @@ class Patient extends Model
         'phone',
         'dni',
         'birthdate',
+        'tutor_name',
+        'tutor_email',
+        'tutor_dni',
+        'tutor_phone',
     ];
 
     protected function casts()

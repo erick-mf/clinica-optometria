@@ -52,4 +52,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Appointment::class);
     }
+
+    public function availableHours()
+    {
+        return $this->hasMany(DoctorAvailableHour::class, 'doctor_id');
+    }
+
+    public function hours()
+    {
+        return $this->belongsToMany(AvailableHour::class, 'doctor_available_hours', 'doctor_id', 'available_hour_id');
+    }
 }

@@ -15,13 +15,15 @@
                             Horarios Configurados
                         </h1>
 
-                        <div class="flex flex-wrap gap-3 w-full sm:w-auto">
-                            <x-add-button action="{{ route('admin.schedules.create') }}" text="Agregar Horario"
-                                class="w-full sm:w-auto" />
+                        @if ($doctors->isNotEmpty())
+                            <div class="flex flex-wrap gap-3 w-full sm:w-auto">
+                                <x-add-button action="{{ route('admin.schedules.create') }}" text="Agregar Horario"
+                                    class="w-full sm:w-auto" />
 
-                            <x-delete-button action="{{ route('admin.schedules.destroyAll') }}"
-                                text="Eliminar Horarios" />
-                        </div>
+                                <x-delete-button action="{{ route('admin.schedules.destroyAll') }}"
+                                    text="Eliminar Horarios" />
+                            </div>
+                        @endif
                     </div>
 
                     <!-- Stats Card - Resumen -->
@@ -64,8 +66,14 @@
                                 <line x1="3" y1="10" x2="21" y2="10" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            <h3 class="text-xl font-semibold text-gray-800 mb-2">No hay horarios registrados</h3>
-                            <p class="text-gray-600 mb-6">Comienza configurando tu primer horario para las citas</p>
+                            @if ($doctors->isEmpty())
+                                <h3 class="text-xl font-semibold text-gray-800 mb-2">No hay doctores registrados</h3>
+                                <p class="text-gray-600 mb-6">Comienza configurando tu primer doctor para crear horarios
+                                </p>
+                            @else
+                                <h3 class="text-xl font-semibold text-gray-800 mb-2">No hay horarios registrados</h3>
+                                <p class="text-gray-600 mb-6">Comienza configurando tu primer horario para las citas</p>
+                            @endif
                         </div>
                     @else
                         <!-- Filtrar fechas con turnos -->
@@ -154,34 +162,11 @@
                                         </div>
 
                                         <div class="flex space-x-2 pt-3 border-t border-gray-100">
-                                            <a href="{{ route('admin.schedules.edit', $date) }}"
-                                                class="flex-1 inline-flex justify-center items-center px-4 py-2 bg-teal-50 text-teal-700 hover:bg-teal-100 font-medium rounded-lg transition-colors duration-200"
-                                                style="background-color: rgba(21, 117, 100, 0.1); color: #157564;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                                Editar
-                                            </a>
+                                            <x-action-button action=" {{ route('admin.schedules.edit', $date) }}"
+                                                text="Editar" icon="edit" color="teal" />
 
-                                            <!-- Botón eliminar -->
-                                            <button type="button"
-                                                class="delete-button-mobile flex-1 inline-flex justify-center items-center px-4 py-2 bg-red-100 text-red-700 hover:bg-red-200 font-medium rounded-lg transition-colors duration-200">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                                Eliminar
-                                            </button>
-                                            <form action="{{ route('admin.schedules.destroy', $date->id) }}"
-                                                method="POST" class="delete-form-mobile hidden">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>
+                                            <x-action-delete-button
+                                                action="{{ route('admin.schedules.destroy', $date->id) }}" />
                                         </div>
                                     </div>
                                 @endforeach
@@ -240,33 +225,11 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                                 <div class="flex justify-center space-x-2">
-                                                    <a href="{{ route('admin.schedules.edit', $date) }}"
-                                                        class="inline-flex items-center px-3 py-1.5 bg-teal-50 text-teal-700 hover:bg-teal-100 font-medium rounded-lg transition-colors duration-200"
-                                                        style="background-color: rgba(21, 117, 100, 0.1); color: #157564;">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                        </svg>
-                                                        Editar
-                                                    </a>
-
-                                                    <button type="button"
-                                                        class="delete-button-mobile inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 font-medium rounded-lg transition-colors duration-200">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                        </svg>
-                                                        Eliminar
-                                                    </button>
-                                                    <form action="{{ route('admin.schedules.destroy', $date->id) }}"
-                                                        method="POST" class="delete-form hidden">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
+                                                    <x-action-button
+                                                        action=" {{ route('admin.schedules.edit', $date) }}"
+                                                        text="Editar" icon="edit" color="teal" />
+                                                    <x-action-delete-button
+                                                        action="{{ route('admin.schedules.destroy', $date->id) }}" />
                                                 </div>
                                             </td>
                                         </tr>

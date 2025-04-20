@@ -49,15 +49,25 @@ class EloquentTimeSlotRepository implements TimeSlotRepositoryInterface
         return $this->model->create($data);
     }
 
-    public function update(TimeSlot $timeSlot, array $data)
+    public function update($timeSlotId, array $data)
     {
-        $timeSlot->update($data);
+        $timeSlot = $this->find($timeSlotId);
 
-        return $timeSlot;
+        return $timeSlot->update($data);
     }
 
     public function delete(TimeSlot $timeSlot)
     {
         return $timeSlot->delete();
+    }
+
+    public function isAvailable($timeSlotId)
+    {
+        return $this->model->query()->where('id', $timeSlotId)->where('is_available', 1)->first();
+    }
+
+    public function reserveTimeSlot($timeSlotId)
+    {
+        return $this->model->query()->where('id', $timeSlotId)->where('is_available', 1)->update(['is_available' => 0]);
     }
 }

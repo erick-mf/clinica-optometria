@@ -11,11 +11,11 @@
     </div>
 
     <!-- Input de búsqueda -->
-    <input type="text" name="s" value="{{ request('s') }}" placeholder="{{ $placeholder }}" minlength="3"
-        maxlength="50" autocomplete="off"
+    <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ $placeholder }}"
+        minlength="3" maxlength="50" autocomplete="off"
         class="w-full pl-10 pr-24 sm:pr-28 py-2 rounded-md border border-gray-300 focus:ring focus:ring-gray-300 focus:border-gray-300 text-sm sm:text-base">
 
-    @if (request('s'))
+    @if (request('search'))
         <div class="absolute inset-y-0 right-0 flex items-center pr-3">
             <a href="{{ $action }}" class="text-gray-400 hover:text-teal-600 transition-colors flex items-center"
                 title="Mostrar todos los pacientes">

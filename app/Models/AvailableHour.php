@@ -24,4 +24,9 @@ class AvailableHour extends Model
     {
         return $this->hasMany(TimeSlot::class);
     }
+
+    public function doctors()
+    {
+        return $this->belongsToMany(User::class, 'doctor_available_hours', 'available_hour_id', 'doctor_id');
+    }
 }

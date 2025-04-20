@@ -14,10 +14,6 @@
                             </svg>
                             Listado de Citas
                         </h1>
-
-                        <div class="flex flex-wrap gap-3 w-full sm:w-auto">
-                            <x-add-button action="{{ route('admin.appointments.create') }}" text="Nueva Cita" />
-                        </div>
                     </div>
 
                     <!-- Mensaje de Sin Resultados -->
@@ -79,45 +75,16 @@
                                     <!-- Versión mejorada de la vista móvil con botones -->
                                     <div class="flex flex-col pt-3 border-t border-gray-100 gap-2">
                                         <div class="flex space-x-2">
-                                            <a href="{{ route('admin.appointments.show', $appointment) }}"
-                                                class="flex-1 inline-flex justify-center items-center px-3 py-2 bg-teal-50 text-teal-700 hover:bg-teal-100 font-medium rounded-lg transition-colors duration-200">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                </svg>
-                                                Ver más
-                                            </a>
+                                            <x-action-button
+                                                action="{{ route('admin.appointments.show', $appointment) }}"
+                                                color="teal" icon="show" text="Ver más" />
 
-                                            <a href="{{ route('admin.appointments.edit', $appointment) }}"
-                                                class="flex-1 inline-flex justify-center items-center px-3 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium rounded-lg transition-colors duration-200">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                </svg>
-                                                Editar
-                                            </a>
+                                            <x-action-button
+                                                action="{{ route('admin.appointments.edit', $appointment) }}"
+                                                color="blue" icon="edit" text="Editar" />
                                         </div>
-
-                                        <button type="button"
-                                            class="delete-button-mobile w-full inline-flex justify-center items-center px-3 py-2 bg-red-100 text-red-700 hover:bg-red-200 font-medium rounded-lg transition-colors duration-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                            Eliminar
-                                        </button>
-                                        <form action="{{ route('admin.appointments.destroy', $appointment->id) }}"
-                                            method="POST" class="delete-form hidden">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
+                                        <x-action-delete-button
+                                            action="{{ route('admin.appointments.destroy', $appointment->id) }}" />
                                     </div>
                                 </div>
                             @endforeach
@@ -163,47 +130,16 @@
                                             </td>
                                             <td class="px-4 py-4 whitespace-nowrap text-center">
                                                 <div class="flex justify-center space-x-2">
-                                                    <a href="{{ route('admin.appointments.show', $appointment) }}"
-                                                        class="inline-flex items-center px-3 py-1.5 bg-teal-50 text-teal-700 hover:bg-teal-100 font-medium rounded-lg transition-colors duration-200">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                        </svg>
-                                                        Ver más
-                                                    </a>
+                                                    <x-action-button
+                                                        action="{{ route('admin.appointments.show', $appointment) }}"
+                                                        color="teal" icon="show" text="Ver más" />
 
-                                                    <a href="{{ route('admin.appointments.edit', $appointment) }}"
-                                                        class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium rounded-lg transition-colors duration-200">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                        </svg>
-                                                        Editar
-                                                    </a>
+                                                    <x-action-button
+                                                        action="{{ route('admin.appointments.edit', $appointment) }}"
+                                                        color="blue" icon="edit" text="Editar" />
 
-                                                    <button type="button"
-                                                        class="delete-button-mobile inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 font-medium rounded-lg transition-colors duration-200">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                        </svg>
-                                                        Eliminar
-                                                    </button>
-                                                    <form
-                                                        action="{{ route('admin.appointments.destroy', $appointment) }}"
-                                                        method="POST" class="delete-form hidden">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
+                                                    <x-action-delete-button
+                                                        action="{{ route('admin.appointments.destroy', $appointment->id) }}" />
                                                 </div>
                                             </td>
                                         </tr>

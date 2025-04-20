@@ -3,13 +3,14 @@
 namespace App\Repositories\Appointment;
 
 use App\Models\Appointment;
-use App\Models\TimeSlot;
+use App\Repositories\TimeSlot\TimeSlotRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class EloquentAppointmentRepository implements AppointmentRepositoryInterface
 {
     protected Appointment $model;
 
-    public function __construct()
+    public function __construct(private TimeSlotRepositoryInterface $timeSlotRepository)
     {
         $this->model = new Appointment;
     }
@@ -28,6 +29,24 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
             ->join('available_dates', 'available_hours.available_date_id', '=', 'available_dates.id')
             ->orderBy('available_dates.date', 'asc') // Orden principal por fecha
             ->orderBy('time_slots.start_time', 'asc') // Orden secundario por hora
+            ->paginate($perPage);
+    }
+
+    public function paginateByDoctor($doctorId, $perPage = 10)
+    {
+        return $this->model->query()
+            ->where('user_id', $doctorId)  // Filtro por el ID del doctor
+            ->with([
+                'patient',
+                'user',
+                'timeSlot.availableHour.availableDate',
+            ])
+            ->select('appointments.*')
+            ->join('time_slots', 'appointments.time_slot_id', '=', 'time_slots.id')
+            ->join('available_hours', 'time_slots.available_hour_id', '=', 'available_hours.id')
+            ->join('available_dates', 'available_hours.available_date_id', '=', 'available_dates.id')
+            ->orderBy('available_dates.date', 'asc')  // Orden principal por fecha
+            ->orderBy('time_slots.start_time', 'asc')  // Orden secundario por hora
             ->paginate($perPage);
     }
 
@@ -64,13 +83,19 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
 
     public function create(array $data)
     {
-        $appointment = $this->model->create($data);
+        return DB::transaction(function () use ($data) {
+            $appointment = $this->model->create([
+                'patient_id' => $data['patient_id'],
+                'time_slot_id' => $data['time_slot_id'],
+                'user_id' => $data['user_id'],
+                'type' => $data['type'],
+                'details' => $data['details'],
+            ]);
 
-        TimeSlot::where('id', $data['time_slot_id'])
-            ->where('is_available', true)
-            ->update(['is_available' => false]);
+            $this->timeSlotRepository->reserveTimeSlot($data['time_slot_id']);
 
-        return $appointment;
+            return $appointment;
+        });
     }
 
     public function update(Appointment $appointment, array $data)
@@ -78,12 +103,9 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
         // Si se cambia el time_slot_id, debemos actualizar el estado de disponibilidad
         if (isset($data['time_slot_id']) && $data['time_slot_id'] != $appointment->time_slot_id) {
             // Liberar el slot anterior
-            TimeSlot::where('id', $appointment->time_slot_id)->update(['is_available' => true]);
-
+            $this->timeSlotRepository->update($appointment->time_slot_id, ['is_available' => true]);
             // Ocupar el nuevo slot
-            TimeSlot::where('id', $data['time_slot_id'])
-                ->where('is_available', true)
-                ->update(['is_available' => false]);
+            $this->timeSlotRepository->reserveTimeSlot($data['time_slot_id']);
         }
 
         $appointment->update($data);
@@ -94,8 +116,20 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
 
     public function delete(Appointment $appointment)
     {
-        TimeSlot::where('id', $appointment->time_slot_id)->update(['is_available' => true]);
+        return DB::transaction(function () use ($appointment) {
+            $this->timeSlotRepository->update($appointment->time_slot_id, ['is_available' => true]);
 
-        return $appointment->delete();
+            return $appointment->delete();
+        });
+    }
+
+    public function isAlreadyBooked($patientId, $date)
+    {
+        return $this->model->query()
+            ->where('patient_id', $patientId)
+            ->whereHas('timeSlot.availableHour.availableDate', function ($query) use ($date) {
+                $query->whereDate('available_dates.date', $date);
+            })
+            ->exists();
     }
 }

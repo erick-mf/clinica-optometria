@@ -102,9 +102,15 @@
             <!-- Responsive Settings Options -->
             <div class="pt-2 pb-1 border-t border-gray-200">
                 <div class="mt-3 space-y-1 px-4">
-                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" class="flex justify-start">
-                        {{ __('Panel de Administración') }} - {{ Auth::user()->name }}
-                    </x-responsive-nav-link>
+                    @if (Auth::user()->role == 'admin')
+                        <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" class="flex justify-start">
+                            {{ __('Panel de Administración') }} - {{ Auth::user()->name }}
+                        </x-responsive-nav-link>
+                    @else
+                        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="flex justify-start">
+                            {{ __('Mi Panel') }} - {{ Auth::user()->name }}
+                        </x-responsive-nav-link>
+                    @endif
                     <x-responsive-nav-link :href="route('profile.edit')" class="flex justify-start">
                         {{ __('Perfil') }}
                     </x-responsive-nav-link>

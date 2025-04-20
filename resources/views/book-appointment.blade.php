@@ -11,7 +11,7 @@
             </picture>
         </div>
 
-        <!-- Contenedor del formulario - Ajustes por breakpoint -->
+        <!-- Contenedor del formulario-->
         <div class="relative z-10 max-w-[1216px] mx-auto px-4 sm:px-6 lg:px-8 my-4 md:my-8 lg:my-12">
             <div class="bg-white px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10 rounded-lg shadow-lg">
                 <form method="POST" action="{{ route('book-appointment.store') }}" class="space-y-4 md:space-y-6">
@@ -101,6 +101,66 @@
                         </div>
                     </div>
 
+                    <!-- Sección de información del tutor para menores de edad -->
+                    <div id="guardian-info"
+                        class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 border-b-2 border-primary pb-6">
+                        <h3 class="text-base sm:text-lg lg:text-xl font-medium text-gray-800 md:col-span-2">
+                            Datos del tutor legal (requerido para menores de edad)
+                        </h3>
+
+                        <!-- Nombre del tutor -->
+                        <div class="text-left">
+                            <label for="tutor_name"
+                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Nombre del
+                                tutor:</label>
+                            <input type="text" id="tutor_name" name="tutor_name"
+                                placeholder="Ingrese el nombre del tutor" value="{{ old('tutor_name') }}"
+                                class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                            @error('tutor_name')
+                                <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Correo del tutor -->
+                        <div class="text-left">
+                            <label for="tutor_email"
+                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Correo del
+                                tutor:</label>
+                            <input type="email" id="tutor_email" name="tutor_email"
+                                placeholder="Ingrese el correo del tutor" value="{{ old('tutor_email') }}"
+                                class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                            @error('tutor_email')
+                                <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- DNI del tutor -->
+                        <div class="text-left">
+                            <label for="tutor_dni"
+                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">DNI/NIE del
+                                tutor:</label>
+                            <input type="text" id="tutor_dni" name="tutor_dni"
+                                placeholder="Ingrese el DNI/NIE del tutor" value="{{ old('tutor_dni') }}"
+                                class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                            @error('tutor_dni')
+                                <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Teléfono del tutor -->
+                        <div class="text-left">
+                            <label for="tutor_phone"
+                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Teléfono del
+                                tutor:</label>
+                            <input type="tel" id="tutor_phone" name="tutor_phone"
+                                placeholder="Ingrese el teléfono del tutor" value="{{ old('tutor_phone') }}"
+                                class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                            @error('tutor_phone')
+                                <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
                     <!-- Sección de Citas Disponibles -->
                     <h3 class="text-base sm:text-lg lg:text-xl font-medium text-gray-800 w-full">
                         Sección de Citas Disponibles
@@ -108,7 +168,8 @@
 
                     <!-- Tipo de cita -->
                     <div class="text-left w-full">
-                        <label for="type" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Tipo de
+                        <label for="type" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Tipo
+                            de
                             cita:</label>
 
                         <div class="flex items-center space-x-4">
@@ -187,8 +248,10 @@
                             <label for="details"
                                 class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Detalles
                                 adicionales:</label>
-                            <textarea id="details" name="details" rows="3" placeholder="Escribe los detalles de la cita aqui..." maxlength="255"
+                            <textarea id="details" name="details" rows="3" placeholder="Escribe los detalles de la cita aqui..."
+                                maxlength="255" value="{{ old('details') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150 resize-none"></textarea>
+                            <p class="text-xs sm:text-sm text-gray-500 mt-1"><span id="char-count">0</span>/255</p>
                             @error('details')
                                 <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
                             @enderror
@@ -226,29 +289,5 @@
     </div>
 
     <x-footer />
-    <!-- Datos de disponibilidad para JavaScript -->
     <div id="booking-data" data-available-slots="{{ json_encode($availableSlots) }}" style="display: none;"></div>
-
-    <style>
-        select#appointment_time option {
-            padding: 8px;
-            font-weight: normal;
-        }
-
-        select#appointment_time option:first-child {
-            font-weight: bold;
-        }
-
-        select#appointment_time option[data-count="high"] {
-            background-color: #e8f5e9;
-        }
-
-        select#appointment_time option[data-count="medium"] {
-            background-color: #fff8e1;
-        }
-
-        select#appointment_time option[data-count="low"] {
-            background-color: #ffebee;
-        }
-    </style>
 </x-app-layout>

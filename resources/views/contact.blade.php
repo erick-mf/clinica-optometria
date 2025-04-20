@@ -74,12 +74,12 @@
 
                         <!-- Mensaje -->
                         <div class="text-left">
-                            <label for="content_message"
-                                class="block text-lg font-bold text-gray-700 mb-2">Mensaje:</label>
-                            <textarea id="content_message" name="content_message" rows="4" placeholder="Escriba los detalles aquí..."
-                                value="{{ old('content_message') }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"></textarea>
-                            @error('content_message')
+                            <label for="details" class="block text-lg font-bold text-gray-700 mb-2">Mensaje:</label>
+                            <textarea id="details" name="details" rows="4" placeholder="Escriba los detalles aquí..."
+                                value="{{ old('details') }}" maxlength="255"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary resize-none"></textarea>
+                            <p class="text-xs sm:text-sm text-gray-500 mt-1"><span id="char-count">0</span>/255</p>
+                            @error('details')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

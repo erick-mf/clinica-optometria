@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Notifications\SetupPassword;
 use App\Repositories\Doctor\DoctorRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 
 class DoctorController extends Controller
@@ -58,7 +59,7 @@ class DoctorController extends Controller
         $doctor = $this->repository->create($validated);
 
         if (! $doctor) {
-            return back()->withInput()->with('error', 'Error al crear al profesor/a.');
+            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al crear el profesor/a.']);
         }
 
         $token = Password::createToken($doctor);
@@ -101,11 +102,17 @@ class DoctorController extends Controller
             'phone.regex' => 'El teléfono solo puede contener números, espacios y guiones.',
         ]);
 
-        $this->repository->update($doctor, $validated);
+        try {
+            $this->repository->update($doctor, $validated);
 
-        return redirect()
-            ->route('admin.doctors.index')
-            ->with('toast', ['type' => 'success', 'message' => 'Profesor/a actualizado correctamente.']);
+            return redirect()
+                ->route('admin.doctors.index')
+                ->with('toast', ['type' => 'success', 'message' => 'Profesor/a actualizado correctamente.']);
+        } catch (\Exception $e) {
+            Log::error("Error al actualizar al profesor/a: {$e->getMessage()}");
+
+            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al actualizar al profesor/a.']);
+        }
     }
 
     /**
@@ -113,10 +120,34 @@ class DoctorController extends Controller
      */
     public function destroy(User $doctor)
     {
-        $this->repository->delete($doctor);
+        try {
+            $this->repository->delete($doctor);
 
-        return redirect()
-            ->route('admin.doctors.index')
-            ->with('toast', ['type' => 'success', 'message' => 'Profesor/a eliminado correctamente.']);
+            return redirect()
+                ->route('admin.doctors.index')
+                ->with('toast', ['type' => 'success', 'message' => 'Profesor/a eliminado correctamente.']);
+        } catch (\Exception $e) {
+            Log::error("Error al eliminar al profesor/a: {$e->getMessage()}");
+
+            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al eliminar al profesor/a.']);
+        }
+    }
+
+    public function resendSetupLink(User $doctor)
+    {
+        if (! $doctor->password) {
+            $token = Password::createToken($doctor);
+            $doctor->notify(new SetupPassword($token));
+
+            return back()->with('toast', [
+                'type' => 'success',
+                'message' => 'Correo reenviado correctamente para configurar la contraseña.',
+            ]);
+        }
+
+        return back()->with('toast', [
+            'type' => 'info',
+            'message' => 'Este usuario ya tiene una contraseña configurada.',
+        ]);
     }
 }

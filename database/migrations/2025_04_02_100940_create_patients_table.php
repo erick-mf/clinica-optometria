@@ -16,10 +16,16 @@ return new class extends Migration
             $table->string('name');
             $table->string('surnames');
             $table->date('birthdate');
-            $table->timestamp('email')->nullable();
+            $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('dni')->nullable();
+            // tutor
+            $table->string('tutor_name')->nullable();
+            $table->string('tutor_email')->nullable();
+            $table->string('tutor_dni')->nullable();
+            $table->string('tutor_phone')->nullable();
             $table->timestamps();
+            $table->unique(['name', 'surnames', 'birthdate', 'tutor_dni'], 'unique_patient_by_tutor');
         });
     }
 

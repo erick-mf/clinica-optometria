@@ -5,19 +5,22 @@ namespace App\Http\Controllers\Doctor;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Patient;
-use App\Models\Schedule;
 use App\Repositories\Appointment\AppointmentRepositoryInterface;
+use App\Repositories\AvailableDate\AvailableDateRepositoryInterface;
+use App\Repositories\Patient\PatientRepositoryInterface;
+use App\Repositories\TimeSlot\TimeSlotRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AppointmentController extends Controller
 {
-    private AppointmentRepositoryInterface $repository;
-
-    public function __construct(AppointmentRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(
+        private readonly AppointmentRepositoryInterface $appoinmentRepository,
+        private readonly PatientRepositoryInterface $patientRepository,
+        private readonly TimeSlotRepositoryInterface $timeSlotRepository,
+        private readonly AvailableDateRepositoryInterface $availableDateRepository
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -25,7 +28,7 @@ class AppointmentController extends Controller
     public function index()
     {
         // Obtener las citas del doctor autenticado con paginación
-        $appointments = auth()->user()->appointments()->paginate(10);
+        $appointments = $this->appoinmentRepository->paginateByDoctor(Auth::user()->id);
 
         return view('doctor.appointments.index', compact('appointments'));
     }
@@ -33,13 +36,14 @@ class AppointmentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Patient $patient)
     {
-        $patients = Patient::all();
+        $patient_id = $patient->id;
         $doctor = Auth::user()->id;
-        $schedules = Schedule::all();
+        $schedules = $this->timeSlotRepository->all();
+        $availableSlots = $this->availableDateRepository->getAvailableDatesWithSlots();
 
-        return view('doctor.appointments.create', compact('patients', 'doctor', 'schedules'));
+        return view('doctor.appointments.create', compact('patient_id', 'doctor', 'schedules', 'availableSlots'));
     }
 
     /**
@@ -51,30 +55,30 @@ class AppointmentController extends Controller
         $validated = $request->validate([
             'patient_id' => 'required|exists:patients,id',
             'doctor_id' => 'required|exists:users,id',
-            'schedule_id' => 'required|exists:schedules,id',
+            'appointment_time' => 'required|exists:time_slots,id',
             'type' => 'required|in:primera cita,revision',
             'details' => 'nullable|string|max:255',
         ], [
             'patient_id.required' => 'El paciente es obligatorio.',
             'patient_id.exists' => 'El paciente seleccionado no existe.',
-            'schedule_id.required' => 'El horario es obligatorio.',
-            'schedule_id.exists' => 'El horario seleccionado no existe.',
+            'appointment_time.required' => 'El horario es obligatorio.',
+            'appointment_time.exists' => 'El horario seleccionado no existe.',
             'type.required' => 'El tipo de cita es obligatorio.',
             'type.in' => 'El tipo de cita debe ser "primera cita" o "revisión".',
             'details.max' => 'Los detalles no pueden exceder los 255 caracteres.',
         ]);
 
-        // Verificar si el horario ya está ocupado por otra cita
-        $existingAppointment = $this->repository->create($validated);
+        try {
+            $validated['time_slot_id'] = $validated['appointment_time'];
+            $this->appoinmentRepository->create($validated);
 
-        if ($existingAppointment) {
-            return redirect()->back()
-                ->withErrors(['schedule_id' => 'El horario seleccionado ya está ocupado.'])
-                ->withInput();
+            // Redirigir con un mensaje de éxito
+            return redirect()->route('patients.index')->with('toast', ['type' => 'success', 'message' => 'Cita creada correctamente.']);
+        } catch (\Exception $e) {
+            Log::error("Error al crear la cita: {$e->getMessage()}");
+
+            return back()->with('toast', ['type' => 'error', 'message' => 'Error al crear la cita.'])->withInput();
         }
-
-        // Redirigir con un mensaje de éxito
-        return redirect()->route('doctor.appointments.index')->with('success', 'Cita creada correctamente.');
     }
 
     // Mostrar detalles de la cita

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             AvailableHourSeeder::class,
             TimeSlotSeeder::class,
             AppointmentSeeder::class,
+            DoctorAvailableHourSeeder::class,
         ]);
     }
 }
