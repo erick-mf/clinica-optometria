@@ -41,10 +41,16 @@ class BookAppointmentController extends Controller
 
     public function getAvailableSlots(string $date)
     {
-        // Obtener slots disponibles para la fecha solicitada
-        $slots = $this->availableDateRepository->getAvailableSlotsForDate($date);
+        try {
+            // Obtener slots disponibles para la fecha solicitada
+            $slots = $this->availableDateRepository->getAvailableSlotsForDate($date);
 
-        return response()->json($slots);
+            return response()->json($slots);
+        } catch (\Exception $e) {
+            Log::error('Error al obtener los slots disponibles: '.$e);
+
+            return response()->json(['error' => 'Error al obtener los slots disponibles.']);
+        }
     }
 
     public function store(BookAppointmentRequest $request)
@@ -59,7 +65,7 @@ class BookAppointmentController extends Controller
         // Verificar si el paciente ya tiene una cita agendada
         $alreadyHasAppointment = $this->appointmentRepository->isAlreadyBooked($patient->id, $validated['appointment_date']);
         if ($alreadyHasAppointment === true) {
-            return back()->with('toast', ['type' => 'info', 'message' => 'El paciente ya tiene una cita agendada ese día.'])->withInput();
+            return back()->with('toast', ['type' => 'info', 'message' => 'Ya tiene una cita agendada ese día.'])->withInput();
         }
 
         // Verificar disponibilidad del slot

@@ -65,19 +65,27 @@ class AppointmentController extends Controller
     {
         $validated = $request->validate([
             'patient_id' => 'required|exists:patients,id',
+            'appointment_date' => 'required|date',
             'appointment_time' => 'required|exists:time_slots,id',
             'user_id' => 'required|exists:users,id',
             'type' => 'required|in:primera cita,revision',
             'details' => 'nullable|string|max:255',
         ], [
+            'appointment_date.required' => 'La fecha es obligatoria.',
             'patient_id.required' => 'El paciente es obligatorio.',
             'appointment_time.required' => 'El horario es obligatorio.',
             'user_id.required' => 'El doctor es obligatorio.',
             'type.required' => 'El tipo es obligatorio.',
         ]);
 
+        $this->appoinmentRepository->create($validated);
+        $validated['time_slot_id'] = $validated['appointment_time'];
+        $slot = $this->appoinmentRepository->isAlreadyBooked($validated['patient_id'], $validated['appointment_date']);
+        if ($slot === true) {
+            return back()->with('toast', ['type' => 'info', 'message' => 'El paciente ya tiene una cita agendada ese día.'])->withInput();
+        }
+
         try {
-            $validated['time_slot_id'] = $validated['appointment_time'];
             $this->appoinmentRepository->create($validated);
 
             return redirect()

@@ -129,48 +129,49 @@ class ScheduleService
                 $turn = $turns[$turnIndex % count($turns)];
                 $turnIndex++;
 
-                // Asociar doctores
-                foreach ($turn['doctors'] as $doctorId) {
+                // Obtener los doctores disponibles para este horario
+                $doctorsInTurn = $turn['doctors'];
+
+                // Procesar cada doctor en el turno
+                foreach (array_unique($doctorsInTurn) as $doctorId) {
+                    // Insertar la relación doctor-available_hour (evitando duplicados)
                     $doctorAvailableHoursToInsert[] = [
                         'doctor_id' => $doctorId,
                         'available_hour_id' => $availableHour->id,
-                        'created_at' => now(),
-                        'updated_at' => now(),
                     ];
-                }
 
-                // Generar slots de tiempo
-                $startTime = Carbon::createFromFormat('H:i', $availableHour->start_time);
-                $endTime = Carbon::createFromFormat('H:i', $availableHour->end_time);
-                $slotStart = clone $startTime;
-                $slotNumber = 1;
+                    // Generar slots de tiempo PARA CADA DOCTOR disponible en este horario
+                    $startTime = Carbon::createFromFormat('H:i', $availableHour->start_time);
+                    $endTime = Carbon::createFromFormat('H:i', $availableHour->end_time);
+                    $slotStart = clone $startTime;
 
-                while ($slotStart->lt($endTime)) {
-                    $slotEnd = (clone $slotStart)->addMinutes($intervalMinutes);
-                    if ($slotEnd->gt($endTime)) {
-                        $slotEnd = clone $endTime;
+                    while ($slotStart->lt($endTime)) {
+                        $slotEnd = (clone $slotStart)->addMinutes($intervalMinutes);
+                        if ($slotEnd->gt($endTime)) {
+                            $slotEnd = clone $endTime;
+                        }
+
+                        if ($slotStart->lt($slotEnd)) {
+                            $timeSlotsToInsert[] = [
+                                'start_time' => $slotStart->format('H:i'),
+                                'end_time' => $slotEnd->format('H:i'),
+                                'is_available' => true,
+                                'available_hour_id' => $availableHour->id,
+                            ];
+                        }
+                        $slotStart = clone $slotEnd;
                     }
-
-                    if ($slotStart->lt($slotEnd)) {
-                        $timeSlotsToInsert[] = [
-                            'start_time' => $slotStart->format('H:i'),
-                            'end_time' => $slotEnd->format('H:i'),
-                            'is_available' => true,
-                            'available_hour_id' => $availableHour->id,
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ];
-                        $slotNumber++;
-                    }
-
-                    $slotStart = clone $slotEnd;
                 }
             }
         }
 
-        // Insertar relaciones doctor-horario
-        if (! empty($doctorAvailableHoursToInsert)) {
-            DB::table('doctor_available_hours')->insert($doctorAvailableHoursToInsert);
+        // Insertar relaciones doctor-horario (evitando duplicados)
+        $uniqueDoctorAvailableHours = collect($doctorAvailableHoursToInsert)->unique(function ($item) {
+            return $item['doctor_id'].'-'.$item['available_hour_id'];
+        })->toArray();
+
+        if (! empty($uniqueDoctorAvailableHours)) {
+            DB::table('doctor_available_hours')->insert($uniqueDoctorAvailableHours);
         }
 
         // Insertar slots de tiempo

@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Obtener datos de disponibilidad
     const bookingData = document.getElementById("booking-data");
     const availableSlots = bookingData ? JSON.parse(bookingData.dataset.availableSlots || "{}") : {};
+    console.log(availableSlots);
 
     // Configurar Flatpickr
     dateInput.value = ""
@@ -24,42 +25,37 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Función para actualizar los horarios disponibles
-    function updateTimeSlots(date, slotsData) {
-        timeSelect.innerHTML = "";
-        if (!date || !slotsData[date] || slotsData[date].length === 0) {
-            timeSelect.innerHTML = '<option value="">No hay horarios disponibles para esta fecha</option>';
-            timeSelect.disabled = true;
-            return;
-        }
-
-        // Filtrar solo slots disponibles
-        const availableSlots = slotsData[date].filter((slot) => slot.available);
-
-        // Agregar opción por defecto
-        const defaultOption = document.createElement("option");
-        defaultOption.value = "";
-        defaultOption.textContent = "Seleccione un horario";
-        timeSelect.appendChild(defaultOption);
-
-        // Ordenar slots por hora y mostrar solo disponibles
-        const sortedSlots = [...availableSlots].sort((a, b) => a.start_time.localeCompare(b.start_time));
-
-        // Crear opciones para cada slot disponible
-        sortedSlots.forEach((slot) => {
-            const option = document.createElement("option");
-            option.value = slot.id;
-            option.textContent = `${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}`;
-            timeSelect.appendChild(option);
-        });
-
-        timeSelect.disabled = false;
-
-        // Si no hay opciones disponibles, mostrar mensaje
-        if (sortedSlots.length === 0) {
-            timeSelect.innerHTML = '<option value="">No hay horarios disponibles para esta fecha</option>';
-            timeSelect.disabled = true;
-        }
+function updateTimeSlots(date, slotsData) {
+    timeSelect.innerHTML = "";
+    if (!date || !slotsData || !slotsData[date] || slotsData[date].length === 0) {
+        timeSelect.innerHTML = '<option value="">No hay horarios disponibles para esta fecha</option>';
+        timeSelect.disabled = true;
+        return;
     }
+
+    const availableSlotsForDate = slotsData[date]; // Obtén el array de slots para la fecha
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Seleccione un horario";
+    timeSelect.appendChild(defaultOption);
+
+    const sortedSlots = [...availableSlotsForDate].sort((a, b) => a.start_time.localeCompare(b.start_time));
+
+    sortedSlots.forEach((slot) => {
+        const option = document.createElement("option");
+        option.value = slot.id;
+        option.textContent = `${formatTime(slot.start_time)} - ${formatTime(slot.end_time)} (${slot.available_count} disponibles)`;
+        timeSelect.appendChild(option);
+    });
+
+    timeSelect.disabled = false;
+
+    if (sortedSlots.length === 0) {
+        timeSelect.innerHTML = '<option value="">No hay horarios disponibles para esta fecha</option>';
+        timeSelect.disabled = true;
+    }
+}
 
     // Función para formatear hora (eliminar segundos)
     function formatTime(timeString) {
