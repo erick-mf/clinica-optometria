@@ -162,8 +162,8 @@
                                         </div>
 
                                         <div class="flex space-x-2 pt-3 border-t border-gray-100">
-                                            <x-action-button action=" {{ route('admin.schedules.edit', $date) }}"
-                                                text="Editar" icon="edit" color="teal" />
+                                            <!-- <x-action-button action=" {{ route('admin.schedules.edit', $date) }}" -->
+                                            <!--     text="Editar" icon="edit" color="teal" /> -->
 
                                             <x-action-delete-button
                                                 action="{{ route('admin.schedules.destroy', $date->id) }}" />
@@ -225,9 +225,9 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                                 <div class="flex justify-center space-x-2">
-                                                    <x-action-button
-                                                        action=" {{ route('admin.schedules.edit', $date) }}"
-                                                        text="Editar" icon="edit" color="teal" />
+                                                    <!-- <x-action-button -->
+                                                    <!--     action=" {{ route('admin.schedules.edit', $date) }}" -->
+                                                    <!--     text="Editar" icon="edit" color="teal" /> -->
                                                     <x-action-delete-button
                                                         action="{{ route('admin.schedules.destroy', $date->id) }}" />
                                                 </div>

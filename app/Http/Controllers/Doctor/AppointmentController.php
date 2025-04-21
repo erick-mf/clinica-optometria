@@ -92,4 +92,17 @@ class AppointmentController extends Controller
     {
         return view('show-details', compact('appointment'));
     }
+
+    public function destroy(Appointment $appointment)
+    {
+        try {
+            $this->appoinmentRepository->delete($appointment);
+
+            return redirect()->route('appointments.index')->with('toast', ['type' => 'success', 'message' => 'Cita eliminada correctamente.']);
+        } catch (\Exception $e) {
+            Log::error("Error al eliminar la cita: {$e->getMessage()}");
+
+            return back()->with('toast', ['type' => 'error', 'message' => 'Error al eliminar la cita.']);
+        }
+    }
 }
