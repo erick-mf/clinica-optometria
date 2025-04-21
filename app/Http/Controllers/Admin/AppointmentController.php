@@ -78,7 +78,6 @@ class AppointmentController extends Controller
             'type.required' => 'El tipo es obligatorio.',
         ]);
 
-        $this->appoinmentRepository->create($validated);
         $validated['time_slot_id'] = $validated['appointment_time'];
         $slot = $this->appoinmentRepository->isAlreadyBooked($validated['patient_id'], $validated['appointment_date']);
         if ($slot === true) {

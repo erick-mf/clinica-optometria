@@ -117,7 +117,7 @@ class ScheduleService
             ->groupBy('available_date_id');
     }
 
-    protected function processDoctorsAndSlots($availableHours, $turns, $intervalMinutes)
+protected function processDoctorsAndSlots($availableHours, $turns, $intervalMinutes)
     {
         $doctorAvailableHoursToInsert = [];
         $timeSlotsToInsert = [];
@@ -167,15 +167,15 @@ class ScheduleService
 
         // Insertar relaciones doctor-horario (evitando duplicados)
         $uniqueDoctorAvailableHours = collect($doctorAvailableHoursToInsert)->unique(function ($item) {
-            return $item['doctor_id'].'-'.$item['available_hour_id'];
+            return $item['doctor_id'] . '-' . $item['available_hour_id'];
         })->toArray();
 
-        if (! empty($uniqueDoctorAvailableHours)) {
+        if (!empty($uniqueDoctorAvailableHours)) {
             DB::table('doctor_available_hours')->insert($uniqueDoctorAvailableHours);
         }
 
         // Insertar slots de tiempo
-        if (! empty($timeSlotsToInsert)) {
+        if (!empty($timeSlotsToInsert)) {
             DB::table('time_slots')->insert($timeSlotsToInsert);
         }
     }
