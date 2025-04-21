@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,14 +13,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            UserSeeder::class,
-            PatientSeeder::class,
-            AvailableDateSeeder::class,
-            AvailableHourSeeder::class,
-            TimeSlotSeeder::class,
-            AppointmentSeeder::class,
-            DoctorAvailableHourSeeder::class,
-        ]);
+        if (env('APP_ENV') === 'local') {
+            $this->call([
+                AdminUserSeeder::class,
+                UserSeeder::class,
+                PatientSeeder::class,
+                AvailableDateSeeder::class,
+                AvailableHourSeeder::class,
+                TimeSlotSeeder::class,
+                AppointmentSeeder::class,
+                DoctorAvailableHourSeeder::class,
+            ]);
+        } else {
+            if (! User::where('email', 'admin@example.com')->exists()) {
+                $this->call(AdminUserSeeder::class);
+            }
+        }
     }
 }
