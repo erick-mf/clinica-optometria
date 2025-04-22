@@ -56,7 +56,7 @@
                         Términos y condiciones
                     </a>
                 </div>
-                <p class="text-sm text-white/80">
+                <p class="text-sm">
                     © 2025 Clínica Universitaria de Visión y Optometría. Todos los derechos reservados.
                 </p>
             </div>
