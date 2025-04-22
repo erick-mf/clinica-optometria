@@ -124,10 +124,6 @@
                                     </div>
 
                                     <div class="flex space-x-2 pt-3 border-t border-gray-100">
-                                        <x-action-button action="{{ route('schedules.index', $hour->id) }}"
-                                            text="Editar" icon="edit" color="teal" />
-
-                                        <x-action-delete-button action="{{ route('schedules.index', $hour->id) }}" />
                                     </div>
                                 </div>
                             @endforeach
@@ -154,7 +150,7 @@
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Acciones
+                                            <!-- Acciones -->
                                         </th>
                                     </tr>
                                 </thead>
@@ -186,11 +182,6 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                                 <div class="flex justify-center space-x-2">
-                                                    <x-action-button
-                                                        action="{{ route('schedules.index', $hour->id) }}"
-                                                        text="Editar" icon="edit" color="teal" />
-                                                    <x-action-delete-button
-                                                        action="{{ route('schedules.index', $hour->id) }}" />
                                                 </div>
                                             </td>
                                         </tr>
