@@ -90,6 +90,7 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
                 'user_id' => $data['user_id'],
                 'type' => $data['type'],
                 'details' => $data['details'],
+                'token' => $data['token'],
             ]);
 
             $this->timeSlotRepository->reserveTimeSlot($data['time_slot_id']);
@@ -131,5 +132,10 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
                 $query->whereDate('available_dates.date', $date);
             })
             ->exists();
+    }
+
+    public function findByToken($token)
+    {
+        return $this->model->where('token', $token)->first();
     }
 }

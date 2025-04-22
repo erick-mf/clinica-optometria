@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class BookAppointmentController extends Controller
 {
@@ -80,14 +81,13 @@ class BookAppointmentController extends Controller
             $validated['time_slot_id'] = $validated['appointment_time'];
             $validated['patient_id'] = $patient->id;
             $validated['user_id'] = $this->lastAssignedDoctorId();
+            $validated['token'] = Str::random(32);
             $appointment = $this->appointmentRepository->create($validated);
 
-            // Obtenemos la información completa del time_slot
+            // Enviar correo de confirmación
             $timeSlot = $this->timeSlotRepository->find($validated['appointment_time']);
+            $this->sendAppointmentEmail($patient, $appointment, $timeSlot, $validated['appointment_date']);
 
-            $dateAppointment = $validated['appointment_date'];
-
-            $this->sendAppointmentEmail($patient, $appointment, $timeSlot, $dateAppointment);
             DB::commit();
 
             return redirect()->route('home')->with('toast', ['type' => 'success', 'message' => 'Cita reservada correctamente.']);
@@ -147,6 +147,36 @@ class BookAppointmentController extends Controller
                 $message->to($patient->tutor_email, $patient->tutor_name)
                     ->subject('Confirmación de su cita - Clínica Universitaria de Visión y Optometría');
             });
+        }
+    }
+
+    public function showCancel($token)
+    {
+        $appointment = $this->appointmentRepository->findByToken($token);
+
+        if (! $appointment) {
+            return redirect()->route('home')->with('toast', ['type' => 'error', 'message' => 'Cita no encontrada.']);
+        }
+
+        return view('cancel-appointment', compact('appointment'));
+    }
+
+    public function cancel($token)
+    {
+        $appointment = $this->appointmentRepository->findByToken($token);
+
+        if (! $appointment) {
+            return redirect()->route('home')->with('toast', ['type' => 'error', 'message' => 'Cita no encontrada.']);
+        }
+
+        try {
+            $this->appointmentRepository->delete($appointment);
+
+            return redirect()->route('home')->with('toast', ['type' => 'success', 'message' => 'Cita cancelada correctamente.']);
+        } catch (\Exception $e) {
+            Log::error('Error al cancelar la cita: '.$e);
+
+            return back()->with('toast', ['type' => 'error', 'message' => 'Error al cancelar la cita.']);
         }
     }
 }

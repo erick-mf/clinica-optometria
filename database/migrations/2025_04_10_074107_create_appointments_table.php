@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->enum('type', ['primera cita', 'revision'])->default('primera cita');
             $table->string('details')->nullable();
+            $table->string('token')->unique();
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('patient_id')->constrained()->onDelete('cascade');

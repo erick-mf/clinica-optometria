@@ -129,10 +129,8 @@
                 <p><strong>Dirección:</strong> Calle San Juan de Dios, 19, centro, 18001 Granada</p>
             </div>
 
-            <p>Su código de cita es:</p>
-            <div class="appointment-code">
-                LKJKLSJDSJDALSJD
-            </div>
+            <p>Si desea cancelar su cita, haga clic en el siguiente enlace:</p>
+            <a href="{{ route('appointments.cancel', ['token' => $appointment->token]) }}" class="button">Cancelar Cita</a>
 
             <p><strong>Recomendaciones:</strong></p>
             <ul>
