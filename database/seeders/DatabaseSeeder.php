@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
                 DoctorAvailableHourSeeder::class,
             ]);
         } else {
-            if (! User::where('email', 'admin@example.com')->exists()) {
+            if (! User::where('email', env('ADMIN_EMAIL'))->exists()) {
                 $this->call(AdminUserSeeder::class);
             }
         }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\AppointmentCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Patient;
@@ -12,6 +13,7 @@ use App\Repositories\Patient\PatientRepositoryInterface;
 use App\Repositories\TimeSlot\TimeSlotRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class AppointmentController extends Controller
@@ -79,59 +81,36 @@ class AppointmentController extends Controller
         ]);
 
         $validated['time_slot_id'] = $validated['appointment_time'];
-        $slot = $this->appoinmentRepository->isAlreadyBooked($validated['patient_id'], $validated['appointment_date']);
-        if ($slot === true) {
-            return back()->with('toast', ['type' => 'info', 'message' => 'El paciente ya tiene una cita agendada ese día.'])->withInput();
+        $patient = $this->patientRepository->findById($validated['patient_id']);
+
+        // Verificar si el paciente ya tiene una cita agendada
+        $alreadyHasAppointment = $this->appoinmentRepository->isAlreadyBooked($patient->id, $validated['appointment_date']);
+        if ($alreadyHasAppointment === true) {
+            return back()->with('toast', ['type' => 'info', 'message' => 'Ya tiene una cita agendada ese día.'])->withInput();
+        }
+
+        $slot = $this->timeSlotRepository->isAvailable($validated['appointment_time']);
+        if (! $slot) {
+            return back()->with('toast', ['type' => 'info', 'message' => 'La hora seleccionada no está disponible.'])->withInput();
         }
 
         try {
-            $this->appoinmentRepository->create($validated);
+            DB::beginTransaction();
+            $appointment = $this->appoinmentRepository->create($validated);
 
-            return redirect()
-                ->route('admin.patients.index')
-                ->with('toast', ['type' => 'success', 'message' => 'Cita creada correctamente.']);
+            // Enviar correo de confirmación
+            $timeSlot = $this->timeSlotRepository->find($validated['appointment_time']);
+            event(new AppointmentCreated($appointment, $patient, $timeSlot, $validated['appointment_date']));
+
+            DB::commit();
+
+            return redirect()->route('admin.patients.index')->with('toast', ['type' => 'success', 'message' => 'Cita creada correctamente.']);
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error('Error al crear la cita: '.$e->getMessage());
 
-            return back()
-                ->withInput()
-                ->with('toast', ['type' => 'error', 'message' => 'Error al crear la cita. Por favor intente nuevamente.'])->withInput();
+            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al crear la cita. Por favor intente nuevamente.'])->withInput();
         }
-    }
-
-    // NOTE: Es necesario este metodo?
-    /**
-     * Muestra el formulario para editar una cita existente.
-     */
-    public function edit(Appointment $appointment)
-    {
-        $patient = $appointment->patiend_id;
-        $schedules = $this->timeSlotRepository->all();
-        $doctors = $this->doctorRepository->all();
-        $availableSlots = $this->availableDateRepository->getAvailableDatesWithSlots();
-
-        return view('admin.appointments.edit', compact('patient', 'schedules', 'doctors', 'availableSlots', 'appointment'));
-    }
-
-    // NOTE: Es necesario este metodo?
-    /**
-     * Actualiza una cita existente en la base de datos.
-     */
-    public function update(Request $request, Appointment $appointment)
-    {
-        $validated = $request->validate([
-            'patient_id' => 'required|exists:patients,id',
-            'time_slot_id' => 'required|exists:time_slots,id',
-            'user_id' => 'required|exists:users,id',
-            'type' => 'required|in:primera cita,revision',
-            'details' => 'nullable|string|max:255',
-        ]);
-
-        $this->appoinmentRepository->update($appointment, $validated);
-
-        return redirect()
-            ->route('admin.appointments.index')
-            ->with('toast', ['type' => 'success', 'message' => 'Cita actualizada correctamente.']);
     }
 
     /**

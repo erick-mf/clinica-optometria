@@ -6,7 +6,7 @@
         @method('PUT')
     @endif
     <!-- Datos para la cita -->
-    <input type="hidden" name="doctor_id" value="{{ $doctor }}">
+    <input type="hidden" name="user_id" value="{{ $doctor }}">
     <input type="hidden" name="patient_id" value="{{ $patient }}">
     <!-- Tipo de cita -->
     <div class="text-left w-full">

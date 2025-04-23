@@ -51,6 +51,7 @@ class ContactController extends Controller
         try {
             // Enviar el correo
             Mail::send('email.contact-email', $content, function ($message) {
+                $message->to(env('MAIL_FROM_ADDRESS'))->subject('Nuevo mensaje de contacto');
                 $message->subject('Nuevo mensaje de contacto');
             });
 

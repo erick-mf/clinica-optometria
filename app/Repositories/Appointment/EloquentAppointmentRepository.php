@@ -5,6 +5,7 @@ namespace App\Repositories\Appointment;
 use App\Models\Appointment;
 use App\Repositories\TimeSlot\TimeSlotRepositoryInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class EloquentAppointmentRepository implements AppointmentRepositoryInterface
 {
@@ -83,6 +84,7 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
 
     public function create(array $data)
     {
+            $data['token'] = Str::random(32);
         return DB::transaction(function () use ($data) {
             $appointment = $this->model->create([
                 'patient_id' => $data['patient_id'],
