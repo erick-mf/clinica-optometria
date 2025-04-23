@@ -123,8 +123,7 @@
             </div>
 
             <div class="expiry-notice">
-                Este enlace expirará en {{ config('auth.passwords.' . config('auth.defaults.passwords') . '.expire') }}
-                minutos.
+                Este enlace expirará en {{ round(config('auth.passwords.' . config('auth.defaults.passwords') . '.expire') / 60, 1) }} horas.
             </div>
 
             <p>Si no has solicitado esta cuenta, puedes ignorar este mensaje.</p>
