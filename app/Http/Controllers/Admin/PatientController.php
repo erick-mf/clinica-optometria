@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use App\Repositories\Patient\PatientRepositoryInterface;
-use Illuminate\Http\Request;
+use App\Http\Requests\AdminPatientRequest;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
@@ -19,12 +20,7 @@ class PatientController extends Controller
     {
         $search = $request->input('search');
         $validated = $request->validate([
-            'search' => 'nullable|string|min:3|max:100',  function ($attribute, $value, $fail) {
-                // Permitir texto con espacios para nombres
-                $isText = preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u', $value);
-                // Validar formato DNI/NIE
-                $isDni = preg_match('/^[XYZ\d]\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i', $value);
-            },
+            'search' => 'nullable|string|min:3|max:100',
         ]);
 
         if ($request->filled('search')) {
@@ -55,40 +51,16 @@ class PatientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AdminPatientRequest $request) // Usar AdminPatientRequest
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
-            'surnames' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
-            'email' => 'required|email|unique:users,email,',
-            'phone' => 'nullable|string|max:9|regex:/^[0-9\s\-]+$/',
-            'dni' => 'required|max:9|regex:/^[XYZ]?\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i',
-            'birthdate' => 'required|date',
-        ], [
-            'name.required' => 'El nombre es obligatorio.',
-            'name.max' => 'El nombre no puede tener más de 255 caracteres.',
-            'name.regex' => 'El nombre solo puede contener letras y espacios.',
-            'surnames.required' => 'Los apellidos son obligatorios.',
-            'surnames.max' => 'Los apellidos no pueden tener más de 255 caracteres.',
-            'surnames.regex' => 'Los apellidos solo pueden contener letras y espacios.',
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email' => 'El correo electrónico debe ser una dirección válida.',
-            'email.unique' => 'El correo electrónico ya está en uso.',
-            'phone.max' => 'El teléfono no puede tener más de 9 números.',
-            'phone.regex' => 'El teléfono solo puede contener números, espacios y guiones.',
-            'dni.required' => 'El DNI es obligatorio.',
-            'dni.max' => 'El DNI no puede tener más de 9 caracteres.',
-            'dni.regex' => 'El DNI solo puede contener 8 números y 1 letra.',
-            'birthdate.required' => 'La fecha de nacimiento es obligatoria.',
-            'birthdate.date' => 'La fecha de nacimiento debe ser una fecha v&aacute;lida.',
-        ]);
+        $validated = $request->validated(); // Validar automáticamente con AdminPatientRequest
+
         try {
             $patient = $this->repository->create($validated);
 
             return redirect()
                 ->route('admin.patients.index')
                 ->with('toast', ['type' => 'success', 'message' => 'Paciente creado correctamente.']);
-
         } catch (\Exception $e) {
             Log::error("Error al crear el paciente: {$e->getMessage()}");
 
@@ -101,30 +73,9 @@ class PatientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Patient $patient, Request $request)
+    public function update(AdminPatientRequest $request, Patient $patient) // Usar AdminPatientRequest
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
-            'surnames' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
-            'email' => 'required|email|unique:users,email,'.$patient->id,
-            'phone' => 'nullable|string|max:9|regex:/^[0-9\s\-]+$/',
-            'dni' => 'required|max:9|regex:/^[XYZ]?\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i',
-        ], [
-            'name.required' => 'El nombre es obligatorio.',
-            'name.max' => 'El nombre no puede tener más de 255 caracteres.',
-            'name.regex' => 'El nombre solo puede contener letras y espacios.',
-            'surnames.required' => 'Los apellidos son obligatorios.',
-            'surnames.max' => 'Los apellidos no pueden tener más de 255 caracteres.',
-            'surnames.regex' => 'Los apellidos solo pueden contener letras y espacios.',
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email' => 'El correo electrónico debe ser una dirección válida.',
-            'email.unique' => 'El correo electrónico ya está en uso.',
-            'phone.max' => 'El teléfono no puede tener más de 9 números.',
-            'phone.regex' => 'El teléfono solo puede contener números, espacios y guiones.',
-            'dni.required' => 'El DNI es obligatorio.',
-            'dni.max' => 'El DNI no puede tener más de 9 caracteres.',
-            'dni.regex' => 'El DNI solo puede contener 8 números y 1 letra.',
-        ]);
+        $validated = $request->validated(); // Validar automáticamente con AdminPatientRequest
 
         try {
             $this->repository->update($patient, $validated);

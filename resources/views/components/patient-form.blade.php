@@ -11,69 +11,132 @@
         <h2 class="text-lg font-medium text-gray-900 border-b pb-2">Datos personales</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <!-- Nombre -->
-            <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
-                <input type="text" name="name" id="name"
-                    value="{{ old('name', $patient ? $patient->name : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
+            <div class="text-left">
+                <label for="name"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Nombre *</label>
+                <input type="text" id="name" name="name" placeholder="Ingrese su nombre"
+                    value="{{ old('name') ?? $patient->name ?? '' }}"
+                    class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
                 @error('name')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Apellidos -->
-            <div>
-                <label for="surnames" class="block text-sm font-medium text-gray-700 mb-1">Apellidos *</label>
-                <input type="text" name="surnames" id="surnames"
-                    value="{{ old('surnames', $patient ? $patient->surnames : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
+            <div class="text-left">
+                <label for="surnames"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Apellidos *</label>
+                <input type="text" id="surnames" name="surnames" placeholder="Ingrese sus apellidos"
+                    value="{{ old('surnames') ?? $patient->surnames ?? '' }}"
+                    class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
                 @error('surnames')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <!-- Email -->
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                <input type="email" name="email" id="email"
-                    value="{{ old('email', $patient ? $patient->email : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
+            <!-- Fecha de Nacimiento -->
+            <div class="text-left">
+                <label for="birthdate"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Fecha de
+                    Nacimiento *</label>
+                <input type="date" id="birthdate" name="birthdate" value="{{ old('birthdate') ?? $patient->birthdate ?? '' }}"
+                    min="{{ \Carbon\Carbon::now()->subYears(100)->format('Y-m-d') }}"
+                    max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                    class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                @error('birthdate')
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Correo -->
+            <div class="text-left">
+                <label for="email"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Correo *</label>
+                <input type="email" id="email" name="email" placeholder="Ingrese su correo"
+                    value="{{ old('email') ?? $patient->email ?? '' }}"
+                    class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
                 @error('email')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Teléfono -->
-            <div>
-                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Teléfono *</label>
-                <input type="tel" name="phone" id="phone"
-                    value="{{ old('phone', $patient ? $patient->phone : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
+            <div class="text-left">
+                <label for="phone"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Teléfono *</label>
+                <input type="tel" id="phone" name="phone" placeholder="Ingrese su teléfono"
+                    value="{{ old('phone') ?? $patient->phone ?? '' }}"
+                    class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
                 @error('phone')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- DNI -->
-            <div>
-                <label for="dni" class="block text-sm font-medium text-gray-700 mb-1">DNI *</label>
-                <input type="text" name="dni" id="dni"
-                    value="{{ old('dni', $patient ? $patient->dni : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
+            <div class="text-left">
+                <label for="dni"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">DNI/NIE *</label>
+                <input type="text" id="dni" name="dni" placeholder="Ingrese su DNI/NIE"
+                    value="{{ old('dni') ?? $patient->dni ?? '' }}"
+                    class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
                 @error('dni')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+        </div>
+
+    <!-- Datos del tutor legal (requerido para menores de edad) -->
+        <h2 class="text-lg font-medium text-gray-900 border-b pb-2">Datos del tutor legal (requerido para menores de edad)</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            <!-- Nombre del tutor -->
+            <div class="text-left">
+                <label for="tutor_name"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Nombre del
+                    tutor *</label>
+                <input type="text" id="tutor_name" name="tutor_name"
+                    placeholder="Ingrese el nombre del tutor" value="{{ old('tutor_name') ?? $patient->tutor_name ?? '' }}"
+                    class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                @error('tutor_name')
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <!-- Birthdate -->
-            <div>
-                <label for="birthdate" class="block text-sm font-medium text-gray-700 mb-1">Fecha de nacimiento
-                    *</label>
-                <input type="date" name="birthdate" id="dni"
-                    value="{{ old('birthdate', $patient ? $patient->birthdate : '') }}"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
-                @error('birthdate')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            <!-- Correo del tutor -->
+            <div class="text-left">
+                <label for="tutor_email"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Correo del
+                    tutor *</label>
+                <input type="email" id="tutor_email" name="tutor_email"
+                    placeholder="Ingrese el correo del tutor" value="{{ old('tutor_email') ?? $patient->tutor_email ?? '' }}"
+                    class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                @error('tutor_email')
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- DNI del tutor -->
+            <div class="text-left">
+                <label for="tutor_dni"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">DNI/NIE del
+                    tutor *</label>
+                <input type="text" id="tutor_dni" name="tutor_dni"
+                    placeholder="Ingrese el DNI/NIE del tutor" value="{{ old('tutor_dni') ?? $patient->tutor_dni ?? '' }}"
+                    class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                @error('tutor_dni')
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Teléfono del tutor -->
+            <div class="text-left">
+                <label for="tutor_phone"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Teléfono del
+                    tutor *</label>
+                <input type="tel" id="tutor_phone" name="tutor_phone"
+                    placeholder="Ingrese el teléfono del tutor" value="{{ old('tutor_phone') ?? $patient->tutor_phone ?? '' }}" 
+                    class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
+                @error('tutor_phone')
+                    <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
         </div>
@@ -83,8 +146,7 @@
     <div class="flex flex-col sm:flex-row items-center justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
         <a href="{{ route('admin.patients.index') }}"
             class="w-full sm:w-auto px-4 py-2 text-center border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-150 ease-in-out">
-            Cancelar
-        </a>
+            Cancelar</a>
         <x-primary-button type="submit">{{ $isEdit ? 'Guardar cambios' : 'Crear paciente' }}</x-primary-button>
     </div>
 </form>
