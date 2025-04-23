@@ -78,10 +78,6 @@
                                             <x-action-button
                                                 action="{{ route('admin.appointments.show', $appointment) }}"
                                                 color="teal" icon="show" text="Ver más" />
-
-                                            <x-action-button
-                                                action="{{ route('admin.appointments.edit', $appointment) }}"
-                                                color="blue" icon="edit" text="Editar" />
                                         </div>
                                         <x-action-delete-button
                                             action="{{ route('admin.appointments.destroy', $appointment->id) }}" />
@@ -133,10 +129,6 @@
                                                     <x-action-button
                                                         action="{{ route('admin.appointments.show', $appointment) }}"
                                                         color="teal" icon="show" text="Ver más" />
-
-                                                    <x-action-button
-                                                        action="{{ route('admin.appointments.edit', $appointment) }}"
-                                                        color="blue" icon="edit" text="Editar" />
 
                                                     <x-action-delete-button
                                                         action="{{ route('admin.appointments.destroy', $appointment->id) }}" />
