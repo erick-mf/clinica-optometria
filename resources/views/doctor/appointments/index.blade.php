@@ -76,8 +76,6 @@
                                     <div class="flex space-x-2 pt-3 border-t border-gray-100">
                                         <x-action-button action=" {{ route('appointments.show', $appointment) }}"
                                             text="Ver más" icon="show" color="teal" />
-                                        <x-action-delete-button
-                                            action="{{ route('appointments.destroy', $appointment) }}" />
                                     </div>
                                 </div>
                             @endforeach
@@ -126,8 +124,6 @@
                                                     <x-action-button
                                                         action=" {{ route('appointments.show', $appointment) }}"
                                                         text="Ver más" icon="show" color="teal" />
-                                                    <x-action-delete-button
-                                                        action="{{ route('appointments.destroy', $appointment) }}" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -145,9 +141,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal de confirmación -->
-    <x-delete-modal title="Confirmar eliminación"
-        content="¿Estás seguro que deseas eliminar esta cita? Esta acción no se puede deshacer." />
 
 </x-app-layout>
