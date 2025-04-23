@@ -129,14 +129,7 @@
             @endphp
 
             <div class="expiry-notice">
-                @if ($hours > 0 && $minutes == 0)
-                    Este enlace expirará en {{ $hours }} hora{{ $hours > 1 ? 's' : '' }}.
-                @elseif ($hours > 0 && $minutes > 0)
-                    Este enlace expirará en {{ $hours }} hora{{ $hours > 1 ? 's' : '' }} y {{ $minutes }}
-                    minuto{{ $minutes > 1 ? 's' : '' }}.
-                @else
-                    Este enlace expirará en {{ $minutes }} minuto{{ $minutes > 1 ? 's' : '' }}.
-                @endif
+                Este enlace expirará en {{ round(config('auth.passwords.' . config('auth.defaults.passwords') . '.expire') / 60, 1) }} horas.
             </div>
 
             <p>Si no has solicitado esta cuenta, puedes ignorar este mensaje.</p>

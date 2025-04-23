@@ -14,11 +14,6 @@
                             </svg>
                             Horarios Configurados
                         </h1>
-
-                        <div class="flex flex-wrap gap-3 w-full sm:w-auto">
-                            <x-add-button action="{{ route('schedules.index') }}" text="Agregar Horario"
-                                class="w-full sm:w-auto" />
-                        </div>
                     </div>
 
                     <!-- Stats Card - Resumen -->
@@ -122,9 +117,6 @@
                                             @endforeach
                                         </div>
                                     </div>
-
-                                    <div class="flex space-x-2 pt-3 border-t border-gray-100">
-                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -147,10 +139,6 @@
                                         <th scope="col"
                                             class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Turnos Disponibles
-                                        </th>
-                                        <th scope="col"
-                                            class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            <!-- Acciones -->
                                         </th>
                                     </tr>
                                 </thead>
@@ -180,10 +168,6 @@
                                                     @endforeach
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                <div class="flex justify-center space-x-2">
-                                                </div>
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -194,9 +178,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal de confirmación mejorado -->
-    <x-delete-modal title="Confirmar eliminación"
-        content="¿Estás seguro que deseas eliminar este horario? Esta acción no se puede deshacer y eliminará todos los turnos y citas asociados." />
 
 </x-app-layout>
