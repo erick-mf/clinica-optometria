@@ -20,10 +20,6 @@
 @endsection
 
 @section('actions')
-    <button onclick="window.location.reload()"
-        class="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg shadow-lg transition duration-300 transform hover:scale-105">
-        Recargar página
-    </button>
     <a href="{{ route('home') }}"
         class="px-6 py-3 border border-amber-600 text-amber-600 hover:bg-amber-50 font-medium rounded-lg transition duration-300">
         Ir al inicio

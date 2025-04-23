@@ -24,10 +24,4 @@
         class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg shadow-lg transition duration-300 transform hover:scale-105">
         Volver al inicio
     </a>
-    @auth
-        <a href="{{ url()->previous() }}"
-            class="px-6 py-3 border border-red-600 text-red-600 hover:bg-red-50 font-medium rounded-lg transition duration-300">
-            Volver atrás
-        </a>
-    @endauth
 @endsection

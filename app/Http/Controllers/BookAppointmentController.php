@@ -82,7 +82,6 @@ class BookAppointmentController extends Controller
             $validated['time_slot_id'] = $validated['appointment_time'];
             $validated['patient_id'] = $patient->id;
             $validated['user_id'] = $this->lastAssignedDoctorId();
-            $validated['token'] = Str::random(32);
             $appointment = $this->appointmentRepository->create($validated);
 
             // Enviar correo de confirmación

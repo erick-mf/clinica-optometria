@@ -37,6 +37,7 @@ interface PatientRepositoryInterface
      */
     public function find($dni);
 
+public function findById($id);
     /**
      * Find a patient by identity
      *

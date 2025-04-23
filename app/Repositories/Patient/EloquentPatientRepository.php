@@ -50,6 +50,9 @@ class EloquentPatientRepository implements PatientRepositoryInterface
     {
         return $this->model->query()->where('dni', $dni)->first();
     }
+public function findById($id){
+    return $this->model->query()->where('id', $id)->first();
+}
 
     public function findByIdentity($data)
     {

@@ -24,8 +24,4 @@
         class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-lg transition duration-300 transform hover:scale-105">
         Volver al inicio
     </a>
-    <a href="{{ url()->previous() }}"
-        class="px-6 py-3 border border-indigo-600 text-indigo-600 hover:bg-indigo-50 font-medium rounded-lg transition duration-300">
-        Volver atrás
-    </a>
 @endsection

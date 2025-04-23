@@ -28,7 +28,7 @@
         class="px-6 py-3 border border-red-600 text-red-600 hover:bg-red-50 font-medium rounded-lg transition duration-300">
         Ir al inicio
     </a>
-    <a href="mailto:soporte@tudominio.com"
+    <a href="{{ config('app.support_email') }}"
         class="px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-medium rounded-lg border border-gray-300 transition duration-300">
         Contactar soporte
     </a>
