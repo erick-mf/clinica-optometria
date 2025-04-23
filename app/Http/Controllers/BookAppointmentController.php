@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AppointmentCreated;
 use App\Http\Requests\BookAppointmentRequest;
 use App\Repositories\Appointment\AppointmentRepositoryInterface;
 use App\Repositories\AvailableDate\AvailableDateRepositoryInterface;
@@ -86,7 +87,7 @@ class BookAppointmentController extends Controller
 
             // Enviar correo de confirmación
             $timeSlot = $this->timeSlotRepository->find($validated['appointment_time']);
-            $this->sendAppointmentEmail($patient, $appointment, $timeSlot, $validated['appointment_date']);
+            event(new AppointmentCreated($appointment, $patient, $timeSlot, $validated['appointment_date']));
 
             DB::commit();
 
@@ -122,32 +123,6 @@ class BookAppointmentController extends Controller
         Cache::put('last_assigned_doctor_id', $assignedDoctor->id);
 
         return $assignedDoctor->id;
-    }
-
-    public function sendAppointmentEmail($patient, $appointment, $timeSlot, $dateAppointment)
-    {
-        $age = date_diff(date_create($patient->birthdate), date_create('now'))->y;
-        if ($age >= 18) {
-            Mail::send('email.appointment-email', [
-                'patient' => $patient,
-                'appointment' => $appointment,
-                'time_slot' => $timeSlot,
-                'date_appointment' => $dateAppointment,
-            ], function ($message) use ($patient) {
-                $message->to($patient->email, $patient->name.' '.$patient->surnames)
-                    ->subject('Confirmación de su cita - Clínica Universitaria de Visión y Optometría');
-            });
-        } else {
-            Mail::send('email.appointment-email-child', [
-                'patient' => $patient,
-                'appointment' => $appointment,
-                'time_slot' => $timeSlot,
-                'date_appointment' => $dateAppointment,
-            ], function ($message) use ($patient) {
-                $message->to($patient->tutor_email, $patient->tutor_name)
-                    ->subject('Confirmación de su cita - Clínica Universitaria de Visión y Optometría');
-            });
-        }
     }
 
     public function showCancel($token)

@@ -14,6 +14,20 @@
             color: #333;
         }
 
+        p {
+            color: #333;
+        }
+
+        a {
+            color: blue;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: blue;
+            text-decoration: none;
+        }
+
         .container {
             max-width: 600px;
             margin: 20px auto;
@@ -57,23 +71,6 @@
             border-left: 4px solid #66a499;
         }
 
-        .appointment-code {
-            font-size: 18px;
-            font-weight: bold;
-            color: #66a499;
-            text-align: center;
-            padding: 10px;
-            background-color: #f1f7f6;
-            border-radius: 4px;
-            margin: 20px 0;
-            letter-spacing: 1px;
-        }
-
-        .map-container {
-            margin: 20px 0;
-            text-align: center;
-        }
-
         .footer {
             background-color: #f1f1f1;
             text-align: center;
@@ -85,22 +82,6 @@
         .footer a {
             color: #66a499;
             text-decoration: none;
-        }
-
-        .button {
-            background-color: #66a499;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            display: inline-block;
-            margin: 15px 0;
-            font-weight: bold;
-        }
-
-        .qr-code {
-            text-align: center;
-            margin: 20px 0;
         }
     </style>
 </head>
@@ -114,7 +95,7 @@
 
         <!-- Contenido -->
         <div class="content">
-            <p>Estimado/a tutor/a <strong>{{ $patient->tutor_name }}</strong>,</p>
+            <p>Estimado/a <strong>{{ $patient->tutor_name }}</strong>,</p>
 
             <p>La cita en la <strong>Clínica Universitaria de Visión y Optometría</strong> para su tutelado/a
                 <strong>{{ $patient->name }} {{ $patient->surnames ?? '' }}</strong> ha sido confirmada con éxito. A
@@ -124,14 +105,14 @@
             <div class="appointment-info">
                 <p><strong>Paciente:</strong> {{ $patient->name }} {{ $patient->surnames ?? '' }}</p>
                 <p><strong>Fecha:</strong> {{ date('d/m/Y', strtotime($date_appointment)) }}</p>
-                <p><strong>Hora:</strong> {{ date('H:i', strtotime($time_slot->start_time)) }} -
-                    {{ date('H:i', strtotime($time_slot->end_time)) }}</p>
+                <p><strong>Hora de la cita:</strong> {{ date('H:i', strtotime($time_slot->start_time)) }}</p>
                 <p><strong>Lugar:</strong> Hospital San Rafael</p>
                 <p><strong>Dirección:</strong> Calle San Juan de Dios, 19, centro, 18001 Granada</p>
             </div>
 
-            <p>Si desea cancelar su cita, haga clic en el siguiente enlace:</p>
-            <a href="{{ route('appointments.cancel', ['token' => $appointment->token]) }}" class="button">Cancelar Cita</a>
+            <p>Si desea cancelar su cita, haga clic en el siguiente enlace:
+                <a href="{{ $cancel_url }}">Cancelar Cita</a>
+            </p>
 
             <p><strong>Recomendaciones para la cita del menor:</strong></p>
             <ul>
