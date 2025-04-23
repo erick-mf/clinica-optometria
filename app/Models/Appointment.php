@@ -15,6 +15,7 @@ class Appointment extends Model
         'user_id',
         'patient_id',
         'time_slot_id',
+        'token',
     ];
 
     public function patient()

@@ -21,4 +21,6 @@ interface AppointmentRepositoryInterface
     public function delete(Appointment $appointment);
 
     public function isAlreadyBooked($patientId, $date);
+
+    public function findByToken($token);
 }

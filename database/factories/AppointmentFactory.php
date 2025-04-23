@@ -25,6 +25,7 @@ class AppointmentFactory extends Factory
             'user_id' => $this->faker->randomElement(User::all())->id,
             'patient_id' => $this->faker->randomElement(Patient::all())->id,
             'time_slot_id' => $this->faker->randomElement(TimeSlot::all())->id,
+            'token' => $this->faker->unique()->uuid(),
         ];
     }
 }

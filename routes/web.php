@@ -73,3 +73,6 @@ Route::middleware('auth', 'verified', 'doctor')->group(function () {
     Route::resource('appointments', DoctorAppointment::class);
     Route::get('/schedule', [DoctorSchedule::class, 'index'])->name('schedules.index');
 });
+
+Route::get('/cancel-appointment/{token}', [BookAppointmentController::class, 'showCancel'])->name('appointments.cancel');
+Route::post('/cancel-appointment/{token}', [BookAppointmentController::class, 'cancel'])->name('appointments.cancel.confirm');
