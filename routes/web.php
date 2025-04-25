@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AppointmentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DoctorController;
+use App\Http\Controllers\Admin\OfficeController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -63,6 +64,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'verified', 'admin')-
     Route::resource('schedules', ScheduleController::class);
     Route::get('appointments/create/{patient}', [AppointmentController::class, 'create'])->name('appointments.create.withPatient');
     Route::resource('appointments', AppointmentController::class);
+    Route::resource('offices', OfficeController::class);
 });
 
 // routes doctor

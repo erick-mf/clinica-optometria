@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
                 TimeSlotSeeder::class,
                 AppointmentSeeder::class,
                 DoctorAvailableHourSeeder::class,
+                OfficeSeeder::class,
             ]);
         } else {
             if (! User::where('email', 'admin@example.com')->exists()) {

@@ -12,8 +12,8 @@
             <!-- Center section (for non-authenticated users) - Hidden on mobile -->
             @if (!Auth::check())
                 <div class="hidden md:flex items-center space-x-8">
-                    <p class="text-white text-sm">{{ __('¿Eres parte de nuestro equipo?') }}</p>
-                    <x-nav-link :href="route('login')" :active="request()->routeIs('login')" class="text-white text-sm hover:text-gray-100">
+                    <p class="text-white">{{ __('¿Eres parte de nuestro equipo?') }}</p>
+                    <x-nav-link :href="route('login')" :active="request()->routeIs('login')" class="text-white  hover:text-gray-100">
                         {{ __('Iniciar sesión') }}
                     </x-nav-link>
                 </div>
