@@ -10,6 +10,8 @@ use App\Repositories\AvailableHour\AvailableHourRepositoryInterface;
 use App\Repositories\AvailableHour\EloquentAvailableHourRepository;
 use App\Repositories\Doctor\DoctorRepositoryInterface;
 use App\Repositories\Doctor\EloquentDoctorRepository;
+use App\Repositories\Office\EloquentOfficeRepository;
+use App\Repositories\Office\OfficeRepositoryInterface;
 use App\Repositories\Patient\EloquentPatientRepository;
 use App\Repositories\Patient\PatientRepositoryInterface;
 use App\Repositories\TimeSlot\EloquentTimeSlotRepository;
@@ -29,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AvailableDateRepositoryInterface::class, EloquentAvailableDateRepository::class);
         $this->app->bind(AvailableHourRepositoryInterface::class, EloquentAvailableHourRepository::class);
         $this->app->bind(TimeSlotRepositoryInterface::class, EloquentTimeSlotRepository::class);
+        $this->app->bind(OfficeRepositoryInterface::class, EloquentOfficeRepository::class);
     }
 
     /**

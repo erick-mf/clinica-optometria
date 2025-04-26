@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Obtener datos de disponibilidad
     const bookingData = document.getElementById("booking-data");
     const availableSlots = bookingData ? JSON.parse(bookingData.dataset.availableSlots || "{}") : {};
-    console.log(availableSlots);
 
     // Configurar Flatpickr
     dateInput.value = "";
@@ -71,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             statusElement.classList.remove("hidden");
 
-            const response = await fetch(`/api/available-slots/${date}`, {
+            const response = await fetch(`/~unidadoptometria/api/available-slots/${date}`, {
                 method: "GET",
                 headers: {
                     "X-Appointment-Token": token,
