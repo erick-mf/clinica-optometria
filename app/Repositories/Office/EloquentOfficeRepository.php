@@ -24,11 +24,26 @@ class EloquentOfficeRepository implements OfficeRepositoryInterface
 
     public function create(array $data)
     {
+        if ($data['user_id']) {
+            $existUser = $this->model->where('user_id', $data['user_id'])->first();
+
+            if ($existUser) {
+                return false;
+            }
+        }
+
         return $this->model->create($data);
     }
 
     public function update(Office $office, array $data)
     {
+        if ($data['user_id']) {
+            $existUser = $this->model->where('user_id', $data['user_id'])->first();
+
+            if ($existUser) {
+                return false;
+            }
+        }
         $office->update($data);
 
         return $office;

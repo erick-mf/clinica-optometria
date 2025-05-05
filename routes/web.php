@@ -12,6 +12,7 @@ use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\Doctor\AppointmentController as DoctorAppointment;
 use App\Http\Controllers\Doctor\DashboardController as DoctorDashboard;
 use App\Http\Controllers\Doctor\PatientController as DoctorPatient;
+use App\Http\Controllers\Doctor\ReservedTimesController as DoctorReservedTimes;
 use App\Http\Controllers\Doctor\ScheduleController as DoctorSchedule;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -74,6 +75,7 @@ Route::middleware('auth', 'verified', 'doctor')->group(function () {
     Route::get('appointments/create/{patient}', [DoctorAppointment::class, 'create'])->name('appointments.create.withPatient');
     Route::resource('appointments', DoctorAppointment::class);
     Route::get('/schedule', [DoctorSchedule::class, 'index'])->name('schedules.index');
+    Route::resource('reserved-times', DoctorReservedTimes::class);
 });
 
 Route::get('/cancel-appointment/{token}', [BookAppointmentController::class, 'showCancel'])->name('appointments.cancel');

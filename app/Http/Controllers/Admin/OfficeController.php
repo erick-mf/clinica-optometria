@@ -46,9 +46,20 @@ class OfficeController extends Controller
             'status.required' => 'El estado es requerido',
         ]);
 
-        $this->officeRepository->create($validated);
+        try {
+            $existOffice = $this->officeRepository->create($validated);
 
-        return redirect()->route('admin.offices.index')->with('toast', ['type' => 'success', 'message' => 'Espacio creado correctamente']);
+            if (! $existOffice) {
+                return back()->with('toast', ['type' => 'error', 'message' => 'El usuario ya tiene un espacio asignado'])->withInput();
+            }
+
+            return redirect()->route('admin.offices.index')->with('toast', ['type' => 'success', 'message' => 'Espacio creado correctamente']);
+        } catch (\Exception $e) {
+            Log::error('Error al crear el espacio: '.$e->getMessage());
+
+            return back()->with('toast', ['type' => 'error', 'message' => 'Error al crear el espacio'])->withInput();
+        }
+
     }
 
     /**
@@ -79,7 +90,11 @@ class OfficeController extends Controller
         ]);
 
         try {
-            $this->officeRepository->update($office, $validated);
+            $updateOffice = $this->officeRepository->update($office, $validated);
+
+            if (! $updateOffice) {
+                return back()->with('toast', ['type' => 'error', 'message' => 'El usuario ya tiene un espacio asignado'])->withInput();
+            }
 
             return redirect()->route('admin.offices.index')->with('toast', ['type' => 'success', 'message' => 'Espacio actualizado correctamente']);
         } catch (\Exception $e) {

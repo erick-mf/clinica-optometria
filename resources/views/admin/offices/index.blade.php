@@ -82,11 +82,12 @@
                                 <div class="text-left w-full">
                                     <label for="user_id"
                                         class="block text-sm sm:text-base font-medium text-gray-700 mb-1">
-                                        Doctor asignado:
+                                        Profesional asignado:
                                     </label>
                                     <select id="user_id" name="user_id"
                                         class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-primary focus:border-primary transition duration-150">
-                                        <option value="">Seleccionar doctor</option>
+                                        <option disabled selected>Seleccionar profesional</option>
+                                        <option value="">Sin profesional</option>
                                         @foreach ($doctors as $doctor)
                                             <option value="{{ $doctor->id }}"
                                                 {{ old('user_id', $office->user_id ?? '') == $doctor->id ? 'selected' : '' }}>
@@ -94,7 +95,8 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <p class="mt-1 text-xs text-gray-500">Opcional: selecciona un doctor para asignar a
+                                    <p class="mt-1 text-xs text-gray-500">Opcional: selecciona un profesional para
+                                        asignar a
                                         este espacio</p>
                                     @error('user_id')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -173,7 +175,8 @@
                                                             </div>
                                                         @else
                                                             <div class="flex items-center text-gray-400">
-                                                                <span class="text-sm">Sin doctor asignado</span>
+                                                                <span class="text-sm">No tiene profesional
+                                                                    asignado</span>
                                                             </div>
                                                         @endif
                                                     </div>

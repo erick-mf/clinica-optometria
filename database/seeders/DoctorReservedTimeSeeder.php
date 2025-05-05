@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\DoctorAvailableHour;
+use App\Models\DoctorReservedTime;
 use Illuminate\Database\Seeder;
 
-class DoctorAvailableHourSeeder extends Seeder
+class DoctorReservedTimeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DoctorAvailableHour::factory(5)->create();
+        DoctorReservedTime::factory()->count(10)->create();
     }
 }
