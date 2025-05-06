@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const statusElement = document.getElementById("availability-status");
     const token = document.querySelector('meta[name="x-appointment-token"]').getAttribute("content");
 
-    if (!dateInput || !timeSelect) return;
+    if (!dateInput || !timeSelect || !token) return;
 
     // Obtener datos de disponibilidad
     const bookingData = document.getElementById("booking-data");
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             statusElement.classList.remove("hidden");
 
-            const response = await fetch(`/~unidadoptometria/api/available-slots/${date}`, {
+            const response = await fetch(`/api/available-slots/${date}`, {
                 method: "GET",
                 headers: {
                     "X-Appointment-Token": token,

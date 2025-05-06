@@ -24,6 +24,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        $request['email'] = strtolower($request['email']);
+
         $request->authenticate();
         $request->session()->regenerate();
 

@@ -29,7 +29,7 @@
                                     <label for="date" class="block text-sm font-medium text-gray-700 mb-1">
                                         Fecha:
                                     </label>
-                                    <input type="date" id="date" name="date" value="{{ old('date') }}"
+                                    <input type="text" id="date" name="date" value="{{ old('date') }}"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
                                     @error('date')
                                         <p class="text-sm text-red-600">{{ $message }}</p>
@@ -90,7 +90,7 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     @if (!$reservedTimes || $reservedTimes->isEmpty())
                         <div class="p-6 text-center text-gray-500">
-                            No tienes bloques personales registrados.
+                            No tienes reservasiones personales registrados.
                         </div>
                     @else
                         <div class="p-4 sm:p-6 text-gray-900">

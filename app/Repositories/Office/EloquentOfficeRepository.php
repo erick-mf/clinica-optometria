@@ -14,7 +14,7 @@ class EloquentOfficeRepository implements OfficeRepositoryInterface
 
     public function all()
     {
-        return $this->model->paginate(20);
+        return $this->model->orderBy('name')->get();
     }
 
     public function find($id)
@@ -24,26 +24,15 @@ class EloquentOfficeRepository implements OfficeRepositoryInterface
 
     public function create(array $data)
     {
-        if ($data['user_id']) {
-            $existUser = $this->model->where('user_id', $data['user_id'])->first();
-
-            if ($existUser) {
-                return false;
-            }
-        }
+        $data['name'] = ucwords(strtolower($data['name']));
 
         return $this->model->create($data);
     }
 
     public function update(Office $office, array $data)
     {
-        if ($data['user_id']) {
-            $existUser = $this->model->where('user_id', $data['user_id'])->first();
+        $data['name'] = ucwords(strtolower($data['name']));
 
-            if ($existUser) {
-                return false;
-            }
-        }
         $office->update($data);
 
         return $office;

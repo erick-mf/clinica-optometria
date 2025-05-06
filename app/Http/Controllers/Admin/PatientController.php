@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminPatientRequest;
 use App\Models\Patient;
 use App\Repositories\Patient\PatientRepositoryInterface;
-use App\Http\Requests\AdminPatientRequest;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PatientController extends Controller
 {
@@ -18,13 +18,13 @@ class PatientController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $search = trim($request->input('search'));
         $validated = $request->validate([
             'search' => 'nullable|string|min:3|max:100',
         ]);
 
         if ($request->filled('search')) {
-            $patients = $this->repository->search($validated['search']);
+            $patients = $this->repository->search(trim($validated['search']));
         } else {
             $patients = $this->repository->paginate();
         }

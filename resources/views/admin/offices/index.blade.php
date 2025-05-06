@@ -41,6 +41,21 @@
                                     @enderror
                                 </div>
 
+                                <!-- Abreviatura del espacio -->
+                                <div class="text-left w-full">
+                                    <label for="name"
+                                        class="block text-sm sm:text-base font-medium text-gray-700 mb-1">
+                                        Abreviatura del espacio:
+                                    </label>
+                                    <input type="text" id="abbreviation" name="abbreviation"
+                                        value="{{ old('abbreviation', $office->abbreviation ?? '') }}"
+                                        class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-primary focus:border-primary transition duration-150"
+                                        placeholder="Ej: C1, P1...">
+                                    @error('abbreviation')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
                                 <!-- Estado (Activo/Inactivo/En mantenimiento) -->
                                 <div class="text-left w-full">
                                     <label
@@ -149,7 +164,9 @@
                                             <div class="flex flex-col sm:flex-row justify-between sm:items-center">
                                                 <div class="mb-2 sm:mb-0">
                                                     <h3 class="text-base font-medium text-gray-800">
-                                                        {{ $office->name }}</h3>
+                                                        {{ $office->name }}
+                                                        {{ isset($office->abbreviation) ? '-' : '' }}
+                                                        {{ $office->abbreviation }}</h3>
                                                     <div class="mt-1 flex flex-wrap gap-2 flex-col">
                                                         <!-- Estado con mejor visualización -->
                                                         <div class="flex items-center">

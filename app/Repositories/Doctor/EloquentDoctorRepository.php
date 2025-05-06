@@ -54,6 +54,9 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
 
     public function create(array $data)
     {
+        $data['name'] = ucwords(strtolower($data['name']));
+        $data['surnames'] = ucwords(strtolower($data['surnames']));
+        $data['email'] = strtolower($data['email']);
         $data['role'] = 'doctor';
 
         return $this->model->create($data);
@@ -61,6 +64,10 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
 
     public function update(User $user, array $data)
     {
+        $data['name'] = ucwords(strtolower($data['name']));
+        $data['surnames'] = ucwords(strtolower($data['surnames']));
+        $data['email'] = strtolower($data['email']);
+
         $user->update($data);
 
         return $user;

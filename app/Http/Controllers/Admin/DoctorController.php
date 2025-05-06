@@ -38,8 +38,8 @@ class DoctorController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
-            'surnames' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
+            'name' => 'required|string|max:255|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/',
+            'surnames' => 'required|string|max:255|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/',
             'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|string|max:20|regex:/^[0-9\s\-]+$/',
         ], [

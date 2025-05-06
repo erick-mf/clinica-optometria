@@ -20,7 +20,7 @@
                         </div>
                     </div>
 
-                    @if (!request('s') && $patients->isEmpty())
+                    @if (!request('search') && $patients->isEmpty())
                         <div class="bg-gradient-to-br from-gray-50 to-teal-50 rounded-lg p-8 sm:p-12 text-center border border-gray-200 shadow-sm"
                             style="background: linear-gradient(to bottom right, #f9fafb, rgba(21, 117, 100, 0.1));">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-6 opacity-80"
@@ -31,7 +31,7 @@
                             <h3 class="text-xl font-semibold text-gray-800 mb-2">No hay pacientes registrados</h3>
                             <p class="text-gray-600 mb-6">Comienza agregando tu primer paciente al sistema</p>
                         </div>
-                    @elseif (request('s') && $patients->isEmpty())
+                    @elseif (request('search') && $patients->isEmpty())
                         <!-- Buscador -->
                         <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre, apellido o dni...'" />
 

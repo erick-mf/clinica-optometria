@@ -111,11 +111,11 @@
                                             Email
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Teléfono
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             DNI
                                         </th>
                                         <th scope="col"
@@ -137,10 +137,10 @@
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 truncate max-w-xs">
                                                 {{ $patient->email ?? 'Menor de edad' }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                                                 {{ $patient->phone ?? 'Menor de edad' }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                                                 {{ $patient->dni ?? 'Menor de edad' }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">

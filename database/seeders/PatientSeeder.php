@@ -15,8 +15,6 @@ class PatientSeeder extends Seeder
         for ($i = 1; $i < 20; $i++) {
             Patient::factory()->create([
                 'email' => 'patient'.$i.'@example.com',
-                'name' => 'Patient '.$i,
-                'surnames' => 'Surname '.$i,
                 'phone' => '11122233'.$i,
                 'dni' => '12345678F'.$i,
             ]);

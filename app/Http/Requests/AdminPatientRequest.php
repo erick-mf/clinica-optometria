@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Patient;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AdminPatientRequest extends FormRequest
@@ -26,6 +27,18 @@ class AdminPatientRequest extends FormRequest
             $age = date('Y') - date('Y', strtotime($this->birthdate));
         }
 
+        $dni = $this->dni;
+        if (isset($dni) && $dni !== '') {
+            $dni = strtoupper(trim($dni));
+            $this->merge(['dni' => $dni]);
+        }
+
+        $tutor_dni = $this->tutor_dni;
+        if (isset($tutor_dni) && $tutor_dni !== '') {
+            $tutor_dni = strtoupper(trim($tutor_dni));
+            $this->merge(['tutor_dni' => $tutor_dni]);
+        }
+
         $rules = [
             // Datos personales
             'name' => 'required|string|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/|max:255',
@@ -47,7 +60,16 @@ class AdminPatientRequest extends FormRequest
             // Si es adulto
             $rules['email'] = 'required|email|max:255';
             $rules['phone'] = 'required|digits:9|regex:/^[6-9]\d{8}$/';
-            $rules['dni'] = 'required|max:9|regex:/^[XYZ]?\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i';
+            $rules['dni'] = ['required', 'max:9', 'regex:/^[XYZ]?\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i',
+                function ($attribute, $value, $fail) {
+                    $dni = strtoupper(trim($value));
+
+                    $exists = Patient::where('dni', $dni)->exists();
+
+                    if ($exists) {
+                        $fail('El DNI/NIE ya está registrado.');
+                    }
+                }, ];
 
             // Campos del tutor son opcionales para adultos
             $rules['tutor_name'] = 'nullable|string|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/|max:255';

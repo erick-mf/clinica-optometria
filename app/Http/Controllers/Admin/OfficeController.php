@@ -35,12 +35,20 @@ class OfficeController extends Controller
      */
     public function store(Request $request)
     {
+        $request['name'] = ucwords(strtolower($request['name']));
+        $request['abbreviation'] = strtoupper($request['abbreviation']) ?? null;
+
         $validated = $request->validate([
             'name' => 'required|string|unique:offices',
+            'abbreviation' => 'nullable|max:10|unique:offices',
             'status' => 'required',
             'user_id' => 'nullable',
         ], [
             'name.required' => 'El nombre es requerido',
+            'name.string' => 'El nombre debe ser una cadena de texto',
+            'name.unique' => 'El nombre ya está en uso',
+            'abbreviation.max' => 'La abreviatura debe tener máximo 10 caracteres',
+            'abbreviation.unique' => 'La abreviatura ya está en uso',
             'name.string' => 'El nombre debe ser una cadena de texto',
             'name.unique' => 'El nombre ya está en uso',
             'status.required' => 'El estado es requerido',
