@@ -15,71 +15,98 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-4 sm:p-6 text-gray-900">
                         <div class="flex justify-between items-start mb-6">
-                            <h2 class="text-xl font-semibold">{{ __('Crear reservación') }}</h2>
+                            <h2 class="text-xl font-semibold">{{ __('Crear reservación') }}</h2>
                         </div>
 
-                        <form method="POST" action="{{ route('reserved-times.store') }}"
-                            class="space-y-4 md:space-y-6">
+                        <form method="POST" action="{{ route('reserved-times.store') }}" class="space-y-4 md:space-y-6"
+                            id="reservation-form">
                             @csrf
-
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+
                             <div class="grid grid-cols-1 gap-4 sm:gap-6">
-                                <!-- Fecha -->
                                 <div class="text-left w-full">
                                     <label for="date" class="block text-sm font-medium text-gray-700 mb-1">
-                                        Fecha:
+                                        Fecha*
                                     </label>
-                                    <input type="text" id="date" name="date" value="{{ old('date') }}"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
+                                    <div class="relative">
+                                        <input type="text" id="date" name="date"
+                                            class="w-full px-3 py-2 pl-10 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
+                                        <div
+                                            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
                                     @error('date')
-                                        <p class="text-sm text-red-600">{{ $message }}</p>
+                                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <!-- Hora de inicio -->
+                                <!-- Sección para mostrar horas reservadas -->
                                 <div class="text-left w-full">
-                                    <label for="start_time" class="block text-sm font-medium text-gray-700 mb-1">
-                                        Hora de inicio:
-                                    </label>
-                                    <input type="time" id="start_time" name="start_time"
-                                        value="{{ old('start_time') }}"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
-                                    @error('start_time')
-                                        <p class="text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
+                                    <div id="reserved-hours-display"
+                                        class="p-3 bg-gray-50 rounded-md min-h-10 border border-gray-200">
+                                        <p class="text-sm text-gray-500">Seleccione una fecha para ver las horas
+                                            reservadas</p>
+                                    </div>
                                 </div>
 
-                                <!-- Hora de fin -->
-                                <div class="text-left w-full">
-                                    <label for="end_time" class="block text-sm font-medium text-gray-700 mb-1">
-                                        Hora de fin:
-                                    </label>
-                                    <input type="time" id="end_time" name="end_time" value="{{ old('end_time') }}"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
-                                    @error('end_time')
-                                        <p class="text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <!-- Hora de inicio -->
+                                    <div class="text-left w-full">
+                                        <label for="start_time" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Hora de inicio*
+                                        </label>
+                                        <div class="relative">
+                                            <input type="time" id="start_time" name="start_time"
+                                                placeholder="Seleccione hora de inicio"
+                                                class="time-picker w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
+                                        </div>
+                                        @error('start_time')
+                                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Hora de fin -->
+                                    <div class="text-left w-full">
+                                        <label for="end_time" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Hora de fin*
+                                        </label>
+                                        <div class="relative">
+                                            <input type="time" id="end_time" name="end_time"
+                                                placeholder="Seleccione hora de fin"
+                                                class="time-picker w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
+                                        </div>
+                                        @error('end_time')
+                                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                 </div>
 
                                 <!-- Motivo -->
                                 <div class="text-left w-full">
-                                    <label for="reason" class="block text-sm font-medium text-gray-700 mb-1">
-                                        Motivo (opcional):
+                                    <label for="details" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Motivo*
                                     </label>
-                                    <textarea id="reason" name="reason" rows="3" maxlength="255"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary resize-none"
-                                        placeholder="Ej: reunión externa, descanso, videollamada...">{{ old('description') }}</textarea>
-                                    @error('reason')
-                                        <p class="text-sm text-red-600">{{ $message }}</p>
+                                    <div class="relative">
+                                        <textarea id="details" name="details" rows="3" maxlength="255"
+                                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary resize-none"
+                                            placeholder="Ej: reunión externa, descanso, videollamada...">{{ old('details') }}</textarea>
+                                        <p class="text-xs sm:text-sm text-gray-500 mt-1"><span
+                                                id="char-count">0</span>/255</p>
+                                    </div>
+                                    @error('details')
+                                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
                                 <!-- Botones -->
                                 <div class="flex justify-end gap-4 pt-2">
-                                    <button type="submit"
-                                        class="px-4 py-2 border rounded-md text-white bg-primary hover:bg-teal-800 transition">
-                                        {{ 'Crear bloque' }}
-                                    </button>
+                                    <x-primary-button>{{ __('Guardar') }}</x-primary-button>
                                 </div>
                             </div>
                         </form>
@@ -88,42 +115,55 @@
 
                 <!-- Columna de la lista -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    @if (!$reservedTimes || $reservedTimes->isEmpty())
-                        <div class="p-6 text-center text-gray-500">
-                            No tienes reservasiones personales registrados.
-                        </div>
-                    @else
-                        <div class="p-4 sm:p-6 text-gray-900">
-                            <h2 class="text-xl font-semibold mb-4">Tus reservaciones personales</h2>
-
-                            <ul class="divide-y divide-gray-200 max-h-[550px] overflow-y-auto pr-1">
+                    <div class="p-4 sm:p-6 text-gray-900">
+                        @if (!$reservedTimes || $reservedTimes->isEmpty())
+                            <div id="empty-state" class="p-6 text-center text-gray-500">
+                                <svg class="w-12 h-12 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                No tienes reservaciones personales registradas.
+                            </div>
+                        @else
+                            <ul id="reservation-list"
+                                class="divide-y divide-gray-200 max-h-[550px] overflow-y-auto pr-1">
                                 @foreach ($reservedTimes as $reservedTime)
-                                    <li class="py-3 hover:bg-gray-50 px-3 rounded-md transition duration-150">
+                                    <li class="py-3 hover:bg-gray-50 px-3 rounded-md transition duration-150 reservation-item"
+                                        data-date="{{ \Carbon\Carbon::parse($reservedTime->date)->isoFormat('D [de] MMMM [de] YYYY') }}"
+                                        data-reason="{{ $reservedTime->details ?? '' }}">
                                         <div class="flex justify-between items-center">
                                             <div>
                                                 <p class="font-medium text-gray-800">
-                                                    {{ \Carbon\Carbon::parse($reservedTime->date)->format('d/m/Y') }}
-                                                    de {{ substr($reservedTime->start_time, 0, 5) }}
-                                                    a {{ substr($reservedTime->end_time, 0, 5) }}
+                                                    {{ \Carbon\Carbon::parse($reservedTime->date)->isoFormat('D [de] MMMM [de] YYYY') }}
+                                                    <br>
+                                                    <span class="text-sm">
+                                                        Hora: {{ substr($reservedTime->start_time, 0, 5) }}
+                                                        a {{ substr($reservedTime->end_time, 0, 5) }}
+                                                    </span>
                                                 </p>
-                                                @if ($reservedTime->reason)
-                                                    <p class="text-sm text-gray-600">{{ __('Motivo:') }}
-                                                        {{ $reservedTime->reason }}</p>
+                                                @if ($reservedTime->details)
+                                                    <p class="text-sm text-gray-600 mt-1">
+                                                        <span class="font-medium">Motivo:</span>
+                                                        {{ $reservedTime->details }}
+                                                    </p>
                                                 @endif
                                             </div>
                                             <div class="flex gap-2">
-                                                <x-action-delete-button :action="route('reserved-times.destroy', $reservedTime->id)" />
+                                                <x-action-delete-button :action="route('reserved-times.destroy', $reservedTime->id)"
+                                                    data-id="{{ $reservedTime->id }}" class="delete-btn" />
                                             </div>
                                         </div>
                                     </li>
                                 @endforeach
                             </ul>
-                        </div>
-                    @endif
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <x-delete-modal title="Eliminar bloque" content="¿Seguro que deseas eliminar este bloque reservado?" />
+    <x-delete-modal title="Eliminar esta reservación"
+        content="¿Seguro que deseas eliminar esta reservación? Esta acción no se puede deshacer." />
 </x-app-layout>
