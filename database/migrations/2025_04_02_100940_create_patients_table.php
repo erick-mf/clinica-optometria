@@ -18,14 +18,16 @@ return new class extends Migration
             $table->date('birthdate');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->string('dni')->nullable();
+            $table->enum('document_type', ['DNI', 'NIE', 'Pasaporte'])->nullable();
+            $table->string('document_number')->nullable();
             // tutor
             $table->string('tutor_name')->nullable();
             $table->string('tutor_email')->nullable();
-            $table->string('tutor_dni')->nullable();
+            $table->enum('tutor_document_type', ['DNI', 'NIE', 'Pasaporte'])->nullable();
+            $table->string('tutor_document_number')->nullable();
             $table->string('tutor_phone')->nullable();
             $table->timestamps();
-            $table->unique(['name', 'surnames', 'birthdate', 'tutor_dni'], 'unique_patient_by_tutor');
+            $table->unique(['name', 'surnames', 'birthdate', 'tutor_document_type', 'tutor_document_number'], 'unique_patient_by_tutor');
         });
     }
 

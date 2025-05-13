@@ -20,23 +20,85 @@ class AdminPatientRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+    public function isValidDni($dni)
+    {
+        $dni = strtoupper(trim($dni));
+        $pattern_dni = '/^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i';
+
+        if (! preg_match($pattern_dni, $dni)) {
+            return false;
+        }
+
+        // Validar la letra del DNI
+        $number = substr($dni, 0, 8);
+        $letter = substr($dni, 8, 1);
+        $letters = 'TRWAGMYFPDXBNJZSQVHLCKE';
+        $correctLetter = $letters[intval($number) % 23];
+
+        return $letter == $correctLetter;
+    }
+
+    public function isValidNie($nie)
+    {
+        $nie = strtoupper(trim($nie));
+        $pattern_nie = '/^[XYZ][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/i';
+
+        if (! preg_match($pattern_nie, $nie)) {
+            return false;
+        }
+
+        $first = $nie[0];
+        $replace = '';
+
+        if ($first == 'X') {
+            $replace = '0';
+        } elseif ($first == 'Y') {
+            $replace = '1';
+        } elseif ($first == 'Z') {
+            $replace = '2';
+        }
+
+        $number = $replace.substr($nie, 1, 7);
+        $letter = substr($nie, 8, 1);
+        $letters = 'TRWAGMYFPDXBNJZSQVHLCKE';
+        $correctLetter = $letters[intval($number) % 23];
+
+        return $letter == $correctLetter;
+    }
+
+    public function isValidPassport($passport)
+    {
+        $passport = strtoupper(trim($passport));
+        $pattern_passport = '/^[A-Z0-9]{6,12}$/i';
+
+        return preg_match($pattern_passport, $passport);
+    }
+
+    // Validar el documento de identidad
+    public function isValidDocument($type, $value)
+    {
+        $value = strtoupper(trim($value));
+
+        if ($type == 'DNI') {
+            return $this->isValidDni($value) ?: 'El DNI introducido no es válido.';
+        }
+
+        if ($type == 'NIE') {
+            return $this->isValidNie($value) ?: 'El NIE introducido no es válido.';
+        }
+
+        if ($type == 'Pasaporte') {
+            return $this->isValidPassport($value) ?: 'El pasaporte introducido no es válido.';
+        }
+
+        return 'El documento introducido no es valido.';
+    }
+
     public function rules(): array
     {
         $age = 0;
         if ($this->filled('birthdate')) {
             $age = date('Y') - date('Y', strtotime($this->birthdate));
-        }
-
-        $dni = $this->dni;
-        if (isset($dni) && $dni !== '') {
-            $dni = strtoupper(trim($dni));
-            $this->merge(['dni' => $dni]);
-        }
-
-        $tutor_dni = $this->tutor_dni;
-        if (isset($tutor_dni) && $tutor_dni !== '') {
-            $tutor_dni = strtoupper(trim($tutor_dni));
-            $this->merge(['tutor_dni' => $tutor_dni]);
         }
 
         $rules = [
@@ -49,21 +111,48 @@ class AdminPatientRequest extends FormRequest
 
         if ($age < 18) {
             // Si es menor
-            $rules['dni'] = 'nullable|max:9|regex:/^[XYZ]?\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i';
+            $rules['email'] = 'nullable|email|max:255';
+            $rules['document_type'] = 'nullable|in:DNI,NIE,Pasaporte';
+            $rules['document_number'] = ['nullable', 'max:9', function ($attribute, $value, $fail) {
+                $type = $this->input('document_type');
+                if (empty($type) || empty($value)) {
+                    return;
+                }
+
+                $result = $this->isValidDocument($type, $value);
+                if ($result !== true) {
+                    $fail($result);
+                }
+            }];
             $rules['phone'] = 'nullable|digits:9|regex:/^[6-9]\d{8}$/';
             // Datos del tutor son obligatorios
             $rules['tutor_name'] = 'required|string|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/|max:255';
             $rules['tutor_email'] = 'nullable|email|max:255';
-            $rules['tutor_dni'] = 'required|max:9|regex:/^[XYZ]?\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i';
+            $rules['tutor_document_type'] = 'required|in:DNI,NIE,Pasaporte';
+            $rules['tutor_document_number'] = ['required', 'max:9', function ($attribute, $value, $fail) {
+                $type = $this->input('tutor_document_type');
+                $result = $this->isValidDocument($type, $value);
+                if ($result !== true) {
+                    $fail($result);
+                }
+            }];
             $rules['tutor_phone'] = 'required|digits:9|regex:/^[6-9]\d{8}$/';
         } else {
             // Si es adulto
             $rules['phone'] = 'required|digits:9|regex:/^[6-9]\d{8}$/';
-            $rules['dni'] = ['required', 'max:9', 'regex:/^[XYZ]?\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i',
+            $rules['document_type'] = 'required|in:DNI,NIE,Pasaporte';
+            $rules['document_number'] = ['required', 'max:9', function ($attribute, $value, $fail) {
+                $type = $this->input('document_type');
+                $result = $this->isValidDocument($type, $value);
+                if ($result !== true) {
+                    $fail($result);
+                }
+            },
                 function ($attribute, $value, $fail) {
-                    $dni = strtoupper(trim($value));
+                    $type = $this->input('document_type');
+                    $number = strtoupper(trim($value));
 
-                    $exists = Patient::where('dni', $dni)->exists();
+                    $exists = Patient::where('document_type', $type)->where('document_number', $value)->exists();
 
                     if ($exists) {
                         $fail('El DNI/NIE ya está registrado.');
@@ -73,7 +162,18 @@ class AdminPatientRequest extends FormRequest
             // Campos del tutor son opcionales para adultos
             $rules['tutor_name'] = 'nullable|string|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/|max:255';
             $rules['tutor_email'] = 'nullable|email|max:255';
-            $rules['tutor_dni'] = 'nullable|max:9|regex:/^[XYZ]?\d{7,8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i';
+            $rules['document_type'] = 'required|in:DNI,NIE,Pasaporte';
+            $rules['document_number'] = ['nullable', 'max:9', function ($attribute, $value, $fail) {
+                $type = $this->input('document_type');
+                if (empty($type) || empty($value)) {
+                    return;
+                }
+
+                $result = $this->isValidDocument($type, $value);
+                if ($result !== true) {
+                    $fail($result);
+                }
+            }];
             $rules['tutor_phone'] = 'nullable|digits:9|regex:/^[6-9]\d{8}$/';
         }
 
