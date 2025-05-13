@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('abbreviation', 10)->nullable();
-            $table->enum('status', ['activo', 'inactivo', 'en mantenimiento'])->default('activo');
+            $table->enum('status', ['activo', 'inactivo', 'en mantenimiento'])->default('inactivo');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();

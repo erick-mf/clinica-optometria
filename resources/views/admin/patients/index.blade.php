@@ -33,7 +33,7 @@
                         </div>
                     @elseif (request('search') && $patients->isEmpty())
                         <!-- Buscador -->
-                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre, apellido o dni...'" />
+                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre o apellido'" />
 
                         <!-- Mensaje de no resultados para búsqueda -->
                         <div class="bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
@@ -43,7 +43,7 @@
                         </div>
                     @else
                         <!-- Buscador -->
-                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre, apellido o dni...'" />
+                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre o apellido'" />
 
 
                         <!-- Vista para Móviles (Tarjetas) -->
@@ -127,11 +127,11 @@
                                             Email
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Teléfono
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Acciones
                                         </th>
                                     </tr>
@@ -139,10 +139,10 @@
                                 <tbody class="divide-y divide-gray-200" id="patientsTableBody">
                                     @foreach ($patients as $patient)
                                         <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                                                 {{ ucfirst($patient->name) }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                                                 {{ ucfirst($patient->surnames) }}
                                             </td>
                                             <td
@@ -153,11 +153,11 @@
                                                     {{ \Carbon\Carbon::parse($patient->birthdate)->age >= 18 ? 'Email no disponible' : 'Menor de edad' }}
                                                 @endif
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                                                 {{ $patient->phone ?? 'Menor de edad' }}
                                             </td>
                                             <!-- Vista para Tablets/Desktop (Tabla) - Botones con ancho fijo -->
-                                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                            <td class="px-4 py-4 whitespace-nowrap text-center">
                                                 <div class="flex justify-center space-x-2">
                                                     <x-action-button
                                                         action=" {{ route('admin.patients.edit', $patient) }}"

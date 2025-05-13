@@ -38,22 +38,29 @@ class DoctorController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/',
-            'surnames' => 'required|string|max:255|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/',
+            'name' => 'required|string|min:3|max:255|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/',
+            'surnames' => 'required|string|min:3|max:255|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'nullable|string|max:20|regex:/^[0-9\s\-]+$/',
+            'phone' => 'nullable|digits:9|regex:/^[6-9]\d{8}$/',
         ], [
             'name.required' => 'El nombre es obligatorio.',
+            'name.string' => 'El nombre debe ser una cadena de texto.',
+            'name.min' => 'El nombre debe tener al menos 3 caracteres.',
             'name.max' => 'El nombre no puede tener más de 255 caracteres.',
             'name.regex' => 'El nombre solo puede contener letras y espacios.',
+
             'surnames.required' => 'Los apellidos son obligatorios.',
+            'surnames.string' => 'Los apellidos deben ser una cadena de texto.',
+            'surnames.min' => 'Los apellidos deben tener al menos 3 caracteres.',
             'surnames.max' => 'Los apellidos no pueden tener más de 255 caracteres.',
             'surnames.regex' => 'Los apellidos solo pueden contener letras y espacios.',
+
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.email' => 'El correo electrónico debe ser una dirección válida.',
             'email.unique' => 'El correo electrónico ya está en uso.',
-            'phone.max' => 'El teléfono no puede tener más de 20 caracteres.',
-            'phone.regex' => 'El teléfono solo puede contener números, espacios y guiones.',
+
+            'phone.digits' => 'El teléfono debe tener 9 dígitos.',
+            'phone.regex' => 'El teléfono debe comenzar con 6, 7, 8 o 9.',
         ]);
 
         $doctor = $this->repository->create($validated);

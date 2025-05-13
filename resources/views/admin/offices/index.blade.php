@@ -45,7 +45,7 @@
                                 <div class="text-left w-full">
                                     <label for="name"
                                         class="block text-sm sm:text-base font-medium text-gray-700 mb-1">
-                                        Abreviatura del espacio
+                                        Abreviatura del espacio *
                                     </label>
                                     <input type="text" id="abbreviation" name="abbreviation"
                                         value="{{ old('abbreviation', $office->abbreviation ?? '') }}"
@@ -58,11 +58,11 @@
 
                                 <!-- Estado (Activo/Inactivo/En mantenimiento) -->
                                 <div class="text-left w-full">
-                                    <label
-                                        class="block text-sm sm:text-base font-medium text-gray-700 mb-2">Estado *</label>
+                                    <label class="block text-sm sm:text-base font-medium text-gray-700 mb-2">Estado
+                                        *</label>
                                     <div class="flex flex-wrap gap-4">
                                         <label class="inline-flex items-center">
-                                            <input type="radio" name="status" value="activo"
+                                            <input type="radio" name="status" value="activo" id="status_activo"
                                                 {{ $isEdit && $office->status == 'activo' ? 'checked' : '' }}
                                                 class="w-4 h-4 text-primary border-gray-300 focus:ring-primary">
                                             <div class="ml-2 flex items-center">
@@ -94,7 +94,7 @@
                                 </div>
 
                                 <!-- Asignación de doctor -->
-                                <div class="text-left w-full">
+                                <div class="text-left w-full hidden" id="doctor_assignment_section">
                                     <label for="user_id"
                                         class="block text-sm sm:text-base font-medium text-gray-700 mb-1">
                                         Profesional asignado

@@ -17,13 +17,15 @@ class BookAppointmentRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'name' => ucwords(strtolower($this->name)),
-            'surnames' => ucwords(strtolower($this->surnames)),
-            'email' => strtolower($this->email),
-            'dni' => strtoupper($this->dni),
-            'tutor_name' => ucwords(strtolower($this->tutor_name)),
-            'tutor_email' => strtolower($this->tutor_email),
-            'tutor_dni' => strtoupper($this->tutor_dni),
+            'name' => $this->name ? ucwords(strtolower($this->name)) : null,
+            'surnames' => $this->surnames ? ucwords(strtolower($this->surnames)) : null,
+            'email' => $this->email ? strtolower($this->email) : null,
+            'document_type' => $this->document_type ?? null,
+            'document_number' => $this->document_number ? strtoupper($this->document_number) : null,
+            'tutor_name' => $this->tutor_name ? ucwords(strtolower($this->tutor_name)) : null,
+            'tutor_email' => $this->tutor_email ? strtolower($this->tutor_email) : null,
+            'tutor_document_type' => $this->tutor_document_type ?? null,
+            'tutor_document_number' => $this->tutor_document_number ? strtoupper($this->tutor_document_number) : null,
         ]);
     }
 

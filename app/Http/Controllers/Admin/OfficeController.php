@@ -36,21 +36,26 @@ class OfficeController extends Controller
     public function store(Request $request)
     {
         $request['name'] = ucwords(strtolower($request['name']));
-        $request['abbreviation'] = strtoupper($request['abbreviation']) ?? null;
+        $request['abbreviation'] = strtoupper($request['abbreviation']);
 
         $validated = $request->validate([
-            'name' => 'required|string|unique:offices|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/',
-            'abbreviation' => 'nullable|max:10|unique:offices',
+            'name' => 'required|string|min:3|max:100|unique:offices',
+            'abbreviation' => 'required|string|min:2|max:10|unique:offices',
             'status' => 'required',
             'user_id' => 'nullable',
         ], [
             'name.required' => 'El nombre es requerido',
             'name.string' => 'El nombre debe ser una cadena de texto',
+            'name.min' => 'El nombre debe tener al menos 3 caracteres',
+            'name.max' => 'El nombre debe tener máximo 100 caracteres',
             'name.unique' => 'El nombre ya está en uso',
+
+            'abbreviation.required' => 'La abreviatura es requerida',
+            'abbreviation.string' => 'La abreviatura debe ser una cadena de texto',
+            'abbreviation.min' => 'La abreviatura debe tener al menos 2 caracter',
             'abbreviation.max' => 'La abreviatura debe tener máximo 10 caracteres',
             'abbreviation.unique' => 'La abreviatura ya está en uso',
-            'name.string' => 'El nombre debe ser una cadena de texto',
-            'name.unique' => 'El nombre ya está en uso',
+
             'status.required' => 'El estado es requerido',
         ]);
 
@@ -92,9 +97,24 @@ class OfficeController extends Controller
     public function update(Request $request, Office $office)
     {
         $validated = $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|min:3|max:100|unique:offices',
+            'abbreviation' => 'required|string|min:2|max:10|unique:offices',
             'status' => 'required',
             'user_id' => 'nullable',
+        ], [
+            'name.required' => 'El nombre es requerido',
+            'name.string' => 'El nombre debe ser una cadena de texto',
+            'name.min' => 'El nombre debe tener al menos 3 caracteres',
+            'name.max' => 'El nombre debe tener máximo 100 caracteres',
+            'name.unique' => 'El nombre ya está en uso',
+
+            'abbreviation.required' => 'La abreviatura es requerida',
+            'abbreviation.string' => 'La abreviatura debe ser una cadena de texto',
+            'abbreviation.min' => 'La abreviatura debe tener al menos 2 caracter',
+            'abbreviation.max' => 'La abreviatura debe tener máximo 10 caracteres',
+            'abbreviation.unique' => 'La abreviatura ya está en uso',
+
+            'status.required' => 'El estado es requerido',
         ]);
 
         try {

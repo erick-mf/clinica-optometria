@@ -53,10 +53,13 @@ class PatientController extends Controller
      */
     public function store(AdminPatientRequest $request)
     {
-        $validated = $request->validated(); // Validar automáticamente con AdminPatientRequest
+        $validated = $request->validated();
 
         try {
             $patient = $this->repository->create($validated);
+            if (! $patient) {
+                return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'El paciente ya existe.']);
+            }
 
             return redirect()
                 ->route('admin.patients.index')
@@ -73,12 +76,15 @@ class PatientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AdminPatientRequest $request, Patient $patient) // Usar AdminPatientRequest
+    public function update(AdminPatientRequest $request, Patient $patient)
     {
-        $validated = $request->validated(); // Validar automáticamente con AdminPatientRequest
+        $validated = $request->validated();
 
         try {
-            $this->repository->update($patient, $validated);
+            $patient = $this->repository->update($patient, $validated);
+            if (! $patient) {
+                return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'El paciente ya existe.']);
+            }
 
             return redirect()
                 ->route('admin.patients.index')

@@ -106,21 +106,6 @@
                             <x-add-button action="{{ route('admin.schedules.create') }}" text="Configurar Turnos" />
                         </div>
                     @else
-                        <!-- Filtro  -->
-                        <div class="mb-6 flex flex-col sm:flex-row gap-4">
-                            <div class="flex gap-2">
-                                <select id="filterMonth"
-                                    class="rounded-lg border border-gray-300 px-8 py-2.5 focurs:outline-none w-full">
-                                    <option value="">Todos los meses</option>
-                                    @for ($i = 1; $i <= 12; $i++)
-                                        <option value="{{ $i }}">
-                                            {{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}
-                                        </option>
-                                    @endfor
-                                </select>
-                            </div>
-                        </div>
-
                         <!-- Vista para Móviles (Tarjetas) -->
                         <div class="sm:hidden space-y-4 mb-6">
                             @foreach ($filteredSchedules as $date)
