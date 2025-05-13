@@ -30,7 +30,7 @@
                                 <div class="text-left w-full">
                                     <label for="name"
                                         class="block text-sm sm:text-base font-medium text-gray-700 mb-1">
-                                        Nombre del espacio:
+                                        Nombre del espacio *
                                     </label>
                                     <input type="text" id="name" name="name"
                                         value="{{ old('name', $office->name ?? '') }}"
@@ -45,7 +45,7 @@
                                 <div class="text-left w-full">
                                     <label for="name"
                                         class="block text-sm sm:text-base font-medium text-gray-700 mb-1">
-                                        Abreviatura del espacio:
+                                        Abreviatura del espacio
                                     </label>
                                     <input type="text" id="abbreviation" name="abbreviation"
                                         value="{{ old('abbreviation', $office->abbreviation ?? '') }}"
@@ -59,7 +59,7 @@
                                 <!-- Estado (Activo/Inactivo/En mantenimiento) -->
                                 <div class="text-left w-full">
                                     <label
-                                        class="block text-sm sm:text-base font-medium text-gray-700 mb-2">Estado:</label>
+                                        class="block text-sm sm:text-base font-medium text-gray-700 mb-2">Estado *</label>
                                     <div class="flex flex-wrap gap-4">
                                         <label class="inline-flex items-center">
                                             <input type="radio" name="status" value="activo"
@@ -97,7 +97,7 @@
                                 <div class="text-left w-full">
                                     <label for="user_id"
                                         class="block text-sm sm:text-base font-medium text-gray-700 mb-1">
-                                        Profesional asignado:
+                                        Profesional asignado
                                     </label>
                                     <select id="user_id" name="user_id"
                                         class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-primary focus:border-primary transition duration-150">

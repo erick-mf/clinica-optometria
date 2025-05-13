@@ -180,7 +180,7 @@
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Profesor
+                                        Profesional
                                     </th>
                                     <th scope="col"
                                         class="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">

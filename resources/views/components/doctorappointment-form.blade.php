@@ -11,7 +11,7 @@
     <!-- Tipo de cita -->
     <div class="text-left w-full">
         <label for="type" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Tipo de
-            cita:</label>
+            cita *</label>
 
         <div class="flex items-center space-x-4">
             <label class="inline-flex items-center">
@@ -39,7 +39,7 @@
             <div class="mb-4 sm:mb-0">
                 <label for="appointment_date" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Fecha de
                     la
-                    cita:</label>
+                    cita *</label>
                 <div class="relative">
                     <input type="text" id="appointment_date" name="appointment_date" readonly
                         class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150"
@@ -55,7 +55,7 @@
             <!-- Horarios -->
             <div>
                 <label for="appointment_time" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Horario
-                    disponible:</label>
+                    disponible *</label>
                 <select id="appointment_time" name="appointment_time" disabled
                     class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
                     <option value="">Primero seleccione una fecha</option>
@@ -86,7 +86,7 @@
         <!-- Detalles -->
         <div class="text-left md:col-span-2">
             <label for="details" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Detalles
-                adicionales:</label>
+                adicionales</label>
             <textarea id="details" name="details" rows="3" placeholder="Escribe los detalles de la cita aqui..."
                 maxlength="255"
                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150 resize-none"></textarea>

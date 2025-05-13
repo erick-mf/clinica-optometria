@@ -25,8 +25,8 @@
                             </svg>
                         </div>
                         <div>
-                            <h2 class="text-lg font-semibold text-gray-800">Profesores</h2>
-                            <p class="text-sm text-gray-600">Administra perfiles de profesores</p>
+                            <h2 class="text-lg font-semibold text-gray-800">Profesionales</h2>
+                            <p class="text-sm text-gray-600">Administra perfiles de los profesionales</p>
                         </div>
                     </div>
                 </a>
@@ -214,7 +214,7 @@
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Profesor
+                                        Profesional
                                     </th>
                                     <th scope="col"
                                         class="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">

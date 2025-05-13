@@ -29,7 +29,7 @@
                         <!-- Nombre -->
                         <div class="text-left">
                             <label for="name"
-                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Nombre:</label>
+                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Nombre *</label>
                             <input type="text" id="name" name="name" placeholder="Ingrese su nombre"
                                 value="{{ old('name') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
@@ -41,7 +41,7 @@
                         <!-- Apellidos -->
                         <div class="text-left">
                             <label for="surnames"
-                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Apellidos:</label>
+                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Apellidos *</label>
                             <input type="text" id="surnames" name="surnames" placeholder="Ingrese sus apellidos"
                                 value="{{ old('surnames') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
@@ -54,7 +54,7 @@
                         <div class="text-left">
                             <label for="birthdate"
                                 class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Fecha de
-                                Nacimiento:</label>
+                                Nacimiento *</label>
                             <input type="date" id="birthdate" name="birthdate" value="{{ old('birthdate') }}"
                                 min="{{ \Carbon\Carbon::now()->subYears(100)->format('Y-m-d') }}"
                                 max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
@@ -67,7 +67,7 @@
                         <!-- Correo -->
                         <div class="text-left">
                             <label for="email"
-                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Correo:</label>
+                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Correo</label>
                             <input type="email" id="email" name="email" placeholder="Ingrese su correo"
                                 value="{{ old('email') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
@@ -79,7 +79,7 @@
                         <!-- Teléfono -->
                         <div class="text-left">
                             <label for="phone"
-                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Teléfono:</label>
+                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Teléfono *</label>
                             <input type="tel" id="phone" name="phone" placeholder="Ingrese su teléfono"
                                 value="{{ old('phone') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
@@ -91,7 +91,7 @@
                         <!-- DNI -->
                         <div class="text-left">
                             <label for="dni"
-                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">DNI/NIE:</label>
+                                class="block text-sm sm:text-base font-medium text-gray-700 mb-1">DNI/NIE *</label>
                             <input type="text" id="dni" name="dni" placeholder="Ingrese su DNI/NIE"
                                 value="{{ old('dni') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
@@ -112,7 +112,7 @@
                         <div class="text-left">
                             <label for="tutor_name"
                                 class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Nombre del
-                                tutor:</label>
+                                tutor *</label>
                             <input type="text" id="tutor_name" name="tutor_name"
                                 placeholder="Ingrese el nombre del tutor" value="{{ old('tutor_name') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
@@ -125,7 +125,7 @@
                         <div class="text-left">
                             <label for="tutor_email"
                                 class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Correo del
-                                tutor:</label>
+                                tutor</label>
                             <input type="email" id="tutor_email" name="tutor_email"
                                 placeholder="Ingrese el correo del tutor" value="{{ old('tutor_email') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
@@ -138,7 +138,7 @@
                         <div class="text-left">
                             <label for="tutor_dni"
                                 class="block text-sm sm:text-base font-medium text-gray-700 mb-1">DNI/NIE del
-                                tutor:</label>
+                                tutor *</label>
                             <input type="text" id="tutor_dni" name="tutor_dni"
                                 placeholder="Ingrese el DNI/NIE del tutor" value="{{ old('tutor_dni') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
@@ -151,7 +151,7 @@
                         <div class="text-left">
                             <label for="tutor_phone"
                                 class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Teléfono del
-                                tutor:</label>
+                                tutor *</label>
                             <input type="tel" id="tutor_phone" name="tutor_phone"
                                 placeholder="Ingrese el teléfono del tutor" value="{{ old('tutor_phone') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
@@ -170,7 +170,7 @@
                     <div class="text-left w-full">
                         <label for="type" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Tipo
                             de
-                            cita:</label>
+                            cita *</label>
 
                         <div class="flex items-center space-x-4">
                             <label class="inline-flex items-center">
@@ -198,7 +198,7 @@
                             <div class="mb-4 sm:mb-0">
                                 <label for="appointment_date"
                                     class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Fecha de la
-                                    cita:</label>
+                                    cita *</label>
                                 <div class="relative">
                                     <input type="text" id="appointment_date" name="appointment_date" readonly
                                         class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150"
@@ -215,7 +215,7 @@
                             <div>
                                 <label for="appointment_time"
                                     class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Horario
-                                    disponible:</label>
+                                    disponible *</label>
                                 <select id="appointment_time" name="appointment_time" disabled
                                     class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
                                     <option value="">Primero seleccione una fecha</option>
@@ -247,7 +247,7 @@
                         <div class="text-left md:col-span-2">
                             <label for="details"
                                 class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Detalles
-                                adicionales:</label>
+                                adicionales</label>
                             <textarea id="details" name="details" rows="3" placeholder="Escribe los detalles de la cita aqui..."
                                 maxlength="255" value="{{ old('details') }}"
                                 class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150 resize-none"></textarea>
@@ -268,7 +268,7 @@
                                     <label for="privacy-policy" class="text-gray-700">Acepto la <a
                                             href="{{ route('privacy-policy') }}"
                                             class="text-primary hover:underline font-medium">política de
-                                            privacidad</a></label>
+                                            privacidad</a> *</label>
                                 </div>
                             </div>
                             @error('privacy-policy')

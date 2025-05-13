@@ -39,7 +39,7 @@ class OfficeController extends Controller
         $request['abbreviation'] = strtoupper($request['abbreviation']) ?? null;
 
         $validated = $request->validate([
-            'name' => 'required|string|unique:offices',
+            'name' => 'required|string|unique:offices|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/',
             'abbreviation' => 'nullable|max:10|unique:offices',
             'status' => 'required',
             'user_id' => 'nullable',
