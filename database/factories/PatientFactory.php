@@ -22,7 +22,8 @@ class PatientFactory extends Factory
             'birthdate' => fake()->date(),
             'phone' => '111222333',
             'email' => fake()->unique()->safeEmail(),
-            'dni' => fake()->unique()->numberBetween(10000000, 99999999),
+            'document_type' => fake()->randomElement(['DNI', 'NIE', 'Pasaporte']),
+            'document_number' => fake()->randomNumber(8),
         ];
     }
 }

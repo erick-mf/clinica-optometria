@@ -51,7 +51,7 @@ class PatientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AdminPatientRequest $request) // Usar AdminPatientRequest
+    public function store(AdminPatientRequest $request)
     {
         $validated = $request->validated(); // Validar automáticamente con AdminPatientRequest
 

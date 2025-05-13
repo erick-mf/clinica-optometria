@@ -16,7 +16,6 @@ class PatientSeeder extends Seeder
             Patient::factory()->create([
                 'email' => 'patient'.$i.'@example.com',
                 'phone' => '11122233'.$i,
-                'dni' => '12345678F'.$i,
             ]);
         }
     }
