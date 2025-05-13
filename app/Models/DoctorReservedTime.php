@@ -13,7 +13,7 @@ class DoctorReservedTime extends Model
         'date',
         'start_time',
         'end_time',
-        'reason',
+        'details',
         'user_id',
     ];
 
@@ -24,7 +24,7 @@ class DoctorReservedTime extends Model
         ];
     }
 
-    public function user()
+    public function doctor()
     {
         return $this->belongsTo(User::class);
     }

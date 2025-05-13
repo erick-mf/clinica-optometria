@@ -21,7 +21,7 @@ class DoctorReservedTimeFactory extends Factory
             'date' => $this->faker->date('Y-m-d'),
             'start_time' => $this->faker->time('H:i'),
             'end_time' => $this->faker->time('H:i'),
-            'reason' => $this->faker->sentence(),
+            'details' => $this->faker->sentence(),
             'user_id' => $this->faker->randomElement(User::all())->id,
         ];
     }

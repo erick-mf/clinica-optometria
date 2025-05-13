@@ -65,6 +65,6 @@ class User extends Authenticatable
 
     public function personalReservations()
     {
-        return $this->hasMany(DoctorReservedTimes::class, 'user_id');
+        return $this->hasMany(DoctorReservedTime::class, 'user_id');
     }
 }
