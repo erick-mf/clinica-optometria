@@ -77,7 +77,7 @@
                             <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
                                 <span
                                     class="bg-teal-100 text-teal-800 rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
-                                Define los turnos y los profesores que atenderán los horarios
+                                Define los turnos y los profesional que atenderán los horarios
                             </h2>
                             <div id="turns-wrapper" class="space-y-4 mb-4">
                                 <!-- Turno base -->

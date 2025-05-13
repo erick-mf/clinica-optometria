@@ -59,7 +59,7 @@ class DoctorController extends Controller
         $doctor = $this->repository->create($validated);
 
         if (! $doctor) {
-            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al crear el profesor/a.']);
+            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al crear el profesional.']);
         }
 
         $token = Password::createToken($doctor);
@@ -67,7 +67,7 @@ class DoctorController extends Controller
 
         return redirect()
             ->route('admin.doctors.index')
-            ->with('toast', ['type' => 'success', 'message' => 'Profesor/a creado correctamente.']);
+            ->with('toast', ['type' => 'success', 'message' => 'Profesional creado correctamente.']);
     }
 
     /**
@@ -107,11 +107,11 @@ class DoctorController extends Controller
 
             return redirect()
                 ->route('admin.doctors.index')
-                ->with('toast', ['type' => 'success', 'message' => 'Profesor/a actualizado correctamente.']);
+                ->with('toast', ['type' => 'success', 'message' => 'Profesional actualizado correctamente.']);
         } catch (\Exception $e) {
-            Log::error("Error al actualizar al profesor/a: {$e->getMessage()}");
+            Log::error("Error al actualizar al profesional: {$e->getMessage()}");
 
-            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al actualizar al profesor/a.']);
+            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al actualizar al profesional.']);
         }
     }
 
@@ -125,11 +125,11 @@ class DoctorController extends Controller
 
             return redirect()
                 ->route('admin.doctors.index')
-                ->with('toast', ['type' => 'success', 'message' => 'Profesor/a eliminado correctamente.']);
+                ->with('toast', ['type' => 'success', 'message' => 'Profesional eliminado correctamente.']);
         } catch (\Exception $e) {
-            Log::error("Error al eliminar al profesor/a: {$e->getMessage()}");
+            Log::error("Error al eliminar al profesional: {$e->getMessage()}");
 
-            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al eliminar al profesor/a.']);
+            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al eliminar al profesional.']);
         }
     }
 

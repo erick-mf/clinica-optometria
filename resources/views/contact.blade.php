@@ -15,7 +15,7 @@
                     <div class="space-y-4">
                         <!-- Nombre -->
                         <div class="text-left">
-                            <label for="name" class="block text-lg font-bold text-gray-700 mb-2">Nombre:</label>
+                            <label for="name" class="block text-lg font-bold text-gray-700 mb-2">Nombre *</label>
                             <input type="text" id="name" name="name" placeholder="Ingrese su nombre"
                                 value="{{ old('name') }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
@@ -26,7 +26,7 @@
 
                         <!-- Apellidos -->
                         <div class="text-left">
-                            <label for="surnames" class="block text-lg font-bold text-gray-700 mb-2">Apellidos:</label>
+                            <label for="surnames" class="block text-lg font-bold text-gray-700 mb-2">Apellidos *</label>
                             <input type="text" id="surnames" name="surnames" placeholder="Ingrese sus apellidos"
                                 value="{{ old('surnames') }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
@@ -38,7 +38,7 @@
                         <!-- Selección entre Teléfono o Correo -->
                         <div class="text-left">
                             <label for="contact_method" class="block text-lg font-bold text-gray-700 mb-2">Método de
-                                contacto:</label>
+                                contacto *</label>
                             <select id="contact_method" name="contact_method" value="{{ old('contact_method') }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
                                 <option value="" disabled selected>Seleccione una opción</option>
@@ -52,7 +52,7 @@
 
                         <!-- Campo Teléfono -->
                         <div id="phone-field" class="text-left hidden">
-                            <label for="phone" class="block text-lg font-bold text-gray-700 mb-2">Teléfono:</label>
+                            <label for="phone" class="block text-lg font-bold text-gray-700 mb-2">Teléfono *</label>
                             <input type="tel" id="phone" name="phone" placeholder="Ingrese su teléfono"
                                 value="{{ old('phone') }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
@@ -63,7 +63,7 @@
 
                         <!-- Campo Correo -->
                         <div id="email-field" class="text-left hidden">
-                            <label for="email" class="block text-lg font-bold text-gray-700 mb-2">Correo:</label>
+                            <label for="email" class="block text-lg font-bold text-gray-700 mb-2">Correo *</label>
                             <input type="email" id="email" name="email" placeholder="Ingrese su correo"
                                 value="{{ old('email') }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary">
@@ -74,7 +74,7 @@
 
                         <!-- Mensaje -->
                         <div class="text-left">
-                            <label for="details" class="block text-lg font-bold text-gray-700 mb-2">Mensaje:</label>
+                            <label for="details" class="block text-lg font-bold text-gray-700 mb-2">Mensaje *</label>
                             <textarea id="details" name="details" rows="4" placeholder="Escriba los detalles aquí..."
                                 value="{{ old('details') }}" maxlength="255"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary resize-none"></textarea>

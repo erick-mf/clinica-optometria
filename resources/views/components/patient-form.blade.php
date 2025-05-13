@@ -49,7 +49,8 @@
 
             <!-- Correo -->
             <div class="text-left">
-                <label for="email" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Correo *</label>
+                <label for="email"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Correo</label>
                 <input type="email" id="email" name="email" placeholder="Ingrese su correo"
                     value="{{ old('email') ?? ($patient->email ?? '') }}"
                     class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
@@ -132,10 +133,11 @@
 
             <!-- Correo del tutor -->
             <div class="text-left">
-                <label for="tutor_email" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Correo del
-                    tutor *</label>
-                <input type="email" id="tutor_email" name="tutor_email" placeholder="Ingrese el correo del tutor"
-                    value="{{ old('tutor_email') ?? ($patient->tutor_email ?? '') }}"
+                <label for="tutor_email"
+                    class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Correo del
+                    tutor</label>
+                <input type="email" id="tutor_email" name="tutor_email"
+                    placeholder="Ingrese el correo del tutor" value="{{ old('tutor_email') ?? $patient->tutor_email ?? '' }}"
                     class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
                 @error('tutor_email')
                     <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>

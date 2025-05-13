@@ -140,6 +140,6 @@
 
     <!-- Modal de confirmación mejorado -->
     <x-delete-modal title="Confirmar eliminación"
-        content="¿Estás seguro que deseas eliminar a este profesor? Esta acción no se puede deshacer." />
+        content="¿Estás seguro que deseas eliminar a este profesional? Esta acción no se puede deshacer." />
 
 </x-app-layout>
