@@ -175,12 +175,14 @@
                         <div class="flex items-center space-x-4">
                             <label class="inline-flex items-center">
                                 <input type="radio" name="type" value="primera cita"
+                                    {{ old('type') == 'primera cita' ? 'checked' : '' }}
                                     class="form-radio h-4 w-4 text-primary border-gray-300 focus:ring-primary">
                                 <span class="ml-2 text-sm sm:text-base font-medium text-gray-700">Primera cita</span>
                             </label>
 
                             <label class="inline-flex items-center">
                                 <input type="radio" name="type" value="revision"
+                                    {{ old('type') == 'revision' ? 'checked' : '' }}
                                     class="form-radio h-4 w-4 text-primary border-gray-300 focus:ring-primary">
                                 <span class="ml-2 text-sm sm:text-base font-medium text-gray-700">Revisión</span>
                             </label>
@@ -249,8 +251,8 @@
                                 class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Detalles
                                 adicionales:</label>
                             <textarea id="details" name="details" rows="3" placeholder="Escribe los detalles de la cita aqui..."
-                                maxlength="255" value="{{ old('details') }}"
-                                class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150 resize-none"></textarea>
+                                maxlength="255"
+                                class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition duration-150 resize-none">{{ old('details') ?? '' }}</textarea>
                             <p class="text-xs sm:text-sm text-gray-500 mt-1"><span id="char-count">0</span>/255</p>
                             @error('details')
                                 <p class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</p>
@@ -262,6 +264,7 @@
                             <div class="flex items-start">
                                 <div class="flex items-center h-5">
                                     <input type="checkbox" id="privacy-policy" name="privacy-policy"
+                                        {{ old('privacy-policy') ? 'checked' : '' }}
                                         class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
                                 </div>
                                 <div class="ml-3 text-sm">
