@@ -12,8 +12,6 @@ use App\Repositories\TimeSlot\TimeSlotRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class BookAppointmentController extends Controller
 {
@@ -65,9 +63,11 @@ class BookAppointmentController extends Controller
         }
 
         // Verificar si el paciente ya tiene una cita agendada
-        $alreadyHasAppointment = $this->appointmentRepository->isAlreadyBooked($patient->id, $validated['appointment_date']);
-        if ($alreadyHasAppointment === true) {
-            return back()->with('toast', ['type' => 'info', 'message' => 'Ya tiene una cita agendada ese día.'])->withInput();
+        $alreadyHasAppointment = $this->appointmentRepository->isAlreadyBooked($patient->id, false);
+        if ($alreadyHasAppointment) {
+            return back()->with('toast', [
+                'type' => 'info',
+                'message' => 'Ya tiene una cita agendada pendiente.No puede agendar otra hasta que complete o cancele esta cita'])->withInput();
         }
 
         // Verificar disponibilidad del slot

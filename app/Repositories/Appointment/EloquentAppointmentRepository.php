@@ -128,14 +128,21 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
         });
     }
 
-    public function isAlreadyBooked($patientId, $date)
+    public function isAlreadyBooked($patientId, $isDoctor = false)
     {
-        return $this->model->query()
+        if ($isDoctor) {
+            return false;
+        }
+
+        $query = $this->model->query()
             ->where('patient_id', $patientId)
-            ->whereHas('timeSlot.availableHour.availableDate', function ($query) use ($date) {
-                $query->whereDate('available_dates.date', $date);
-            })
-            ->exists();
+            ->whereHas('timeSlot.availableHour.availableDate', function ($query) {
+                $query->whereDate('available_dates.date', '>=', now()->format('Y-m-d'));
+            });
+
+        $exists = $query->exists();
+
+        return $exists;
     }
 
     public function findByToken($token)

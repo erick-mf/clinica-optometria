@@ -14,6 +14,19 @@ class BookAppointmentRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'name' => ucwords(strtolower($this->name)),
+            'surnames' => ucwords(strtolower($this->surnames)),
+            'email' => strtolower($this->email),
+            'dni' => strtoupper($this->dni),
+            'tutor_name' => ucwords(strtolower($this->tutor_name)),
+            'tutor_email' => strtolower($this->tutor_email),
+            'tutor_dni' => strtoupper($this->tutor_dni),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
