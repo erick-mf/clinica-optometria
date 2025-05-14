@@ -90,10 +90,11 @@
                                 <p class="font-medium">Prof. {{ ucfirst($appointment->user->surnames) }}</p>
 
                                 <p class="text-sm text-gray-500">Especialidad:</p>
-                                <p class="font-medium">{{ $appointment->user->specialty ?? 'General' }}</p>
+                                <p class="font-medium">{{ 'General' }}</p>
 
                                 <p class="text-sm text-gray-500">Consultorio:</p>
-                                <p class="font-medium">{{ $appointment->user->office ?? 'No especificado' }}</p>
+                                <p class="font-medium">
+                                    {{ $appointment->user->office->abbreviation ?? 'No especificado' }}</p>
                             </div>
                         </div>
                     </div>

@@ -8,6 +8,8 @@ interface DoctorReservedTimeRepositoryInterface
 {
     public function paginate(int $perPage, int $userId);
 
+    public function paginateAll(int $perPage);
+
     public function findById(int $id);
 
     public function all();

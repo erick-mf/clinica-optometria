@@ -77,7 +77,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
                                             </svg>
-                                            {{ $patient->dni ?? 'Menor de edad' }}
+                                            @if (isset($patient->document_type) && isset($patient->document_number))
+                                                {{ $patient->document_type }} {{ $patient->document_number }}
+                                            @else
+                                                Menor de edad
+                                            @endif
                                         </span>
                                     </div>
                                     <div class="flex space-x-2 pt-3 border-t border-gray-100">
@@ -115,10 +119,6 @@
                                             Teléfono
                                         </th>
                                         <th scope="col"
-                                            class="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            DNI
-                                        </th>
-                                        <th scope="col"
                                             class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Acciones
                                         </th>
@@ -139,9 +139,6 @@
                                             </td>
                                             <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                                                 {{ $patient->phone ?? 'Menor de edad' }}
-                                            </td>
-                                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                {{ $patient->dni ?? 'Menor de edad' }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                                 <div class="flex justify-center space-x-2">

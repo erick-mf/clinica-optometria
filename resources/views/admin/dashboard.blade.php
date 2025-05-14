@@ -104,7 +104,7 @@
                 </a>
 
                 <!-- Gestionar Reservas de Espacios -->
-                <a href="#"
+                <a href="{{ route('admin.reserved-times.index') }}"
                     class="block p-4 sm:p-6 bg-white overflow-hidden shadow-xl sm:rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-200">
                     <div class="flex items-start gap-4">
                         <div class="rounded-full p-3 flex-shrink-0" style="background-color: rgba(21, 117, 100, 0.1);">

@@ -82,7 +82,7 @@ class AppointmentController extends Controller
 
         $validated['time_slot_id'] = $validated['appointment_time'];
         $patient = $this->patientRepository->findById($validated['patient_id']);
-        
+
         // Verificar si el paciente ya tiene una cita agendada
         $alreadyHasAppointment = $this->appoinmentRepository->isAlreadyBooked($patient->id, $validated['appointment_date']);
         if ($alreadyHasAppointment === true) {
@@ -98,14 +98,12 @@ class AppointmentController extends Controller
             DB::beginTransaction();
             $appointment = $this->appoinmentRepository->create($validated);
 
-            // Enviar correo de confirmación
             $timeSlot = $this->timeSlotRepository->find($validated['appointment_time']);
 
             // Verificar si hay un correo disponible antes de enviar el evento
-            if (!empty($patient->email) || !empty($patient->tutor_email)) {
-                Log::error("Enviando correo a {$patient->email} o {$patient->tutor_email}");
+            if (! empty($patient->email) || ! empty($patient->tutor_email)) {
                 event(new AppointmentCreated($appointment, $patient, $timeSlot, $validated['appointment_date']));
-            } 
+            }
 
             DB::commit();
 

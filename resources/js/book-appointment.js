@@ -68,7 +68,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para verificar disponibilidad en tiempo real
     async function checkRealTimeAvailability(date) {
         try {
-            statusElement.classList.remove("hidden");
+            if(statusElement){
+                statusElement.classList.remove("hidden");
+            }
 
             const response = await fetch(`/api/available-slots/${date}`, {
                 method: "GET",
@@ -92,7 +94,9 @@ document.addEventListener("DOMContentLoaded", function () {
             timeSelect.innerHTML = '<option value="">Error al cargar horarios. Intente recargar la página.</option>';
             timeSelect.disabled = true;
         } finally {
-            statusElement.classList.add("hidden");
+            if(statusElement){
+                statusElement.classList.add("hidden");
+            }
         }
     }
 

@@ -23,6 +23,11 @@ class EloquentDoctorReservedTimeRepository implements DoctorReservedTimeReposito
         return $this->model->query()->where('user_id', $userId)->orderBy('date', 'asc')->paginate($perPage);
     }
 
+    public function paginateAll(int $perPage)
+    {
+        return $this->model->query()->with('doctor')->orderBy('date', 'asc')->paginate($perPage);
+    }
+
     public function findById(int $id)
     {
         return $this->model->find($id);

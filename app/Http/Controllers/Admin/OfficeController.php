@@ -39,8 +39,8 @@ class OfficeController extends Controller
         $request['abbreviation'] = strtoupper($request['abbreviation']);
 
         $validated = $request->validate([
-            'name' => 'required|string|min:3|max:100|unique:offices',
-            'abbreviation' => 'required|string|min:2|max:10|unique:offices',
+            'name' => 'required|string|min:3|max:100|unique:offices,name',
+            'abbreviation' => 'required|string|min:2|max:10|unique:offices,abbreviation',
             'status' => 'required',
             'user_id' => 'nullable',
         ], [
@@ -97,8 +97,8 @@ class OfficeController extends Controller
     public function update(Request $request, Office $office)
     {
         $validated = $request->validate([
-            'name' => 'required|string|min:3|max:100|unique:offices',
-            'abbreviation' => 'required|string|min:2|max:10|unique:offices',
+            'name' => 'required|string|min:3|max:100|unique:offices,name'.$office->id,
+            'abbreviation' => 'required|string|min:2|max:10|unique:offices,abbreviation'.$office->id,
             'status' => 'required',
             'user_id' => 'nullable',
         ], [
