@@ -5,15 +5,16 @@
                 <div class="p-4 sm:p-8 text-gray-900">
 
                     <!-- Título y Acciones -->
-                    <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <h1 class="text-xl font-bold sm:text-2xl text-gray-800 flex items-center gap-2">
+                    <div class="mb-6 flex flex-row justify-between items-start sm:items-center gap-4">
+                        <h1 class="text-lg font-bold sm:text-2xl text-gray-800 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-700" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" style="color: #157564;">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            Horarios Configurados
+                            Horarios
                         </h1>
+                        <x-back-link :url="route('dashboard')" />
                     </div>
 
                     <!-- Stats Card - Resumen -->
@@ -60,25 +61,8 @@
                                     stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             <h3 class="text-xl font-semibold text-gray-800 mb-2">No hay horarios registrados</h3>
-                            <p class="text-gray-600 mb-6">Comienza configurando tu primer horario para las citas</p>
-                            <x-add-button action="{{ route('schedules.index') }}" text="Configurar Horarios" />
                         </div>
                     @else
-                        <!-- Filtro -->
-                        <div class="mb-6 flex flex-col sm:flex-row gap-4">
-                            <div class="flex gap-2">
-                                <select id="filterMonth"
-                                    class="rounded-lg border border-gray-300 px-8 py-2.5 focurs:outline-none w-full">
-                                    <option value="">Todos los meses</option>
-                                    @for ($i = 1; $i <= 12; $i++)
-                                        <option value="{{ $i }}">
-                                            {{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}
-                                        </option>
-                                    @endfor
-                                </select>
-                            </div>
-                        </div>
-
                         <!-- Vista para Móviles (Tarjetas) -->
                         <div class="sm:hidden space-y-4 mb-6">
                             @foreach ($schedules as $date => $hoursCollection)

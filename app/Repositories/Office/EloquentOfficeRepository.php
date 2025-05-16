@@ -44,4 +44,9 @@ class EloquentOfficeRepository implements OfficeRepositoryInterface
             $office->delete();
         });
     }
+
+    public function getAvailableOffices()
+    {
+        return $this->model->where('status', 'activo')->orderBy('name')->get();
+    }
 }

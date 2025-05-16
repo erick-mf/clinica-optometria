@@ -12,6 +12,8 @@ interface DoctorReservedTimeRepositoryInterface
 
     public function findById(int $id);
 
+    public function getReservedTimesByDate($date, $officeId = null);
+
     public function all();
 
     public function create(array $data);

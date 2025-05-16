@@ -8,7 +8,8 @@ uses()->group('validation');
 
 test('dni must be unique - already exists in uppercase', function () {
     Patient::factory()->create([
-        'dni' => '47575922T',
+        'document_type' => 'DNI',
+        'document_number' => '67011201B',
     ]);
 
     $data = [
@@ -17,7 +18,8 @@ test('dni must be unique - already exists in uppercase', function () {
         'birthdate' => '1990-01-01',
         'email' => 'random@example.com',
         'phone' => '666666666',
-        'dni' => '47575922t',
+        'document_type' => 'DNI',
+        'document_number' => '67011201b',
     ];
 
     $request = new AdminPatientRequest;
@@ -29,6 +31,6 @@ test('dni must be unique - already exists in uppercase', function () {
     $fails = $validator->fails();
 
     expect($fails)->toBeTrue()
-        ->and($validator->errors()->has('dni'))->toBeTrue()
-        ->and($validator->errors()->first('dni'))->toBe('El DNI/NIE ya está registrado.');
+        ->and($validator->errors()->has('document_number'))->toBeTrue()
+        ->and($validator->errors()->first('document_number'))->toBe('El documento ya está registrado en el sistema.');
 });

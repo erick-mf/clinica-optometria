@@ -7,6 +7,7 @@ use App\Http\Requests\BookAppointmentRequest;
 use App\Repositories\Appointment\AppointmentRepositoryInterface;
 use App\Repositories\AvailableDate\AvailableDateRepositoryInterface;
 use App\Repositories\Doctor\DoctorRepositoryInterface;
+use App\Repositories\DoctorReservedTime\DoctorReservedTimeRepositoryInterface;
 use App\Repositories\Patient\PatientRepositoryInterface;
 use App\Repositories\TimeSlot\TimeSlotRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
@@ -20,7 +21,8 @@ class BookAppointmentController extends Controller
         private readonly AppointmentRepositoryInterface $appointmentRepository,
         private readonly PatientRepositoryInterface $patientRepository,
         private readonly DoctorRepositoryInterface $doctorRepository,
-        private readonly TimeSlotRepositoryInterface $timeSlotRepository
+        private readonly TimeSlotRepositoryInterface $timeSlotRepository,
+        private readonly DoctorReservedTimeRepositoryInterface $doctorReservedTimeRepository
     ) {}
 
     public function index()
@@ -42,8 +44,16 @@ class BookAppointmentController extends Controller
     public function getAvailableSlots(string $date)
     {
         try {
-            // Obtener slots disponibles para la fecha solicitada
             $slots = $this->availableDateRepository->getAvailableSlotsForDate($date);
+
+            $includeReserved = request()->query('include_reserved') === 'true';
+            $officeId = request()->query('office_id');
+
+            if ($includeReserved) {
+                $reservedTimesDoctor = $this->doctorReservedTimeRepository->getReservedTimesByDate($date, $officeId) ?? [];
+
+                return response()->json($reservedTimesDoctor);
+            }
 
             return response()->json($slots);
         } catch (\Exception $e) {
@@ -88,9 +98,9 @@ class BookAppointmentController extends Controller
             $timeSlot = $this->timeSlotRepository->find($validated['appointment_time']);
 
             // Verificar si hay un correo disponible antes de enviar el evento
-            if (!empty($patient->email) || !empty($patient->tutor_email)) {
+            if (! empty($patient->email) || ! empty($patient->tutor_email)) {
                 event(new AppointmentCreated($appointment, $patient, $timeSlot, $validated['appointment_date']));
-            } 
+            }
 
             DB::commit();
 

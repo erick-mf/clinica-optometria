@@ -24,6 +24,26 @@
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 
                             <div class="grid grid-cols-1 gap-4 sm:gap-6">
+                                <!-- campo para seleccionar oficina/espacio -->
+                                <div class="text-left w-full">
+                                    <label for="office_id" class="block text-sm font-medium text-gray-700 mb-1">
+                                        oficina/espacio*
+                                    </label>
+                                    <select id="office_id" name="office_id"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
+                                        <option value="">seleccione una oficina o espacio</option>
+                                        @foreach ($offices as $office)
+                                            <option value="{{ $office->id }}"
+                                                {{ old('office_id') == $office->id ? 'selected' : '' }}>
+                                                {{ $office->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('office_id')
+                                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
                                 <div class="text-left w-full">
                                     <label for="date" class="block text-sm font-medium text-gray-700 mb-1">
                                         Fecha*
@@ -50,7 +70,8 @@
                                 <div class="text-left w-full">
                                     <div id="reserved-hours-display"
                                         class="p-3 bg-gray-50 rounded-md min-h-10 border border-gray-200">
-                                        <p class="text-sm text-gray-500">Seleccione una fecha para ver las horas
+                                        <p class="text-sm text-gray-500">Seleccione una fecha y espacio para ver las
+                                            horas
                                             reservadas</p>
                                     </div>
                                 </div>
@@ -96,8 +117,7 @@
                                         <textarea id="details" name="details" rows="3" maxlength="255"
                                             class="w-full p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary resize-none"
                                             placeholder="Ej: reunión externa, descanso, videollamada...">{{ old('details') }}</textarea>
-                                        <p class="text-xs sm:text-sm text-gray-500 mt-1"><span
-                                                id="char-count">0</span>/255</p>
+                                        <p class="text-xs sm:text-sm text-gray-500 mt-1">Máximo 255 caracteres</p>
                                     </div>
                                     @error('details')
                                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
@@ -127,6 +147,7 @@
                                 No tienes reservaciones personales registradas.
                             </div>
                         @else
+                            <h3 class="text-lg font-semibold mb-2">Reservaciones personales</h3>
                             <ul id="reservation-list"
                                 class="divide-y divide-gray-200 max-h-[550px] overflow-y-auto pr-1">
                                 @foreach ($reservedTimes as $reservedTime)
@@ -143,6 +164,12 @@
                                                         a {{ substr($reservedTime->end_time, 0, 5) }}
                                                     </span>
                                                 </p>
+                                                @if ($reservedTime->office)
+                                                    <p class="text-sm text-gray-600">
+                                                        <span class="font-medium">Espacio:</span>
+                                                        {{ $reservedTime->office->name }}
+                                                    </p>
+                                                @endif
                                                 @if ($reservedTime->details)
                                                     <p class="text-sm text-gray-600 mt-1">
                                                         <span class="font-medium">Motivo:</span>
