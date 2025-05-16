@@ -15,6 +15,7 @@ class DoctorReservedTime extends Model
         'end_time',
         'details',
         'user_id',
+        'office_id',
     ];
 
     public function casts()
@@ -27,5 +28,10 @@ class DoctorReservedTime extends Model
     public function doctor()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class, 'office_id', 'id');
     }
 }

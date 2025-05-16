@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Office;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,6 +24,7 @@ class DoctorReservedTimeFactory extends Factory
             'end_time' => $this->faker->time('H:i'),
             'details' => $this->faker->sentence(),
             'user_id' => $this->faker->randomElement(User::all())->id,
+            'office_id' => $this->faker->randomElement(Office::all())->id,
         ];
     }
 }

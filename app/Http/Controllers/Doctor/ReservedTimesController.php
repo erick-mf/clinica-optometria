@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\DoctorReservedTime\DoctorReservedTimeRepositoryInterface;
+use App\Repositories\Office\OfficeRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ReservedTimesController extends Controller
 {
-    public function __construct(private readonly DoctorReservedTimeRepositoryInterface $doctorReservedTimeRepository) {}
+    public function __construct(
+        private readonly DoctorReservedTimeRepositoryInterface $doctorReservedTimeRepository,
+        private readonly OfficeRepositoryInterface $officeRepository) {}
 
     /**
      * Display a listing of the resource.
@@ -19,10 +22,9 @@ class ReservedTimesController extends Controller
     {
         $userId = (int) Auth::user()->id;
         $reservedTimes = $this->doctorReservedTimeRepository->paginate(10, $userId);
+        $offices = $this->officeRepository->getAvailableOffices();
 
-        return view('doctor.reserved-times.index', [
-            'reservedTimes' => $reservedTimes,
-        ]);
+        return view('doctor.reserved-times.index', compact('reservedTimes', 'offices'));
     }
 
     /**
@@ -31,12 +33,14 @@ class ReservedTimesController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'office_id' => 'required',
             'date' => 'required',
             'start_time' => 'required',
             'end_time' => 'required|after:start_time',
             'details' => 'required|string',
             'user_id' => 'required',
         ], [
+            'office_id.required' => 'El espacio es requerido',
             'date.required' => 'La fecha es requerida',
             'start_time.required' => 'La hora de inicio es requerida',
             'end_time.required' => 'La hora de fin es requerida',
@@ -52,7 +56,7 @@ class ReservedTimesController extends Controller
         } catch (\Exception $e) {
             Log::error('Error al crear el horario reservado: '.$e->getMessage());
 
-            return back()->with('toast', ['type' => 'error', 'message' => 'Error al crear el horario reservado: '.$e->getMessage()]);
+            return back()->with('toast', ['type' => 'error', 'message' => 'Error al crear el horario reservado']);
         }
 
     }

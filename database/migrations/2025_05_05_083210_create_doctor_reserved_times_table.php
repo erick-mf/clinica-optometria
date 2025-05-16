@@ -18,9 +18,10 @@ return new class extends Migration
             $table->time('end_time');
             $table->string('details', 255);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('office_id')->constrained('offices')->onDelete('cascade');
             $table->timestamps();
 
-            $table->unique(['date', 'start_time', 'end_time', 'user_id'], 'unique_reservation');
+            $table->unique(['date', 'start_time', 'end_time', 'user_id', 'office_id'], 'unique_reservation');
         });
     }
 
