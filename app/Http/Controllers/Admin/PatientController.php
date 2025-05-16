@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminPatientRequest;
 use App\Models\Patient;
 use App\Repositories\Patient\PatientRepositoryInterface;
-use App\Http\Requests\AdminPatientRequest;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PatientController extends Controller
 {
@@ -18,13 +18,13 @@ class PatientController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $search = trim($request->input('search'));
         $validated = $request->validate([
             'search' => 'nullable|string|min:3|max:100',
         ]);
 
         if ($request->filled('search')) {
-            $patients = $this->repository->search($validated['search']);
+            $patients = $this->repository->search(trim($validated['search']));
         } else {
             $patients = $this->repository->paginate();
         }
@@ -51,12 +51,15 @@ class PatientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AdminPatientRequest $request) // Usar AdminPatientRequest
+    public function store(AdminPatientRequest $request)
     {
-        $validated = $request->validated(); // Validar automáticamente con AdminPatientRequest
+        $validated = $request->validated();
 
         try {
             $patient = $this->repository->create($validated);
+            if (! $patient) {
+                return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'El paciente ya existe.']);
+            }
 
             return redirect()
                 ->route('admin.patients.index')
@@ -73,12 +76,15 @@ class PatientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AdminPatientRequest $request, Patient $patient) // Usar AdminPatientRequest
+    public function update(AdminPatientRequest $request, Patient $patient)
     {
-        $validated = $request->validated(); // Validar automáticamente con AdminPatientRequest
+        $validated = $request->validated();
 
         try {
-            $this->repository->update($patient, $validated);
+            $patient = $this->repository->update($patient, $validated);
+            if (! $patient) {
+                return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'El paciente ya existe.']);
+            }
 
             return redirect()
                 ->route('admin.patients.index')

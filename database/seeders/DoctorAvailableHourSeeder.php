@@ -12,6 +12,6 @@ class DoctorAvailableHourSeeder extends Seeder
      */
     public function run(): void
     {
-        DoctorAvailableHour::factory(10)->create();
+        DoctorAvailableHour::factory(5)->create();
     }
 }

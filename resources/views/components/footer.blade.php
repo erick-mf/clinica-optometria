@@ -48,7 +48,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
                 <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
                     <a href="{{ route('privacy-policy') }}"
-                        class="text-sm hover:text-white/80 transition-colors duration-300 sm:border-r sm:border-white sm:pr-4">
+                        class="text-sm hover:text-white/80 transition-colors duration-300 sm:border-r sm:border-white sm:pr-6">
                         Política de privacidad
                     </a>
                     <a href="{{ route('terms-conditions') }}"

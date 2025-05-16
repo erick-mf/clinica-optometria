@@ -30,7 +30,7 @@
                                 <div class="text-left w-full">
                                     <label for="name"
                                         class="block text-sm sm:text-base font-medium text-gray-700 mb-1">
-                                        Nombre del espacio:
+                                        Nombre del espacio *
                                     </label>
                                     <input type="text" id="name" name="name"
                                         value="{{ old('name', $office->name ?? '') }}"
@@ -41,13 +41,28 @@
                                     @enderror
                                 </div>
 
+                                <!-- Abreviatura del espacio -->
+                                <div class="text-left w-full">
+                                    <label for="name"
+                                        class="block text-sm sm:text-base font-medium text-gray-700 mb-1">
+                                        Abreviatura del espacio *
+                                    </label>
+                                    <input type="text" id="abbreviation" name="abbreviation"
+                                        value="{{ old('abbreviation', $office->abbreviation ?? '') }}"
+                                        class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-primary focus:border-primary transition duration-150"
+                                        placeholder="Ej: C1, P1...">
+                                    @error('abbreviation')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
                                 <!-- Estado (Activo/Inactivo/En mantenimiento) -->
                                 <div class="text-left w-full">
-                                    <label
-                                        class="block text-sm sm:text-base font-medium text-gray-700 mb-2">Estado:</label>
+                                    <label class="block text-sm sm:text-base font-medium text-gray-700 mb-2">Estado
+                                        *</label>
                                     <div class="flex flex-wrap gap-4">
                                         <label class="inline-flex items-center">
-                                            <input type="radio" name="status" value="activo"
+                                            <input type="radio" name="status" value="activo" id="status_activo"
                                                 {{ $isEdit && $office->status == 'activo' ? 'checked' : '' }}
                                                 class="w-4 h-4 text-primary border-gray-300 focus:ring-primary">
                                             <div class="ml-2 flex items-center">
@@ -79,14 +94,15 @@
                                 </div>
 
                                 <!-- Asignación de doctor -->
-                                <div class="text-left w-full">
+                                <div class="text-left w-full hidden" id="doctor_assignment_section">
                                     <label for="user_id"
                                         class="block text-sm sm:text-base font-medium text-gray-700 mb-1">
-                                        Doctor asignado:
+                                        Profesional asignado
                                     </label>
                                     <select id="user_id" name="user_id"
                                         class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-primary focus:border-primary transition duration-150">
-                                        <option value="">Seleccionar doctor</option>
+                                        <option disabled selected>Seleccionar profesional</option>
+                                        <option value="">Sin profesional</option>
                                         @foreach ($doctors as $doctor)
                                             <option value="{{ $doctor->id }}"
                                                 {{ old('user_id', $office->user_id ?? '') == $doctor->id ? 'selected' : '' }}>
@@ -94,7 +110,8 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <p class="mt-1 text-xs text-gray-500">Opcional: selecciona un doctor para asignar a
+                                    <p class="mt-1 text-xs text-gray-500">Opcional: selecciona un profesional para
+                                        asignar a
                                         este espacio</p>
                                     @error('user_id')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -147,7 +164,9 @@
                                             <div class="flex flex-col sm:flex-row justify-between sm:items-center">
                                                 <div class="mb-2 sm:mb-0">
                                                     <h3 class="text-base font-medium text-gray-800">
-                                                        {{ $office->name }}</h3>
+                                                        {{ $office->name }}
+                                                        {{ isset($office->abbreviation) ? '-' : '' }}
+                                                        {{ $office->abbreviation }}</h3>
                                                     <div class="mt-1 flex flex-wrap gap-2 flex-col">
                                                         <!-- Estado con mejor visualización -->
                                                         <div class="flex items-center">
@@ -173,7 +192,8 @@
                                                             </div>
                                                         @else
                                                             <div class="flex items-center text-gray-400">
-                                                                <span class="text-sm">Sin doctor asignado</span>
+                                                                <span class="text-sm">No tiene profesional
+                                                                    asignado</span>
                                                             </div>
                                                         @endif
                                                     </div>

@@ -4,6 +4,7 @@ import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/material_green.css";
 
 window.flatpickr = flatpickr;
+flatpickr.localize(Spanish);
 
 // Función para formatear fecha como YYYY-MM-DD
 const formatDate = (date) => {

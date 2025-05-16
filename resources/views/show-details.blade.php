@@ -32,8 +32,9 @@
                                 <p class="font-medium">{{ ucfirst($appointment->patient->name) }}
                                     {{ ucfirst($appointment->patient->surnames) }}</p>
 
-                                <p class="text-sm text-gray-500">DNI:</p>
-                                <p class="font-medium">{{ $appointment->patient->dni ?? 'No especificado' }}</p>
+                                <p class="text-sm text-gray-500">{{ $appointment->patient->document_type }}:</p>
+                                <p class="font-medium">{{ $appointment->patient->document_number ?? 'No especificado' }}
+                                </p>
 
                                 <p class="text-sm text-gray-500">Teléfono:</p>
                                 <p class="font-medium">{{ $appointment->patient->phone ?? 'No especificado' }}</p>
@@ -89,10 +90,11 @@
                                 <p class="font-medium">Prof. {{ ucfirst($appointment->user->surnames) }}</p>
 
                                 <p class="text-sm text-gray-500">Especialidad:</p>
-                                <p class="font-medium">{{ $appointment->user->specialty ?? 'General' }}</p>
+                                <p class="font-medium">{{ 'General' }}</p>
 
                                 <p class="text-sm text-gray-500">Consultorio:</p>
-                                <p class="font-medium">{{ $appointment->user->office ?? 'No especificado' }}</p>
+                                <p class="font-medium">
+                                    {{ $appointment->user->office->abbreviation ?? 'No especificado' }}</p>
                             </div>
                         </div>
                     </div>

@@ -15,4 +15,6 @@ interface OfficeRepositoryInterface
     public function update(Office $office, array $data);
 
     public function delete(Office $office);
+
+    public function getAvailableOffices();
 }

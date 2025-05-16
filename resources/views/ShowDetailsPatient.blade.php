@@ -44,9 +44,10 @@
                                     </p>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium text-gray-700">DNI:</p>
+                                    <p class="text-sm font-medium text-gray-700">
+                                        {{ $patient->document_type ?? 'No especificado' }}:</p>
                                     <p class="text-gray-800" id="dni">
-                                        {{ $patient->dni ?? 'No especificado' }}
+                                        {{ $patient->document_number ?? 'No especificado' }}
                                     </p>
                                 </div>
                             </div>
@@ -55,7 +56,7 @@
                         @if (
                             !empty($patient->tutor_name) ||
                                 !empty($patient->tutor_email) ||
-                                !empty($patient->tutor_dni) ||
+                                !empty($patient->tutor_document_type) ||
                                 !empty($patient->tutor_phone))
                             <div class="bg-blue-50 border border-blue-200 rounded-md p-6 shadow-sm">
                                 <h3 class="text-lg font-semibold text-blue-700 mb-4 flex items-center">
@@ -81,9 +82,10 @@
                                         </p>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-medium text-gray-700">DNI del tutor:</p>
+                                        <p class="text-sm font-medium text-gray-700">{{ $patient->tutor_document_type }}
+                                            del tutor:</p>
                                         <p class="text-gray-800" id="tutor_dni">
-                                            {{ $patient->tutor_dni ?? 'No especificado' }}
+                                            {{ $patient->tutor_document_number ?? 'No especificado' }}
                                         </p>
                                     </div>
                                     <div>

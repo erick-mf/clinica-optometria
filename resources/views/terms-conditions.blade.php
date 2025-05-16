@@ -5,7 +5,7 @@
     <div class="max-w-3xl mx-auto py-12 px-6 sm:px-8">
         <h3 class="text-2xl font-bold text-gray-800 text-center mb-8">Términos y condiciones</h3>
         <p class="text-gray-600">
-            Bienvenido a nuestro sitio web de gestión de citas para la clínica de optometría ubicada en Granada. Al
+            Bienvenido a nuestra web de gestión de citas para la clínica de optometría CUVO ubicada en el Hospital San Rafael en Granada. Al
             acceder y utilizar
             este sitio web, acepta cumplir con los términos y condiciones establecidos a continuación. Si no está de
             acuerdo con estos

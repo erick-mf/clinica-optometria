@@ -18,6 +18,8 @@ return new class extends Migration
             $table->boolean('is_available')->default(true);
             $table->foreignId('available_date_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            $table->unique(['start_time', 'end_time', 'available_date_id'], 'available_hours_unique');
         });
     }
 

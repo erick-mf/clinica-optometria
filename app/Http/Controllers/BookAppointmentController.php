@@ -7,13 +7,12 @@ use App\Http\Requests\BookAppointmentRequest;
 use App\Repositories\Appointment\AppointmentRepositoryInterface;
 use App\Repositories\AvailableDate\AvailableDateRepositoryInterface;
 use App\Repositories\Doctor\DoctorRepositoryInterface;
+use App\Repositories\DoctorReservedTime\DoctorReservedTimeRepositoryInterface;
 use App\Repositories\Patient\PatientRepositoryInterface;
 use App\Repositories\TimeSlot\TimeSlotRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class BookAppointmentController extends Controller
 {
@@ -22,7 +21,8 @@ class BookAppointmentController extends Controller
         private readonly AppointmentRepositoryInterface $appointmentRepository,
         private readonly PatientRepositoryInterface $patientRepository,
         private readonly DoctorRepositoryInterface $doctorRepository,
-        private readonly TimeSlotRepositoryInterface $timeSlotRepository
+        private readonly TimeSlotRepositoryInterface $timeSlotRepository,
+        private readonly DoctorReservedTimeRepositoryInterface $doctorReservedTimeRepository
     ) {}
 
     public function index()
@@ -44,8 +44,16 @@ class BookAppointmentController extends Controller
     public function getAvailableSlots(string $date)
     {
         try {
-            // Obtener slots disponibles para la fecha solicitada
             $slots = $this->availableDateRepository->getAvailableSlotsForDate($date);
+
+            $includeReserved = request()->query('include_reserved') === 'true';
+            $officeId = request()->query('office_id');
+
+            if ($includeReserved) {
+                $reservedTimesDoctor = $this->doctorReservedTimeRepository->getReservedTimesByDate($date, $officeId) ?? [];
+
+                return response()->json($reservedTimesDoctor);
+            }
 
             return response()->json($slots);
         } catch (\Exception $e) {
@@ -65,9 +73,11 @@ class BookAppointmentController extends Controller
         }
 
         // Verificar si el paciente ya tiene una cita agendada
-        $alreadyHasAppointment = $this->appointmentRepository->isAlreadyBooked($patient->id, $validated['appointment_date']);
-        if ($alreadyHasAppointment === true) {
-            return back()->with('toast', ['type' => 'info', 'message' => 'Ya tiene una cita agendada ese día.'])->withInput();
+        $alreadyHasAppointment = $this->appointmentRepository->isAlreadyBooked($patient->id, false);
+        if ($alreadyHasAppointment) {
+            return back()->with('toast', [
+                'type' => 'info',
+                'message' => 'Ya tiene una cita agendada pendiente.No puede agendar otra hasta que complete o cancele esta cita'])->withInput();
         }
 
         // Verificar disponibilidad del slot
@@ -86,7 +96,11 @@ class BookAppointmentController extends Controller
 
             // Enviar correo de confirmación
             $timeSlot = $this->timeSlotRepository->find($validated['appointment_time']);
-            event(new AppointmentCreated($appointment, $patient, $timeSlot, $validated['appointment_date']));
+
+            // Verificar si hay un correo disponible antes de enviar el evento
+            if (! empty($patient->email) || ! empty($patient->tutor_email)) {
+                event(new AppointmentCreated($appointment, $patient, $timeSlot, $validated['appointment_date']));
+            }
 
             DB::commit();
 

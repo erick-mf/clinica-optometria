@@ -62,4 +62,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(AvailableHour::class, 'doctor_available_hours', 'doctor_id', 'available_hour_id');
     }
+
+    public function office()
+    {
+        return $this->hasOne(Office::class, 'user_id');
+    }
+
+    public function personalReservations()
+    {
+        return $this->hasMany(DoctorReservedTime::class, 'user_id');
+    }
 }

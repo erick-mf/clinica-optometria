@@ -20,7 +20,7 @@
                         </div>
                     </div>
 
-                    @if (!request('s') && $patients->isEmpty())
+                    @if (!request('search') && $patients->isEmpty())
                         <div class="bg-gradient-to-br from-gray-50 to-teal-50 rounded-lg p-8 sm:p-12 text-center border border-gray-200 shadow-sm"
                             style="background: linear-gradient(to bottom right, #f9fafb, rgba(21, 117, 100, 0.1));">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-6 opacity-80"
@@ -31,9 +31,9 @@
                             <h3 class="text-xl font-semibold text-gray-800 mb-2">No hay pacientes registrados</h3>
                             <p class="text-gray-600 mb-6">Comienza agregando tu primer paciente al sistema</p>
                         </div>
-                    @elseif (request('s') && $patients->isEmpty())
+                    @elseif (request('search') && $patients->isEmpty())
                         <!-- Buscador -->
-                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre, apellido o dni...'" />
+                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre o apellido'" />
 
                         <!-- Mensaje de no resultados para búsqueda -->
                         <div class="bg-gray-50 rounded-lg p-3 sm:p-4 text-center mb-4 sm:mb-6">
@@ -43,7 +43,7 @@
                         </div>
                     @else
                         <!-- Buscador -->
-                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre, apellido o dni...'" />
+                        <x-search-form :action="route('admin.patients.index')" :placeholder="'Buscar por nombre o apellido'" />
 
 
                         <!-- Vista para Móviles (Tarjetas) -->
@@ -65,7 +65,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                             </svg>
-                                            {{ $patient->email ?? 'Menor de edad' }}
+                                            @if ($patient->email)
+                                                {{ $patient->email }}
+                                            @else
+                                                {{ \Carbon\Carbon::parse($patient->birthdate)->age >= 18 ? 'Email no disponible' : 'Menor de edad' }}
+                                            @endif
                                         </span>
                                         <span class="text-gray-600 text-sm flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none"
@@ -81,7 +85,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
                                             </svg>
-                                            {{ $patient->dni ?? 'Menor de edad' }}
+                                            @if (isset($patient->document_type) && isset($patient->document_number))
+                                                {{ $patient->document_type }} {{ $patient->document_number }}
+                                            @else
+                                                Menor de edad
+                                            @endif
                                         </span>
                                     </div>
 
@@ -123,11 +131,11 @@
                                             Email
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Teléfono
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Acciones
                                         </th>
                                     </tr>
@@ -135,21 +143,25 @@
                                 <tbody class="divide-y divide-gray-200" id="patientsTableBody">
                                     @foreach ($patients as $patient)
                                         <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                                                 {{ ucfirst($patient->name) }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                                                 {{ ucfirst($patient->surnames) }}
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 truncate max-w-xs">
-                                                {{ $patient->email ?? 'Menor de edad' }}
+                                                @if ($patient->email)
+                                                    {{ $patient->email }}
+                                                @else
+                                                    {{ \Carbon\Carbon::parse($patient->birthdate)->age >= 18 ? 'Email no disponible' : 'Menor de edad' }}
+                                                @endif
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                                                 {{ $patient->phone ?? 'Menor de edad' }}
                                             </td>
                                             <!-- Vista para Tablets/Desktop (Tabla) - Botones con ancho fijo -->
-                                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                            <td class="px-4 py-4 whitespace-nowrap text-center">
                                                 <div class="flex justify-center space-x-2">
                                                     <x-action-button
                                                         action=" {{ route('admin.patients.edit', $patient) }}"

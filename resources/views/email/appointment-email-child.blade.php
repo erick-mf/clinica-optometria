@@ -106,6 +106,7 @@
                 <p><strong>Paciente:</strong> {{ $patient->name }} {{ $patient->surnames ?? '' }}</p>
                 <p><strong>Fecha:</strong> {{ date('d/m/Y', strtotime($date_appointment)) }}</p>
                 <p><strong>Hora de la cita:</strong> {{ date('H:i', strtotime($time_slot->start_time)) }}</p>
+                <p><strong>Sala:</strong> {{ $appointment->user->office->name }}</p>
                 <p><strong>Lugar:</strong> Hospital San Rafael</p>
                 <p><strong>Dirección:</strong> Calle San Juan de Dios, 19, centro, 18001 Granada</p>
             </div>

@@ -15,11 +15,13 @@ class Patient extends Model
         'birthdate',
         'email',
         'phone',
-        'dni',
+        'document_type',
+        'document_number',
         'birthdate',
         'tutor_name',
         'tutor_email',
-        'tutor_dni',
+        'tutor_document_type',
+        'tutor_document_number',
         'tutor_phone',
     ];
 

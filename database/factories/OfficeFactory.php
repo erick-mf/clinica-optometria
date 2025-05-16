@@ -19,7 +19,8 @@ class OfficeFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'status' => $this->faker->randomElement(['activo', 'inactivo', 'en mantenimiento']),
+            'abbreviation' => $this->faker->randomLetter(),
+            'status' => $this->faker->randomElement(['activo']),
             'user_id' => $this->faker->randomElement(User::all())->id,
         ];
     }

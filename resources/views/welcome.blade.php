@@ -3,7 +3,7 @@
     <x-rrss />
 
     <!-- Hero Section-->
-    <section class="relative w-full sm:h-[83svh] h-[50svh] min-h-[500px] max-h-[900px] overflow-hidden">
+    <section class="relative w-full sm:h-[83svh] h-[50svh] min-h-[518px] max-h-[900px] overflow-hidden">
         <div class="absolute inset-0">
             <picture>
                 <source media="(min-width: 768px)" srcset="/images/img5.webp" type="image/webp">

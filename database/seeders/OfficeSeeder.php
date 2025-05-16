@@ -12,10 +12,29 @@ class OfficeSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 1; $i < 5; $i++) {
             Office::factory()->create([
-                'name' => 'Oficina '.$i,
+                'name' => 'Consulta '.$i,
+                'abbreviation' => 'C'.$i,
             ]);
         }
+
+        for ($i = 1; $i < 4; $i++) {
+            Office::factory()->create([
+                'name' => 'Polivalente '.$i,
+                'abbreviation' => 'P'.$i,
+            ]);
+        }
+
+        Office::factory()->create([
+            'name' => 'Evaluación Avanzada',
+            'abbreviation' => 'EA',
+        ]);
+
+        Office::factory()->create([
+            'name' => 'Contactología',
+            'abbreviation' => 'CO',
+        ]);
+
     }
 }

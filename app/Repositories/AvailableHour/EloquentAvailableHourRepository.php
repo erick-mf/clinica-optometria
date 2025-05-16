@@ -55,4 +55,28 @@ class EloquentAvailableHourRepository implements AvailableHourRepositoryInterfac
     {
         return $availableHour->delete();
     }
+
+    public function getAvailableHoursByDate($date)
+    {
+        return $this->model->whereHas('availableDate', function ($query) use ($date) {
+            $query->where('date', $date);
+        })->get(['start_time', 'end_time']);
+    }
+
+    public function checkAvailabilityConflict($officeId, $date, $startTime, $endTime)
+    {
+        return $this->model->whereHas('availableDate', function ($q) use ($date) {
+            $q->where('date', $date);
+        })
+            ->where('office_id', $officeId)
+            ->where(function ($query) use ($startTime, $endTime) {
+                $query->whereBetween('start_time', [$startTime, $endTime])
+                    ->orWhereBetween('end_time', [$startTime, $endTime])
+                    ->orWhere(function ($q) use ($startTime, $endTime) {
+                        $q->where('start_time', '<=', $startTime)
+                            ->where('end_time', '>=', $endTime);
+                    });
+            })
+            ->exists();
+    }
 }

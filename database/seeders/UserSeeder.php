@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 1; $i < 5; $i++) {
+        for ($i = 1; $i < 9; $i++) {
             User::factory()->create([
                 'email' => 'user'.$i.'@example.com',
                 'password' => bcrypt('1234567890'),

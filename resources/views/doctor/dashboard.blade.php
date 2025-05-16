@@ -69,6 +69,23 @@
                     </div>
                 </a>
 
+                <!-- Gestionar Reservas de Espacios -->
+                <a href="{{ route('reserved-times.index') }}"
+                    class="block p-4 sm:p-6 bg-white overflow-hidden shadow-xl sm:rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-200">
+                    <div class="flex items-start gap-4">
+                        <div class="rounded-full p-3 flex-shrink-0" style="background-color: rgba(21, 117, 100, 0.1);">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-700" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" style="color: #157564;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">Reservas</h2>
+                            <p class="text-sm text-gray-600">Gestiona reserva de espacios</p>
+                        </div>
+                    </div>
+                </a>
             </div>
 
             <!-- Sección de Citas de Hoy -->
@@ -163,7 +180,7 @@
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Profesor
+                                        Profesional
                                     </th>
                                     <th scope="col"
                                         class="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">

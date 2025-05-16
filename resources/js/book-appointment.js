@@ -2,9 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const dateInput = document.getElementById("appointment_date");
     const timeSelect = document.getElementById("appointment_time");
     const statusElement = document.getElementById("availability-status");
-    const token = document.querySelector('meta[name="x-appointment-token"]').getAttribute("content");
+    const token = document.querySelector('meta[name="x-appointment-token"]')?.getAttribute("content");
 
-    if (!dateInput || !timeSelect) return;
+    if (!dateInput || !timeSelect || !token) return;
 
     // Obtener datos de disponibilidad
     const bookingData = document.getElementById("booking-data");
@@ -68,9 +68,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para verificar disponibilidad en tiempo real
     async function checkRealTimeAvailability(date) {
         try {
-            statusElement.classList.remove("hidden");
+            if(statusElement){
+                statusElement.classList.remove("hidden");
+            }
 
-            const response = await fetch(`/~unidadoptometria/api/available-slots/${date}`, {
+            const response = await fetch(`/api/available-slots/${date}`, {
                 method: "GET",
                 headers: {
                     "X-Appointment-Token": token,
@@ -92,7 +94,9 @@ document.addEventListener("DOMContentLoaded", function () {
             timeSelect.innerHTML = '<option value="">Error al cargar horarios. Intente recargar la página.</option>';
             timeSelect.disabled = true;
         } finally {
-            statusElement.classList.add("hidden");
+            if(statusElement){
+                statusElement.classList.add("hidden");
+            }
         }
     }
 

@@ -14,7 +14,7 @@ class EloquentOfficeRepository implements OfficeRepositoryInterface
 
     public function all()
     {
-        return $this->model->paginate(20);
+        return $this->model->orderBy('name')->get();
     }
 
     public function find($id)
@@ -24,11 +24,15 @@ class EloquentOfficeRepository implements OfficeRepositoryInterface
 
     public function create(array $data)
     {
+        $data['name'] = ucwords(strtolower($data['name']));
+
         return $this->model->create($data);
     }
 
     public function update(Office $office, array $data)
     {
+        $data['name'] = ucwords(strtolower($data['name']));
+
         $office->update($data);
 
         return $office;
@@ -39,5 +43,10 @@ class EloquentOfficeRepository implements OfficeRepositoryInterface
         return DB::transaction(function () use ($office) {
             $office->delete();
         });
+    }
+
+    public function getAvailableOffices()
+    {
+        return $this->model->where('status', 'activo')->orderBy('name')->get();
     }
 }

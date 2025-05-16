@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\OfficeController;
 use App\Http\Controllers\Admin\PatientController;
+use App\Http\Controllers\Admin\ReservedTimeController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\SetupPasswordController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\Doctor\AppointmentController as DoctorAppointment;
 use App\Http\Controllers\Doctor\DashboardController as DoctorDashboard;
 use App\Http\Controllers\Doctor\PatientController as DoctorPatient;
+use App\Http\Controllers\Doctor\ReservedTimesController as DoctorReservedTimes;
 use App\Http\Controllers\Doctor\ScheduleController as DoctorSchedule;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +67,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'verified', 'admin')-
     Route::get('appointments/create/{patient}', [AppointmentController::class, 'create'])->name('appointments.create.withPatient');
     Route::resource('appointments', AppointmentController::class);
     Route::resource('offices', OfficeController::class);
+    Route::get('reserved-times', [ReservedTimeController::class, 'index'])->name('reserved-times.index');
 });
 
 // routes doctor
@@ -74,6 +77,7 @@ Route::middleware('auth', 'verified', 'doctor')->group(function () {
     Route::get('appointments/create/{patient}', [DoctorAppointment::class, 'create'])->name('appointments.create.withPatient');
     Route::resource('appointments', DoctorAppointment::class);
     Route::get('/schedule', [DoctorSchedule::class, 'index'])->name('schedules.index');
+    Route::resource('reserved-times', DoctorReservedTimes::class);
 });
 
 Route::get('/cancel-appointment/{token}', [BookAppointmentController::class, 'showCancel'])->name('appointments.cancel');

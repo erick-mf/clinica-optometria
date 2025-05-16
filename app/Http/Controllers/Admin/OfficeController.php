@@ -35,20 +35,44 @@ class OfficeController extends Controller
      */
     public function store(Request $request)
     {
+        $request['name'] = ucwords(strtolower($request['name']));
+        $request['abbreviation'] = strtoupper($request['abbreviation']);
+
         $validated = $request->validate([
-            'name' => 'required|string|unique:offices',
+            'name' => 'required|string|min:3|max:100|unique:offices,name',
+            'abbreviation' => 'required|string|min:2|max:10|unique:offices,abbreviation',
             'status' => 'required',
             'user_id' => 'nullable',
         ], [
             'name.required' => 'El nombre es requerido',
             'name.string' => 'El nombre debe ser una cadena de texto',
+            'name.min' => 'El nombre debe tener al menos 3 caracteres',
+            'name.max' => 'El nombre debe tener máximo 100 caracteres',
             'name.unique' => 'El nombre ya está en uso',
+
+            'abbreviation.required' => 'La abreviatura es requerida',
+            'abbreviation.string' => 'La abreviatura debe ser una cadena de texto',
+            'abbreviation.min' => 'La abreviatura debe tener al menos 2 caracter',
+            'abbreviation.max' => 'La abreviatura debe tener máximo 10 caracteres',
+            'abbreviation.unique' => 'La abreviatura ya está en uso',
+
             'status.required' => 'El estado es requerido',
         ]);
 
-        $this->officeRepository->create($validated);
+        try {
+            $existOffice = $this->officeRepository->create($validated);
 
-        return redirect()->route('admin.offices.index')->with('toast', ['type' => 'success', 'message' => 'Espacio creado correctamente']);
+            if (! $existOffice) {
+                return back()->with('toast', ['type' => 'error', 'message' => 'El usuario ya tiene un espacio asignado'])->withInput();
+            }
+
+            return redirect()->route('admin.offices.index')->with('toast', ['type' => 'success', 'message' => 'Espacio creado correctamente']);
+        } catch (\Exception $e) {
+            Log::error('Error al crear el espacio: '.$e->getMessage());
+
+            return back()->with('toast', ['type' => 'error', 'message' => 'Error al crear el espacio'])->withInput();
+        }
+
     }
 
     /**
@@ -73,13 +97,32 @@ class OfficeController extends Controller
     public function update(Request $request, Office $office)
     {
         $validated = $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|min:3|max:100|unique:offices,name'.$office->id,
+            'abbreviation' => 'required|string|min:2|max:10|unique:offices,abbreviation'.$office->id,
             'status' => 'required',
             'user_id' => 'nullable',
+        ], [
+            'name.required' => 'El nombre es requerido',
+            'name.string' => 'El nombre debe ser una cadena de texto',
+            'name.min' => 'El nombre debe tener al menos 3 caracteres',
+            'name.max' => 'El nombre debe tener máximo 100 caracteres',
+            'name.unique' => 'El nombre ya está en uso',
+
+            'abbreviation.required' => 'La abreviatura es requerida',
+            'abbreviation.string' => 'La abreviatura debe ser una cadena de texto',
+            'abbreviation.min' => 'La abreviatura debe tener al menos 2 caracter',
+            'abbreviation.max' => 'La abreviatura debe tener máximo 10 caracteres',
+            'abbreviation.unique' => 'La abreviatura ya está en uso',
+
+            'status.required' => 'El estado es requerido',
         ]);
 
         try {
-            $this->officeRepository->update($office, $validated);
+            $updateOffice = $this->officeRepository->update($office, $validated);
+
+            if (! $updateOffice) {
+                return back()->with('toast', ['type' => 'error', 'message' => 'El usuario ya tiene un espacio asignado'])->withInput();
+            }
 
             return redirect()->route('admin.offices.index')->with('toast', ['type' => 'success', 'message' => 'Espacio actualizado correctamente']);
         } catch (\Exception $e) {

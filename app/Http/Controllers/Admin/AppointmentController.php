@@ -98,9 +98,12 @@ class AppointmentController extends Controller
             DB::beginTransaction();
             $appointment = $this->appoinmentRepository->create($validated);
 
-            // Enviar correo de confirmación
             $timeSlot = $this->timeSlotRepository->find($validated['appointment_time']);
-            event(new AppointmentCreated($appointment, $patient, $timeSlot, $validated['appointment_date']));
+
+            // Verificar si hay un correo disponible antes de enviar el evento
+            if (! empty($patient->email) || ! empty($patient->tutor_email)) {
+                event(new AppointmentCreated($appointment, $patient, $timeSlot, $validated['appointment_date']));
+            }
 
             DB::commit();
 

@@ -28,6 +28,7 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
             ->join('time_slots', 'appointments.time_slot_id', '=', 'time_slots.id')
             ->join('available_hours', 'time_slots.available_hour_id', '=', 'available_hours.id')
             ->join('available_dates', 'available_hours.available_date_id', '=', 'available_dates.id')
+            ->where('available_dates.date', '>=', now()->format('Y-m-d'))
             ->orderBy('available_dates.date', 'asc') // Orden principal por fecha
             ->orderBy('time_slots.start_time', 'asc') // Orden secundario por hora
             ->paginate($perPage);
@@ -84,7 +85,8 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
 
     public function create(array $data)
     {
-            $data['token'] = Str::random(32);
+        $data['token'] = Str::random(32);
+
         return DB::transaction(function () use ($data) {
             $appointment = $this->model->create([
                 'patient_id' => $data['patient_id'],
@@ -126,14 +128,21 @@ class EloquentAppointmentRepository implements AppointmentRepositoryInterface
         });
     }
 
-    public function isAlreadyBooked($patientId, $date)
+    public function isAlreadyBooked($patientId, $isDoctor = false)
     {
-        return $this->model->query()
+        if ($isDoctor) {
+            return false;
+        }
+
+        $query = $this->model->query()
             ->where('patient_id', $patientId)
-            ->whereHas('timeSlot.availableHour.availableDate', function ($query) use ($date) {
-                $query->whereDate('available_dates.date', $date);
-            })
-            ->exists();
+            ->whereHas('timeSlot.availableHour.availableDate', function ($query) {
+                $query->whereDate('available_dates.date', '>=', now()->format('Y-m-d'));
+            });
+
+        $exists = $query->exists();
+
+        return $exists;
     }
 
     public function findByToken($token)
