@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const dateInput = document.getElementById("appointment_date");
     const timeSelect = document.getElementById("appointment_time");
     const statusElement = document.getElementById("availability-status");
-    const token = document.querySelector('meta[name="x-appointment-token"]').getAttribute("content");
+    const token = document.querySelector('meta[name="x-appointment-token"]')?.getAttribute("content");
 
     if (!dateInput || !timeSelect || !token) return;
 

@@ -83,7 +83,7 @@ class EloquentPatientRepository implements PatientRepositoryInterface
             'tutor_name' => isset($data['tutor_name']) ? ucwords(strtolower($data['tutor_name'])) : null,
             'tutor_email' => isset($data['tutor_email']) ? strtolower($data['tutor_email']) : null,
             'tutor_document_type' => isset($data['tutor_document_type']) ? $data['tutor_document_type'] : null,
-            'tutor_document_number' => isset($data['tutor_document_number']) ? isset($data['tutor_document_number']) : null,
+            'tutor_document_number' => isset($data['tutor_document_number']) ? $data['tutor_document_number'] : null,
             'tutor_phone' => $data['tutor_phone'],
         ]);
     }

@@ -15,4 +15,8 @@ interface AvailableHourRepositoryInterface
     public function update(AvailableHour $availableHour, array $data);
 
     public function delete(AvailableHour $availableHour);
+
+    public function getAvailableHoursByDate($date);
+
+    public function checkAvailabilityConflict($officeId, $date, $startTime, $endTime);
 }
