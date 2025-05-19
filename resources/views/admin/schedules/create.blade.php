@@ -99,7 +99,8 @@
 
                                     <!-- Selector múltiple de doctores -->
                                     <div>
-                                        <label class="block text-sm text-gray-700 mb-1">Doctores para este turno</label>
+                                        <label class="block text-sm text-gray-700 mb-1">Profesionales para este
+                                            turno (tienen que tener un espacio asignado)</label>
                                         <div
                                             class="space-y-2 max-h-60 overflow-y-auto p-2 border border-gray-200 rounded-lg doctors-container">
                                             @foreach ($doctors as $doctor)
@@ -114,7 +115,7 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                        <p class="text-xs text-gray-500 mt-1">Selecciona uno o varios doctores</p>
+                                        <p class="text-xs text-gray-500 mt-1">Selecciona uno o varios profesionales</p>
                                     </div>
 
                                     <button type="button"
@@ -152,11 +153,7 @@
                                 class="w-full sm:w-auto px-4 py-2 text-center border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-150">
                                 Cancelar
                             </a>
-                            <button type="submit"
-                                class="w-full sm:w-auto px-4 py-2 text-center border rounded-lg text-white bg-teal-600 hover:bg-teal-700 transition-colors duration-150"
-                                style="background-color: #157564;">
-                                Guardar Horarios
-                            </button>
+                            <x-primary-button>Guardar Horarios</x-primary-button>
                         </div>
                     </form>
                 </div>

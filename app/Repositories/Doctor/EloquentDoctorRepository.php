@@ -93,4 +93,12 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
             ->whereHas('availableHours') // Solo doctores que tengan horas configuradas
             ->get();
     }
+
+    public function getDoctorsWithOffices()
+    {
+        return $this->model
+            ->where('role', 'doctor')
+            ->whereHas('office')
+            ->get();
+    }
 }

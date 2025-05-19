@@ -5,7 +5,7 @@
                 <div class="p-4 sm:p-8 text-gray-900">
                     <!-- Título -->
                     <div class="mb-6 flex flex-row justify-between items-start sm:items-center gap-4">
-                        <h1 class="text-lg font-bold sm:text-2xl text-gray-800 flex items-center gap-2">
+                        <h1 class="text-lg font-bold sm:text-xl text-gray-800 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-700" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" style="color: #157564;">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -33,32 +33,27 @@
                             @foreach ($reservations as $reservation)
                                 <div
                                     class="bg-white border border-gray-200 rounded-lg shadow-sm p-5 hover:shadow-md transition-shadow duration-200 relative overflow-hidden">
-                                    <!-- Indicador de día de la semana -->
                                     <div class="absolute top-0 right-0 bg-teal-700 text-white px-3 py-1 font-bold rounded-bl-lg"
                                         style="background-color: #157564;">
                                         {{ \Carbon\Carbon::parse($reservation->date)->translatedFormat('l') }}
                                     </div>
-
-                                    <!-- Fecha -->
                                     <div class="mb-3">
                                         <span class="font-semibold text-lg text-gray-800 block">
                                             {{ \Carbon\Carbon::parse($reservation->date)->format('d/m/Y') }}
                                         </span>
                                     </div>
-
-                                    <!-- Profesional -->
                                     <div class="mb-3">
                                         <span class="text-sm text-gray-600">Prof: <span
                                                 class="text-gray-800">{{ $reservation->doctor->name }}</span></span>
                                     </div>
-
-                                    <!-- Motivo -->
                                     <div class="mb-3">
                                         <span class="text-sm text-gray-600">Motivo: <span
                                                 class="text-gray-800">{{ $reservation->details }}</span></span>
                                     </div>
-
-                                    <!-- Horario -->
+                                    <div class="mb-3">
+                                        <span class="text-sm text-gray-600">Espacio: <span
+                                                class="text-gray-800">{{ $reservation->office->abbreviation }}</span></span>
+                                    </div>
                                     <div>
                                         <span class="text-sm text-gray-600">Horario:</span>
                                         <span
@@ -68,6 +63,11 @@
                                             -
                                             {{ \Carbon\Carbon::createFromFormat('H:i', $reservation->end_time)->format('H:i') }}
                                         </span>
+                                    </div>
+                                    <!-- Acciones -->
+                                    <div class="mt-4">
+                                        <x-action-delete-button
+                                            action="{{ route('admin.reserved-times.destroy', $reservation->id) }}" />
                                     </div>
                                 </div>
                             @endforeach
@@ -80,11 +80,11 @@
                                     style="background: linear-gradient(to right, #f9fafb, rgba(21, 117, 100, 0.1));">
                                     <tr>
                                         <th scope="col"
-                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Fecha
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Día
                                         </th>
                                         <th scope="col"
@@ -92,43 +92,46 @@
                                             Profesional
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-wrap">
                                             Motivo
+                                        </th>
+                                        <th scope="col"
+                                            class="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Espacio
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Horario
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Acciones
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
                                     @foreach ($reservations as $reservation)
                                         <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                            <!-- Fecha -->
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-4 py-4 whitespace-nowrap">
                                                 <div class="flex items-center text-gray-700">
                                                     {{ \Carbon\Carbon::parse($reservation->date)->format('d/m/Y') }}
                                                 </div>
                                             </td>
-
-                                            <!-- Día -->
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-4 py-4 whitespace-nowrap">
                                                 <span class="text-gray-700">
                                                     {{ \Carbon\Carbon::parse($reservation->date)->translatedFormat('l') }}
                                                 </span>
                                             </td>
-
-                                            <!-- Profesional -->
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span class="text-gray-700">{{ $reservation->doctor->name }}</span>
                                             </td>
-
-                                            <!-- Motivo -->
                                             <td class="px-6 py-4">
                                                 <span class="text-gray-700">{{ $reservation->details }}</span>
                                             </td>
-
-                                            <!-- Horario -->
+                                            <td class="px-4 py-4">
+                                                <span
+                                                    class="text-gray-700">{{ $reservation->office->abbreviation }}</span>
+                                            </td>
                                             <td class="px-6 py-4">
                                                 <span
                                                     class="inline-block px-3 py-1.5 bg-teal-50 text-teal-700 text-xs font-medium rounded-full whitespace-nowrap"
@@ -138,12 +141,15 @@
                                                     {{ \Carbon\Carbon::createFromFormat('H:i', $reservation->end_time)->format('H:i') }}
                                                 </span>
                                             </td>
+                                            <td class="px-6 py-4">
+                                                <x-action-delete-button
+                                                    action="{{ route('admin.reserved-times.destroy', $reservation->id) }}" />
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
-                        <!-- Paginación -->
                         <div class="mt-6" id="paginate">
                             <x-custom-pagination :paginator="$reservations" />
                         </div>
@@ -152,4 +158,6 @@
             </div>
         </div>
     </div>
+    <x-delete-modal title="Confirmar eliminación"
+        content="¿Estás seguro que deseas eliminar esta reserva? Esta acción no se puede deshacer." />
 </x-app-layout>

@@ -68,6 +68,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'verified', 'admin')-
     Route::resource('appointments', AppointmentController::class);
     Route::resource('offices', OfficeController::class);
     Route::get('reserved-times', [ReservedTimeController::class, 'index'])->name('reserved-times.index');
+    Route::delete('reserved-times/{id}', [ReservedTimeController::class, 'destroy'])->name('reserved-times.destroy');
 });
 
 // routes doctor
