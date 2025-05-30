@@ -70,8 +70,9 @@
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         @if ($doctors->isEmpty())
-                            <h3 class="text-xl font-semibold text-gray-800 mb-2">No hay doctores registrados</h3>
-                            <p class="text-gray-600 mb-6">Comienza configurando tu primer doctor para crear horarios
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">No hay profesionales registrados</h3>
+                            <p class="text-gray-600 mb-6">Comienza configurando tu primer profesional para crear
+                                horarios
                             </p>
                         @else
                             <h3 class="text-xl font-semibold text-gray-800 mb-2">No hay horarios registrados</h3>

@@ -68,4 +68,6 @@ interface DoctorRepositoryInterface
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getDoctorWithSchedule();
+
+    public function getDoctorsWithOffices();
 }

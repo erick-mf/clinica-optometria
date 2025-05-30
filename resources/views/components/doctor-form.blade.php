@@ -54,6 +54,21 @@
                 @enderror
             </div>
         </div>
+        <!-- Role -->
+        <div>
+            <label for="role" class="block text-sm font-medium text-gray-700 mb-1">Rol *</label>
+            <select name="role" id="role"
+                class="w-full sm:w-[48.85%] px-4 py-2 rounded-md border border-gray-300 focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
+                <option value="" selected disabled>Seleccione un rol</option>
+                <option value="admin" {{ old('role', $doctor ? $doctor->role : '') == 'admin' ? 'selected' : '' }}>
+                    Administrador</option>
+                <option value="doctor" {{ old('role', $doctor ? $doctor->role : '') == 'doctor' ? 'selected' : '' }}>
+                    Profesional</option>
+            </select>
+            @error('role')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
+        </div>
     </div>
 
     <!-- Botones de acción -->

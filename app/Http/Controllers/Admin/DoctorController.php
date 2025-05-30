@@ -9,6 +9,7 @@ use App\Repositories\Doctor\DoctorRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\Rule;
 
 class DoctorController extends Controller
 {
@@ -38,10 +39,11 @@ class DoctorController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|min:3|max:255|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/',
-            'surnames' => 'required|string|min:3|max:255|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/',
+            'name' => ['required', 'string', 'min:3', 'max:255', 'regex:/^[\p{L}\s]+$/u', Rule::unique('users')->ignore($request['id'], 'id')],
+            'surnames' => 'required|string|min:3|max:255|regex:/^[\p{L}\s]+$/u',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'nullable|digits:9|regex:/^[6-9]\d{8}$/',
+            'phone' => 'nullable|digits:9|regex:/^[6-9]\d{8}$/|numeric',
+            'role' => 'required',
         ], [
             'name.required' => 'El nombre es obligatorio.',
             'name.string' => 'El nombre debe ser una cadena de texto.',
@@ -61,6 +63,9 @@ class DoctorController extends Controller
 
             'phone.digits' => 'El teléfono debe tener 9 dígitos.',
             'phone.regex' => 'El teléfono debe comenzar con 6, 7, 8 o 9.',
+            'phone.numeric' => 'El teléfono solo puede contener números.',
+
+            'role.required' => 'El rol es obligatorio.',
         ]);
 
         $doctor = $this->repository->create($validated);
@@ -128,7 +133,10 @@ class DoctorController extends Controller
     public function destroy(User $doctor)
     {
         try {
-            $this->repository->delete($doctor);
+            $deleted = $this->repository->delete($doctor);
+            if ($deleted['error']) {
+                return back()->withInput()->with('toast', ['type' => 'error', 'message' => $deleted['error']]);
+            }
 
             return redirect()
                 ->route('admin.doctors.index')

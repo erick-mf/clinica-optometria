@@ -58,74 +58,7 @@
                 </div>
 
                 <!-- Información de contacto mejorada -->
-                <div
-                    class="bg-gray-50 rounded-xl p-8 sm:p-10 shadow-sm border border-gray-100 transform transition-all duration-300 hover:shadow-2xl">
-                    <div class="space-y-6">
-                        <div>
-                            <h3 class="text-2xl font-semibold text-gray-900 mb-3">Nuestra Dirección</h3>
-                            <p class="text-gray-700 leading-relaxed">
-                                <svg class="w-5 h-5 inline-block mr-2 text-primary" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                    </path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                                Hospital San Rafael, C/ San Juan de Dios, 19, Centro, 18001 Granada.
-                            </p>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <h4 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                                    <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
-                                    </svg>
-                                    Periodos de atención
-                                </h4>
-                                <ul class="space-y-2 text-gray-700">
-                                    <li class="flex items-start">
-                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-2 mr-2"></span>
-                                        Octubre - Noviembre
-                                    </li>
-                                    <li class="flex items-start">
-                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-2 mr-2"></span>
-                                        Marzo - Abril
-                                    </li>
-                                    <li class="flex items-start">
-                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-2 mr-2"></span>
-                                        Abril - Junio
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <h4 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                                    <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    Horarios
-                                </h4>
-                                <ul class="space-y-2 text-gray-700">
-                                    <li class="flex items-start">
-                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-2 mr-2"></span>
-                                        Lunes, Miércoles, Jueves, Viernes: 08:00 - 13:30
-                                    </li>
-                                    <li class="flex items-start">
-                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-2 mr-2"></span>
-                                        Lunes a Jueves: 15:00 - 20:30
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <x-clinic-info />
             </div>
         </div>
     </section>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AppointmentController;
+use App\Http\Controllers\Admin\ClinicInfoController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\OfficeController;
@@ -68,6 +69,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'verified', 'admin')-
     Route::resource('appointments', AppointmentController::class);
     Route::resource('offices', OfficeController::class);
     Route::get('reserved-times', [ReservedTimeController::class, 'index'])->name('reserved-times.index');
+    Route::delete('reserved-times/{id}', [ReservedTimeController::class, 'destroy'])->name('reserved-times.destroy');
+
+    Route::get('clinic-info', [ClinicInfoController::class, 'index'])->name('clinic-info.index');
+    Route::get('clinic-info/configure', [ClinicInfoController::class, 'create'])->name('clinic-info.configure');
+    Route::match(['post', 'put'], 'clinic-info', [ClinicInfoController::class, 'storeOrUpdate'])->name('clinic-info.save');
 });
 
 // routes doctor

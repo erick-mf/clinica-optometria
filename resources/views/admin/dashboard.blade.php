@@ -120,6 +120,25 @@
                         </div>
                     </div>
                 </a>
+
+                <!-- Gestionar Información de la Clinica -->
+                <a href="{{ route('admin.clinic-info.index') }}"
+                    class="block p-4 sm:p-6 bg-white overflow-hidden shadow-xl sm:rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-200">
+                    <div class="flex items-start gap-4">
+                        <div class="rounded-full p-3 flex-shrink-0"
+                            style="background-color: rgba(21, 117, 100, 0.1);">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-700" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" style="color: #157564;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">Info. Clínica</h2>
+                            <p class="text-sm text-gray-600">Gestiona dirección y horarios</p>
+                        </div>
+                    </div>
+                </a>
             </div>
 
             <!-- Sección de Citas de Hoy -->

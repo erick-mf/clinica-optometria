@@ -1,10 +1,10 @@
 export function initDoctorReservedTime() {
-    const datePickerElement = document.getElementById('date');
-    const startTimePicker = document.getElementById('start_time');
-    const endTimePicker = document.getElementById('end_time');
-    const reservedHoursDisplay = document.getElementById('reserved-hours-display');
+    const datePickerElement = document.getElementById("date");
+    const startTimePicker = document.getElementById("start_time");
+    const endTimePicker = document.getElementById("end_time");
+    const reservedHoursDisplay = document.getElementById("reserved-hours-display");
     const token = document.querySelector('meta[name="x-appointment-token"]')?.content;
-    const officeSelect = document.getElementById('office_id');
+    const officeSelect = document.getElementById("office_id");
     let currentOfficeId = officeSelect ? officeSelect.value : null;
 
     // Estado de la aplicación
@@ -12,7 +12,7 @@ export function initDoctorReservedTime() {
         reservedSlots: [],
         selectedDate: null,
         startTime: null,
-        endTime: null
+        endTime: null,
     };
     officeSelect.value = ""
 
@@ -31,11 +31,11 @@ export function initDoctorReservedTime() {
             dateFormat: "Y-m-d",
             altInput: true,
             altFormat: "d F Y",
-            onChange: async function(selectedDates, dateStr) {
+            onChange: async function (selectedDates, dateStr) {
                 state.selectedDate = dateStr;
                 clearTimePickers();
                 await fetchAndDisplayReservedHours(dateStr);
-            }
+            },
         });
     }
 
@@ -43,38 +43,38 @@ export function initDoctorReservedTime() {
         if (!startTimePicker || !endTimePicker) return;
 
         // Establecer valores por defecto
-        startTimePicker.value = '';
-        endTimePicker.value = '';
+        startTimePicker.value = "";
+        endTimePicker.value = "";
 
-        startTimePicker.classList.add('w-full', 'px-3', 'py-2', 'border', 'border-gray-300', 'rounded-md');
-        endTimePicker.classList.add('w-full', 'px-3', 'py-2', 'border', 'border-gray-300', 'rounded-md');
+        startTimePicker.classList.add("w-full", "px-3", "py-2", "border", "border-gray-300", "rounded-md");
+        endTimePicker.classList.add("w-full", "px-3", "py-2", "border", "border-gray-300", "rounded-md");
     }
 
     function setupEventListeners() {
         if (startTimePicker) {
-            startTimePicker.addEventListener('change', function() {
+            startTimePicker.addEventListener("change", function () {
                 state.startTime = this.value;
                 if (state.endTime) validateTimeRange();
             });
         }
 
         if (endTimePicker) {
-            endTimePicker.addEventListener('change', function() {
+            endTimePicker.addEventListener("change", function () {
                 state.endTime = this.value;
                 validateTimeRange();
             });
         }
 
-        if(officeSelect){
-            officeSelect.addEventListener("change",function(){
+        if (officeSelect) {
+            officeSelect.addEventListener("change", function () {
                 currentOfficeId = this.value;
 
                 state.reservedSlots = [];
 
-                if(state.selectedDate){
+                if (state.selectedDate) {
                     fetchAndDisplayReservedHours(state.selectedDate);
                 }
-            })
+            });
         }
     }
 
@@ -88,8 +88,8 @@ export function initDoctorReservedTime() {
 
         // Verificar que la hora de fin sea posterior a la de inicio
         if (startMinutes >= endMinutes) {
-            window.Toast.warning('La hora de fin debe ser posterior a la de inicio');
-            endTimePicker.value = '';
+            window.Toast.warning("La hora de fin debe ser posterior a la de inicio");
+            endTimePicker.value = "";
             state.endTime = null;
             return false;
         }
@@ -97,9 +97,9 @@ export function initDoctorReservedTime() {
         // Verificar colisión con horarios ocupados
         const colision = checkTimeConflicts(state.startTime, state.endTime);
         if (colision) {
-            window.Toast.warning('Las horas seleccionadas colisionan con horarios ocupados');
-            startTimePicker.value = '';
-            endTimePicker.value = '';
+            window.Toast.warning("Las horas seleccionadas colisionan con horarios ocupados");
+            startTimePicker.value = "";
+            endTimePicker.value = "";
             state.startTime = null;
             state.endTime = null;
             return false;
@@ -109,32 +109,34 @@ export function initDoctorReservedTime() {
     }
 
     function convertTimeToMinutes(time) {
-        const [hours, minutes] = time.split(':').map(Number);
+        const [hours, minutes] = time.split(":").map(Number);
         return hours * 60 + minutes;
     }
 
     // Verifica si hay colisión con horarios ocupados
     function checkTimeConflicts(start, end) {
-        return state.reservedSlots.some(slot => {
+        return state.reservedSlots.some((slot) => {
             const slotStart = convertTimeToMinutes(slot.start_time);
             const slotEnd = convertTimeToMinutes(slot.end_time);
             const selectedStart = convertTimeToMinutes(start);
             const selectedEnd = convertTimeToMinutes(end);
 
-            return (selectedStart >= slotStart && selectedStart < slotEnd) ||
+            return (
+                (selectedStart >= slotStart && selectedStart < slotEnd) ||
                 (selectedEnd > slotStart && selectedEnd <= slotEnd) ||
-                (selectedStart <= slotStart && selectedEnd >= slotEnd);
+                (selectedStart <= slotStart && selectedEnd >= slotEnd)
+            );
         });
     }
 
     // Limpiar los time pickers
     function clearTimePickers() {
         if (startTimePicker) {
-            startTimePicker.value = '';
+            startTimePicker.value = "";
             state.startTime = null;
         }
         if (endTimePicker) {
-            endTimePicker.value = '';
+            endTimePicker.value = "";
             state.endTime = null;
         }
     }
@@ -155,13 +157,13 @@ export function initDoctorReservedTime() {
                 </div>`;
 
             // Realizar petición al servidor
-            const url = `/api/available-slots/${dateStr}?include_reserved=true`
+            const url = `/api/available-slots/${dateStr}?include_reserved=true`;
             const response = await fetch(officeSelect ? `${url}&office_id=${currentOfficeId}` : url, {
                 method: "GET",
                 headers: {
                     "X-Appointment-Token": token || "",
-                    "Accept": "application/json"
-                }
+                    Accept: "application/json",
+                },
             });
 
             if (!response.ok) {
@@ -173,11 +175,10 @@ export function initDoctorReservedTime() {
 
             // Mostrar los horarios ocupados
             displayReservedHours();
-
         } catch (error) {
             console.error("Error al cargar horarios:", error);
-            if(error.message.includes('429')){
-                window.Toast.error('Se ha alcanzado el límite de solicitudes. Intente nuevamente en unos minutos.');
+            if (error.message.includes("429")) {
+                window.Toast.error("Se ha alcanzado el límite de solicitudes. Intente nuevamente en unos minutos.");
 
                 reservedHoursDisplay.innerHTML = `
                     <div class="p-3 bg-red-50 border border-red-200 rounded-md">
@@ -186,7 +187,7 @@ export function initDoctorReservedTime() {
                     </p>
                     </div>`;
                 state.reservedSlots = [];
-            }else{
+            } else {
                 reservedHoursDisplay.innerHTML = `
                     <div class="p-3 bg-red-50 border border-red-200 rounded-md">
                     <p class="text-sm text-red-600">
@@ -220,7 +221,7 @@ export function initDoctorReservedTime() {
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">`;
 
         // Cada horario ocupado
-        state.reservedSlots.forEach(slot => {
+        state.reservedSlots.forEach((slot) => {
             html += `
                 <div class="bg-red-50 border border-red-200 text-red-800 rounded-md p-2 text-xs sm:text-sm font-medium flex items-center space-x-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

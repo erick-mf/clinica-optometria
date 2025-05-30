@@ -104,7 +104,7 @@ const setupTurnManagement = () => {
             </div>
 
             <div>
-                <label class="block text-sm text-gray-700 mb-1">Doctores para este turno</label>
+                <label class="block text-sm text-gray-700 mb-1">Profesionales para este turno</label>
                 <div class="space-y-2 max-h-60 overflow-y-auto p-2 border border-gray-200 rounded-lg">
                     ${createDoctorCheckboxes(turnCounter)}
                 </div>

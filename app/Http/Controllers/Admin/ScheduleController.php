@@ -46,7 +46,7 @@ class ScheduleController extends Controller
         $disabledDates = array_map(function ($date) {
             return Carbon::parse($date)->format('Y-m-d');
         }, $existingDates);
-        $doctors = $this->doctorRepository->all();
+        $doctors = $this->doctorRepository->getDoctorsWithOffices();
 
         return view('admin.schedules.create', compact('disabledDates', 'doctors'));
     }
