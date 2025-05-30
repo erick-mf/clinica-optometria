@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
                 DoctorAvailableHourSeeder::class,
                 OfficeSeeder::class,
                 DoctorReservedTimeSeeder::class,
+                ClinicInfoSeeder::class,
             ]);
         } else {
             if (! User::where('email', 'admin@example.com')->exists()) {
