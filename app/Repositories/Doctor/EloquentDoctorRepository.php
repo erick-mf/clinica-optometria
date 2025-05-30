@@ -15,7 +15,7 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
 
     public function paginate(int $perPage = 10)
     {
-        $doctorsQuery = $this->model->query()->where('role', 'doctor')->orderBy('id', 'desc');
+        $doctorsQuery = $this->model->query()->orderBy('id', 'desc');
 
         // Si no hay doctores, devolver colección vacía
         if ($doctorsQuery->count() == 0) {
@@ -49,7 +49,7 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
 
     public function all()
     {
-        return $this->model->where('role', 'doctor')->get();
+        return $this->model->get();
     }
 
     public function create(array $data)
@@ -57,7 +57,6 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
         $data['name'] = ucwords(strtolower($data['name']));
         $data['surnames'] = ucwords(strtolower($data['surnames']));
         $data['email'] = strtolower($data['email']);
-        $data['role'] = 'doctor';
 
         return $this->model->create($data);
     }
@@ -75,6 +74,11 @@ class EloquentDoctorRepository implements DoctorRepositoryInterface
 
     public function delete(User $user)
     {
+        if ($_ENV['ADMIN_EMAIL'] == $user->email) {
+            return [
+                'error' => 'No se puede eliminar a este profesional.', ];
+        }
+
         return $user->delete();
     }
 
