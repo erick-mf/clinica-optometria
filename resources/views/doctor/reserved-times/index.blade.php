@@ -15,7 +15,7 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-4 sm:p-6 text-gray-900">
                         <div class="flex justify-between items-start mb-6">
-                            <h2 class="text-xl font-semibold">{{ __('Crear reservación') }}</h2>
+                            <h2 class="text-xl font-semibold">{{ __('Crear reserva') }}</h2>
                         </div>
 
                         <form method="POST" action="{{ route('reserved-times.store') }}" class="space-y-4 md:space-y-6"
@@ -144,10 +144,10 @@
                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                     </path>
                                 </svg>
-                                No tienes reservaciones personales registradas.
+                                No tienes reservas personales registradas.
                             </div>
                         @else
-                            <h3 class="text-lg font-semibold mb-2">Reservaciones personales</h3>
+                            <h3 class="text-lg font-semibold mb-2">Reservas personales</h3>
                             <ul id="reservation-list"
                                 class="divide-y divide-gray-200 max-h-[550px] overflow-y-auto pr-1">
                                 @foreach ($reservedTimes as $reservedTime)
@@ -191,6 +191,6 @@
             </div>
         </div>
     </div>
-    <x-delete-modal title="Eliminar esta reservación"
-        content="¿Seguro que deseas eliminar esta reservación? Esta acción no se puede deshacer." />
+    <x-delete-modal title="Eliminar esta reserva"
+        content="¿Seguro que deseas eliminar esta reserva? Esta acción no se puede deshacer." />
 </x-app-layout>

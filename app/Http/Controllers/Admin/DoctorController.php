@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Notifications\SetupPassword;
 use App\Repositories\Doctor\DoctorRepositoryInterface;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rule;
@@ -68,18 +70,34 @@ class DoctorController extends Controller
             'role.required' => 'El rol es obligatorio.',
         ]);
 
-        $doctor = $this->repository->create($validated);
+        DB::beginTransaction();
 
-        if (! $doctor) {
-            return back()->withInput()->with('toast', ['type' => 'error', 'message' => 'Error al crear el profesional.']);
+        try {
+            $doctor = $this->repository->create($validated);
+
+            if (! $doctor) {
+                throw new Exception('Error al crear el profesional.');
+            }
+
+            $token = Password::createToken($doctor);
+            $doctor->notify(new SetupPassword($token));
+
+            DB::commit();
+
+            return redirect()
+                ->route('admin.doctors.index')
+                ->with('toast', ['type' => 'success', 'message' => 'Profesional creado correctamente.']);
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Error al crear doctor: '.$e->getMessage());
+
+            return back()->withInput()->with('toast', [
+                'type' => 'error',
+                'message' => 'Hubo un error al crear el profesional.',
+            ]);
         }
 
-        $token = Password::createToken($doctor);
-        $doctor->notify(new SetupPassword($token));
-
-        return redirect()
-            ->route('admin.doctors.index')
-            ->with('toast', ['type' => 'success', 'message' => 'Profesional creado correctamente.']);
     }
 
     /**
